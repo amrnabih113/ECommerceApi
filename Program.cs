@@ -1,6 +1,8 @@
 using System.Text;
 using ECommerce.Data;
-using ECommerce.interfaces;
+using ECommerce.Infrastructure;
+using ECommerce.Interfaces.Repositories;
+using ECommerce.Interfaces.services;
 using ECommerce.Models;
 using ECommerce.repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

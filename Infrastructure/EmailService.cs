@@ -1,10 +1,8 @@
-using System.Threading.Tasks;
-using ECommerce.interfaces;
+using ECommerce.Interfaces.services;
 using MailKit.Net.Smtp;
-using Microsoft.Extensions.Configuration;
 using MimeKit;
 
-namespace ECommerce.repositories
+namespace ECommerce.Infrastructure
 {
     public class EmailService : IEmailService
     {

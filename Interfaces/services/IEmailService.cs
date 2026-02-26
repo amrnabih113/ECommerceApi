@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ECommerce.interfaces
+namespace ECommerce.Interfaces.Services
 {
     public interface IEmailService
     {

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using ECommerce.core.Exceptions;
 
 public class ExceptionMiddleware
 {
@@ -14,7 +15,7 @@ public class ExceptionMiddleware
     {
         try
         {
-            await _next(context); 
+            await _next(context);
         }
         catch (Exception ex)
         {
@@ -33,6 +34,9 @@ public class ExceptionMiddleware
                 status = HttpStatusCode.Unauthorized;
                 break;
             case ArgumentException:
+                status = HttpStatusCode.BadRequest;
+                break;
+            case BadRequestException:
                 status = HttpStatusCode.BadRequest;
                 break;
             default:

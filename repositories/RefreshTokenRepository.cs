@@ -1,8 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
 using ECommerce.Data;
-using ECommerce.interfaces;
-using ECommerce.models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.repositories
