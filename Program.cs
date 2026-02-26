@@ -26,6 +26,7 @@ builder
     })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
 builder
     .Services.AddAuthentication(options =>
     {
@@ -82,7 +83,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 
 app.Run();
