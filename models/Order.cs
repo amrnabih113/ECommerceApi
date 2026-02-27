@@ -8,7 +8,10 @@ namespace ECommerce.Models
     public class Order : Entity
     {
         [Required]
+        [ForeignKey(nameof(ApplicationUser))]
         public int UserId { get; set; }
+
+        public ApplicationUser User { get; set; } = null!;
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
