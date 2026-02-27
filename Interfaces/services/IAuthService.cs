@@ -9,7 +9,7 @@ namespace ECommerce.Interfaces.Services
     {
         Task<ApiResponse> RegisterAsync(RegisterDto dto);
         Task<ApiResponse> LoginAsync(LoginDto dto);
-        Task<ApiResponse> VerifyOtpAsync(VerifyOtpDto dto);
+        Task<ApiResponse> VerifyAccountAsync(VerifyOtpDto dto);
         Task<ApiResponse> ForgotPasswordAsync(ForgotPasswordDto dto);
         Task<ApiResponse> RefreshTokenAsync(RefreshTokenDto dto);
         Task<ApiResponse> ResetPasswordAsync(ResetPasswordDto dto);

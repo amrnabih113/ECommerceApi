@@ -41,13 +41,13 @@ namespace ECommerce.Controllers
             var response = await _authService.LoginAsync(dto);
             return Ok(response);
         }
-        // ================= Verify OTP =================
-        [HttpPost("verify-otp")]
-        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto dto)
+        // ================= Verify Account =================
+        [HttpPost("verify-account")]
+        public async Task<IActionResult> VerifyAccount([FromBody] VerifyOtpDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
-            var response = await _authService.VerifyOtpAsync(dto);
+            var response = await _authService.VerifyAccountAsync(dto);
 
             return Ok(response);
         }
