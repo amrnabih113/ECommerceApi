@@ -1,3 +1,4 @@
+using ECommerce.DTOs;
 using ECommerce.DTOs.Auth;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -22,32 +23,32 @@ namespace ECommerce.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
 
 
             var response = await _authService.RegisterAsync(dto);
             return Ok(response);
         }
 
-        // ================= Verify OTP =================
-        [HttpPost("verify-otp")]
-        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto dto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var response = await _authService.VerifyOtpAsync(dto);
 
-            return Ok(response);
-        }
 
         // ================= Login =================
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
+                return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             var response = await _authService.LoginAsync(dto);
+            return Ok(response);
+        }
+        // ================= Verify OTP =================
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
+            var response = await _authService.VerifyOtpAsync(dto);
+
             return Ok(response);
         }
 
@@ -56,7 +57,7 @@ namespace ECommerce.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
 
             var response = await _authService.RefreshTokenAsync(dto);
             return Ok(response);
@@ -68,7 +69,7 @@ namespace ECommerce.Controllers
         {
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             var response = await _authService.ForgotPasswordAsync(dto);
             return Ok(response);
         }
@@ -77,7 +78,7 @@ namespace ECommerce.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(ApiResponse.ErrorResponse(string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             var response = await _authService.ResetPasswordAsync(dto);
             return Ok(response);
         }

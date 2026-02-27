@@ -40,7 +40,7 @@ namespace ECommerce.Services
             var user = new ApplicationUser
             {
                 Email = dto.Email,
-                UserName = dto.Email
+                UserName = dto.Username ?? dto.Email.Split('@')[0]
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
@@ -134,7 +134,32 @@ namespace ECommerce.Services
             _context.EmailOtps.Remove(otpRecord);
             await _context.SaveChangesAsync();
 
-            return ApiResponse.SuccessResponse("Email verified successfully.");
+            var roles = await _userManager.GetRolesAsync(user);
+            var accessToken = _tokenService.GenerateAccessToken(user, roles.ToList());
+
+            var refreshPlain = _tokenService.GenerateRefreshToken();
+            var refreshToken = new RefreshToken
+            {
+                UserId = user.Id,
+                TokenHash = _tokenService.HashToken(refreshPlain),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(15),
+            };
+
+            await _refreshRepo.AddAsync(refreshToken);
+            await _refreshRepo.SaveAsync();
+
+            var response = new VerifyOtpResponseDto
+            {
+                UserId = user.Id,
+                Email = user.Email,
+                FullName = user.FullName,
+                Address = user.Address,
+                ImageUrl = user.ImageUrl,
+                AccessToken = accessToken,
+                RefreshToken = refreshPlain
+            };
+            return ApiResponse<VerifyOtpResponseDto>.Success(response, "OTP verified successfully.");
         }
 
         // =============================
@@ -248,4 +273,5 @@ namespace ECommerce.Services
             await _emailService.SendOtpAsync(user.Email, otpCode);
         }
     }
+
 }
