@@ -1,3 +1,5 @@
+using ECommerce.Models;
+
 namespace ECommerce.Models
 {
     public class RefreshToken
@@ -15,4 +17,5 @@ namespace ECommerce.Models
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
     }
+
 }

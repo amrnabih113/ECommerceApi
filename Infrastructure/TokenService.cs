@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using ECommerce.Interfaces.services;
+using ECommerce.Interfaces.Services;
 using ECommerce.Models;
 using Microsoft.IdentityModel.Tokens;
 

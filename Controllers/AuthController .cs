@@ -1,5 +1,5 @@
 using ECommerce.DTOs.Auth;
-using ECommerce.Interfaces.services;
+using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers

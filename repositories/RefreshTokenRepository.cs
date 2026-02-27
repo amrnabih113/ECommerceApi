@@ -1,15 +1,18 @@
+
+
 using System.Security.Cryptography;
 using System.Text;
-using ECommerce.Data;
+using ECommerce.Interfaces.Repositories;
+using ECommerce.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.repositories
+namespace ECommerce.Repositories
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
     {
-        private readonly AppDbContext _context;
+        private readonly Data.AppDbContext _context;
 
-        public RefreshTokenRepository(AppDbContext context) => _context = context;
+        public RefreshTokenRepository(Data.AppDbContext context) => _context = context;
 
         public async Task AddAsync(RefreshToken token)
         {

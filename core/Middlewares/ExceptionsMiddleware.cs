@@ -1,14 +1,16 @@
-using System.Net;
-using System.Text.Json;
 using ECommerce.core.Exceptions;
+using ECommerce.DTOs;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionMiddleware> _logger;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next,
+        ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -17,40 +19,36 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
+        catch (UnauthorizedException ex)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse.ErrorResponse(ex.Message)
+            );
+        }
+        catch (BadRequestException ex)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse.ErrorResponse(ex.Message)
+            );
+        }
+        // catch (NotFoundException ex)
+        // {
+        //     context.Response.StatusCode = StatusCodes.Status404NotFound;
+        //     await context.Response.WriteAsJsonAsync(
+        //         ApiResponse.ErrorResponse(ex.Message)
+        //     );
+        // }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, ex);
+            _logger.LogError(ex, ex.Message);
+
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            await context.Response.WriteAsJsonAsync(
+                ApiResponse.ErrorResponse("Internal Server Error")
+            );
         }
-    }
-
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-    {
-        HttpStatusCode status;
-        string message = exception.Message;
-
-        switch (exception)
-        {
-            case UnauthorizedAccessException:
-                status = HttpStatusCode.Unauthorized;
-                break;
-            case ArgumentException:
-                status = HttpStatusCode.BadRequest;
-                break;
-            case BadRequestException:
-                status = HttpStatusCode.BadRequest;
-                break;
-            default:
-                status = HttpStatusCode.InternalServerError;
-                message = "An unexpected error occurred.";
-                break;
-        }
-
-        var response = new { message };
-        var payload = JsonSerializer.Serialize(response);
-
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)status;
-
-        return context.Response.WriteAsync(payload);
     }
 }
