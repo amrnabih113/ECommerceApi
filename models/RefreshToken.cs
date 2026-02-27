@@ -14,7 +14,7 @@ namespace ECommerce.Models
 
         public bool IsRevoked { get; set; }
 
-        public string? UserId { get; set; }
+        public required string UserId { get; set; }
         public ApplicationUser? User { get; set; }
     }
 

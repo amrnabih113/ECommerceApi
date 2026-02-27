@@ -1,4 +1,5 @@
 using ECommerce.core.Exceptions;
+using ECommerce.core.utils;
 using ECommerce.Data;
 using ECommerce.DTOs;
 using ECommerce.DTOs.Auth;
@@ -32,9 +33,7 @@ namespace ECommerce.Services
             _emailService = emailService;
         }
 
-        // =============================
-        // Register
-        // =============================
+
         public async Task<ApiResponse> RegisterAsync(RegisterDto dto)
         {
             var user = new ApplicationUser
@@ -44,10 +43,15 @@ namespace ECommerce.Services
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
+
             if (!result.Succeeded)
                 throw new BadRequestException(
                     string.Join(", ", result.Errors.Select(e => e.Description))
                 );
+
+            var roleResult = await _userManager.AddToRoleAsync(user, AppConstants.UserRole);
+            if (!roleResult.Succeeded)
+                throw new BadRequestException("Failed to assign role.");
 
             await SendOtpAsync(user);
 
@@ -61,9 +65,7 @@ namespace ECommerce.Services
                 .Success(response, "Registration successful. Please verify your email.");
         }
 
-        // =============================
-        // Login
-        // =============================
+
         public async Task<ApiResponse> LoginAsync(LoginDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -98,7 +100,7 @@ namespace ECommerce.Services
             var response = new LoginResponseDto
             {
                 UserId = user.Id,
-                Email = user.Email,
+                Email = user.Email!,
                 FullName = user.FullName,
                 Address = user.Address,
                 ImageUrl = user.ImageUrl,
@@ -110,14 +112,12 @@ namespace ECommerce.Services
                 .Success(response, "Login successful.");
         }
 
-        // =============================
-        // Verify OTP
-        // =============================
-        public async Task<ApiResponse> VerifyOtpAsync(VerifyOtpDto dto)
+
+        public async Task<ApiResponse> VerifyAccountAsync(VerifyOtpDto dto)
         {
             var otpRecord = await _context
                 .EmailOtps.Include(o => o.User)
-                .FirstOrDefaultAsync(o => o.User.Email == dto.Email && o.Code == dto.Otp);
+                .FirstOrDefaultAsync(o => o.User!.Email == dto.Email && o.Code == dto.Otp);
 
             if (otpRecord == null)
                 throw new BadRequestException("Invalid OTP.");
@@ -152,7 +152,7 @@ namespace ECommerce.Services
             var response = new VerifyOtpResponseDto
             {
                 UserId = user.Id,
-                Email = user.Email,
+                Email = user.Email!,
                 FullName = user.FullName,
                 Address = user.Address,
                 ImageUrl = user.ImageUrl,
@@ -162,9 +162,6 @@ namespace ECommerce.Services
             return ApiResponse<VerifyOtpResponseDto>.Success(response, "OTP verified successfully.");
         }
 
-        // =============================
-        // Forgot Password
-        // =============================
         public async Task<ApiResponse> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -175,9 +172,6 @@ namespace ECommerce.Services
             return ApiResponse.SuccessResponse("OTP sent successfully.");
         }
 
-        // =============================
-        // Reset Password
-        // =============================
         public async Task<ApiResponse> ResetPasswordAsync(ResetPasswordDto dto)
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -212,9 +206,7 @@ namespace ECommerce.Services
             return ApiResponse.SuccessResponse("Password reset successfully.");
         }
 
-        // =============================
-        // Refresh Token
-        // =============================
+
         public async Task<ApiResponse> RefreshTokenAsync(RefreshTokenDto dto)
         {
             var hashedToken = _tokenService.HashToken(dto.Token);
@@ -252,9 +244,6 @@ namespace ECommerce.Services
             }, "Token refreshed successfully.");
         }
 
-        // =============================
-        // Helper: Send OTP
-        // =============================
         public async Task SendOtpAsync(ApplicationUser user)
         {
             var otpCode = new Random().Next(100000, 999999).ToString();
@@ -262,7 +251,7 @@ namespace ECommerce.Services
             var otp = new EmailOtp
             {
                 UserId = user.Id,
-                Email = user.Email,
+                Email = user.Email!,
                 Code = otpCode,
                 ExpiryDate = DateTime.UtcNow.AddMinutes(5)
             };
@@ -270,7 +259,7 @@ namespace ECommerce.Services
             _context.EmailOtps.Add(otp);
             await _context.SaveChangesAsync();
 
-            await _emailService.SendOtpAsync(user.Email, otpCode);
+            await _emailService.SendOtpAsync(user.Email!, otpCode);
         }
     }
 
