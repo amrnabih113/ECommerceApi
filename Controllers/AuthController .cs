@@ -1,10 +1,12 @@
 using ECommerce.DTOs;
 using ECommerce.DTOs.Auth;
 using ECommerce.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
+    [AllowAnonymous]
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase

@@ -8,8 +8,8 @@ namespace ECommerce.Models
     public class Order : Entity
     {
         [Required]
-        [ForeignKey(nameof(ApplicationUser))]
-        public int UserId { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
 
         public ApplicationUser User { get; set; } = null!;
 
