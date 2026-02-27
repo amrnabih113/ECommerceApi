@@ -1,4 +1,4 @@
-using ECommerce.Interfaces.services;
+using ECommerce.Interfaces.Services;
 using MailKit.Net.Smtp;
 using MimeKit;
 

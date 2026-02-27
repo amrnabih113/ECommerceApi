@@ -2,9 +2,10 @@ using System.Text;
 using ECommerce.Data;
 using ECommerce.Infrastructure;
 using ECommerce.Interfaces.Repositories;
-using ECommerce.Interfaces.services;
+using ECommerce.Interfaces.Services;
 using ECommerce.Models;
-using ECommerce.repositories;
+using ECommerce.Repositories;
+using ECommerce.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,7 @@ builder
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -81,11 +83,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<ExceptionMiddleware>();
+
 app.MapControllers();
 
 app.Run();

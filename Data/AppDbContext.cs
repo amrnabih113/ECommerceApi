@@ -1,7 +1,6 @@
 using ECommerce.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 namespace ECommerce.Data
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
