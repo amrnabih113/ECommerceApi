@@ -7,8 +7,7 @@ namespace ECommerce.Models
     public class Address : Entity
     {
         [Required]
-        [ForeignKey(nameof(ApplicationUser))]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public ApplicationUser User { get; set; } = null!;
 

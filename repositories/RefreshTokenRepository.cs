@@ -35,4 +35,5 @@ namespace ECommerce.Repositories
         public static string HashToken(string token) =>
             Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
     }
+  
 }

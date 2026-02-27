@@ -16,8 +16,8 @@ namespace ECommerce.Models
         public string Comment { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(ApplicationUser))]
-        public int UserId { get; set; }
+        [ForeignKey(nameof(User))]
+        public string UserId { get; set; }
 
         public ApplicationUser User { get; set; } = null!;
 
