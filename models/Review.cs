@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
@@ -15,7 +16,8 @@ namespace ECommerce.Models
         public string Comment { get; set; } = null!;
 
         [Required]
-        public string UserId { get; set; } = null!;
+        [ForeignKey(nameof(ApplicationUser))]
+        public int UserId { get; set; }
 
         public ApplicationUser User { get; set; } = null!;
 
