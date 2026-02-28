@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECommerce.DTOs.Brands;
 using ECommerce.DTOs.Categories;
 using ECommerce.DTOs.Products;
 using ECommerce.Models;
@@ -28,12 +29,20 @@ public class MappingProfile : Profile
         CreateMap<ProductUpdateDto, Product>();
 
         // Category mappings
-        CreateMap<Category, CategoryDto>() .ForMember(dest => dest.ProductsCount,
-        opt => opt.MapFrom(src => 
+        CreateMap<Category, CategoryDto>().ForMember(dest => dest.ProductsCount,
+        opt => opt.MapFrom(src =>
             src.Products.Count(p => p.IsActive)
         ));
         CreateMap<CategoryCreateDto, Category>();
         CreateMap<CategoryUpdateDto, Category>();
+
+        // Brand mappings
+        CreateMap<Brand, BrandDto>().ForMember(dest => dest.ProductsCount,
+        opt => opt.MapFrom(src =>
+            src.Products.Count(p => p.IsActive)
+        ));
+        CreateMap<BrandCreateDto, Brand>();
+        CreateMap<BrandUpdateDto, Brand>();
 
     }
 }

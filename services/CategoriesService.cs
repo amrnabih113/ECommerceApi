@@ -22,6 +22,7 @@ namespace ECommerce.Services
         public async Task<ApiResponse<CategoryDto>> CreateAsync(CategoryCreateDto dto)
         {
             var Category = _mapper.Map<Category>(dto);
+            Category.CreatedAt = DateTime.UtcNow;
             var createdCategory = await _unitOfWork.Categories.AddAsync(Category);
             await _unitOfWork.CompleteAsync();
             var CategoryDto = _mapper.Map<CategoryDto>(createdCategory);
@@ -95,6 +96,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Category not found.");
             }
             _mapper.Map(dto, category);
+            category.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.Categories.UpdateAsync(category);
             await _unitOfWork.CompleteAsync();
             var updatedCategoryDto = _mapper.Map<CategoryDto>(category);

@@ -5,6 +5,8 @@ namespace ECommerce.Interfaces.Repositories
         IProductsRepository Products { get; }
         ICategoriesRepository Categories { get; }
 
+        IBrandsRepository Brands { get; }
+
         Task<int> CompleteAsync();
     }
 }

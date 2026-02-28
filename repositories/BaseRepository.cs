@@ -46,6 +46,7 @@ namespace ECommerce.Repositories
 
         public virtual async Task UpdateAsync(T entity)
         {
+            
             _dbSet.Update(entity);
             await _context.SaveChangesAsync();
         }

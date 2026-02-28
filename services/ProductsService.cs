@@ -21,6 +21,7 @@ namespace ECommerce.Services
         public async Task<ApiResponse<ProductDto>> CreateAsync(ProductCreateDto dto)
         {
             var product = _mapper.Map<Product>(dto);
+            product.CreatedAt = DateTime.UtcNow;
             var createdProduct = await _unitOfWork.Products.AddAsync(product);
             await _unitOfWork.CompleteAsync();
             var productDto = _mapper.Map<ProductDto>(createdProduct);
@@ -103,6 +104,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Product not found.");
             }
             _mapper.Map(dto, product);
+            product.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.Products.UpdateAsync(product);
             await _unitOfWork.CompleteAsync();
             var updatedProductDto = _mapper.Map<ProductDto>(product);

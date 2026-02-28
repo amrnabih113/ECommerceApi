@@ -9,12 +9,14 @@ namespace ECommerce.Repositories
         private readonly AppDbContext _context;
         public IProductsRepository Products { get; private set; }
         public ICategoriesRepository Categories { get; private set; }
+        public IBrandsRepository Brands { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             Products = new ProductsRepository(_context);
             Categories = new CategoriesRepository(_context);
+            Brands = new BrandsRepository(_context);
         }
 
         public async Task<int> CompleteAsync()
