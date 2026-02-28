@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ECommerce.core.utils;
 using ECommerce.DTOs;
 using ECommerce.DTOs.Products;
 using ECommerce.Interfaces.Services;

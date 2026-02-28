@@ -109,6 +109,8 @@ public partial class Program
         builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
         builder.Services.AddScoped<IProductsService, ProductsService>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+        builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
         // Swagger Configuration
         builder.Services.AddEndpointsApiExplorer();

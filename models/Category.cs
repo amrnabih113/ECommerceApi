@@ -22,12 +22,15 @@ namespace ECommerce.Models
         [Required]
         public bool IsActive { get; set; } = true;
 
+        [AllowNull]
         [ForeignKey(nameof(ParentCategoryId))]
-        public int ParentCategoryId { get; set; }
+        public int? ParentCategoryId { get; set; }
+
         public Category? ParentCategory { get; set; }
 
         public ICollection<Product> Products { get; set; } = new List<Product>();
 
-
+        public ICollection<Category> SubCategories { get; set; }
+    = new List<Category>();
     }
 }

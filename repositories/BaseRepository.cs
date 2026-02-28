@@ -1,5 +1,4 @@
 using ECommerce.Data;
-using ECommerce.DTOs;
 using ECommerce.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 namespace ECommerce.Repositories

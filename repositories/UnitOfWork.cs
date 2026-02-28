@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Interfaces.Repositories;
 
@@ -12,11 +8,13 @@ namespace ECommerce.Repositories
 
         private readonly AppDbContext _context;
         public IProductsRepository Products { get; private set; }
+        public ICategoriesRepository Categories { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             Products = new ProductsRepository(_context);
+            Categories = new CategoriesRepository(_context);
         }
 
         public async Task<int> CompleteAsync()
