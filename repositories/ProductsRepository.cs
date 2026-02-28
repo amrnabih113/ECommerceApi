@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories
 {
-    public class ProductsRepository : BaseRepository<Product>, IProductRepository
+    public class ProductsRepository : BaseRepository<Product>, IProductsRepository
     {
         public ProductsRepository(AppDbContext context) : base(context) { }
 
