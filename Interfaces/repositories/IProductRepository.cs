@@ -2,7 +2,7 @@ using ECommerce.Models;
 
 namespace ECommerce.Interfaces.Repositories
 {
-    public interface IProductRepository : IBaseRepository<Product>
+    public interface IProductsRepository : IBaseRepository<Product>
     {
         Task<(IEnumerable<Product> Items, int TotalItems)> GetByCategoryIdAsync(int categoryId, int page = 1, int pageSize = 10);
 
