@@ -38,7 +38,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("create")]
         [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Create([FromBody] ProductCreateDto dto)

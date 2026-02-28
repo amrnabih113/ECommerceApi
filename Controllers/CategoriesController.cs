@@ -31,7 +31,7 @@ namespace ECommerce.Controllers
             return Ok(categories);
         }
         [HttpGet()]
-        [Route("sub-categories/{parentId}")]
+        [Route("sub-categories/{parentId:int}")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<CategoryDto>>), 200)]
         public async Task<IActionResult> GetSubCategories(int parentId)
         {
@@ -48,7 +48,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpGet()]
-        [Route("{id}")]
+        [Route("{id:int}")]
 
         [ProducesResponseType(typeof(ApiResponse<CategoryDto>), 200)]
         public async Task<IActionResult> GetById(int id)
@@ -59,7 +59,7 @@ namespace ECommerce.Controllers
 
         [HttpPost()]
         [Authorize(Roles = "Admin")]
-        [Route("add")]
+        [Route("create")]
         [ProducesResponseType(typeof(ApiResponse<CategoryDto>), 200)]
         public async Task<IActionResult> Create(CategoryCreateDto dto)
         {
@@ -71,7 +71,7 @@ namespace ECommerce.Controllers
             return Ok(createdCategory);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(ApiResponse<CategoryDto>), 200)]
         public async Task<IActionResult> Update(int id, CategoryUpdateDto dto)
@@ -84,7 +84,7 @@ namespace ECommerce.Controllers
             return Ok(updatedCategory);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(ApiResponse<bool>), 200)]
         public async Task<IActionResult> Delete(int id)

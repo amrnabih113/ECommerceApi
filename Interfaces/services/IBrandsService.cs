@@ -5,10 +5,10 @@ namespace ECommerce.Interfaces.Services
 {
     public interface IBrandsService
     {
-        Task<IEnumerable<BrandDto>> GetAllAsync(int page = 1, int pageSize = 10);
-        Task<BrandDto> GetByIdAsync(int id);
-        Task<BrandDto> CreateAsync(BrandCreateDto dto);
-        Task<BrandDto> UpdateAsync(int id, BrandUpdateDto dto);
-        Task<bool> DeleteAsync(int id);
+        Task<ApiResponse<PageResult<BrandDto>>> GetAllAsync(int page = 1, int pageSize = 10);
+        Task<ApiResponse<BrandDto>> GetByIdAsync(int id);
+        Task<ApiResponse<BrandDto>> CreateAsync(BrandCreateDto dto);
+        Task<ApiResponse<BrandDto>> UpdateAsync(int id, BrandUpdateDto dto);
+        Task<ApiResponse<bool>> DeleteAsync(int id);
     }
 }
