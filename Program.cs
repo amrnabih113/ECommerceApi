@@ -1,4 +1,5 @@
 using System.Text;
+using ECommerce.core.configs;
 using ECommerce.Data;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
@@ -21,9 +22,12 @@ public partial class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // ===============================
+        builder.Services.Configure<JWTConfig>(builder.Configuration.GetSection("Jwt"));
+        builder.Services.Configure<EmailSettingsConfig>(
+            builder.Configuration.GetSection("EmailSettings")
+        );
+
         // Add Services
-        // ===============================
 
         builder.Services.AddControllers();
 
@@ -33,9 +37,7 @@ public partial class Program
             )
         );
 
-        // ===============================
         // Identity Configuration
-        // ===============================
         builder.Services
             .AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -47,9 +49,7 @@ public partial class Program
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-        // ===============================
         // JWT Authentication
-        // ===============================
         builder.Services
             .AddAuthentication(options =>
             {
@@ -99,21 +99,18 @@ public partial class Program
                 };
             });
 
-        // ===============================
         // Dependency Injection
-        // ===============================
         builder.Services.AddAutoMapper(typeof(MappingProfile));
 
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         builder.Services.AddScoped<IAuthService, AuthService>();
-        builder.Services.AddScoped<IProductRepository, ProductsRepository>();
+        builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
         builder.Services.AddScoped<IProductsService, ProductsService>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        // ===============================
         // Swagger Configuration
-        // ===============================
         builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddSwaggerGen(options =>
@@ -134,11 +131,6 @@ public partial class Program
                 In = ParameterLocation.Header,
                 Description = "Enter JWT token like: Bearer {your token}"
             });
-
-            // Add JWT Requirement
-
-
-
             options.AddServer(new OpenApiServer
             {
                 Url = "https://localhost:7286"
@@ -147,9 +139,7 @@ public partial class Program
 
         var app = builder.Build();
 
-        // ===============================
         // Seed Roles
-        // ===============================
         using (var scope = app.Services.CreateScope())
         {
             var roleManager =
@@ -158,9 +148,7 @@ public partial class Program
             await RoleSeeder.SeedRolesAsync(roleManager);
         }
 
-        // ===============================
         // Middleware Pipeline
-        // ===============================
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

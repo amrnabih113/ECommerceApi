@@ -70,7 +70,7 @@ namespace ECommerce.Services
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
-                throw new UnauthorizedException("Invalid credentials.");
+                throw new UnauthorizedException("Invalid Email or Password.");
 
             if (!user.EmailConfirmed)
             {
@@ -80,7 +80,7 @@ namespace ECommerce.Services
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
             if (!passwordValid)
-                throw new UnauthorizedException("Invalid credentials.");
+                throw new UnauthorizedException("Invalid Email or Password.");
 
             var roles = await _userManager.GetRolesAsync(user);
             var accessToken = _tokenService.GenerateAccessToken(user, roles.ToList());
