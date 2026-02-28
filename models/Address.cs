@@ -1,13 +1,12 @@
 
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
     public class Address : Entity
     {
         [Required]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         public ApplicationUser User { get; set; } = null!;
 
