@@ -39,7 +39,6 @@ namespace ECommerce.Controllers
             return Ok(categories);
         }
         [HttpGet()]
-        [Route("all")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<CategoryDto>>), 200)]
         public async Task<IActionResult> GetAllCategories(int page = 1, int pageSize = 10)
         {

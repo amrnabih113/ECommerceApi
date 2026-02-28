@@ -29,7 +29,7 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(ApiResponse<ProductDto>), 200)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -50,7 +50,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDto dto)
@@ -62,7 +62,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -70,7 +70,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpGet("by-brand/{brandId}")]
+        [HttpGet("by-brand/{brandId:int}")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> GetByBrand(int brandId, int page = 1, int pageSize = 10)
@@ -81,7 +81,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpGet("by-category/{categoryId}")]
+        [HttpGet("by-category/{categoryId:int}")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> GetByCategory(int categoryId, int page = 1, int pageSize = 10)
