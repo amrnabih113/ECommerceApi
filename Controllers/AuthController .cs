@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
-    [AllowAnonymous]
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
