@@ -62,7 +62,7 @@ postman/
 ### Environment: `Development.json`
 
 **Key Variables:**
-- `baseUrl` - API base (localhost:5000/api)
+- `baseUrl` - API base (localhost:7286/api)
 - `authToken` - Auto-set after login
 - `userId` - Auto-set after login
 - Test IDs for quick testing
@@ -231,8 +231,8 @@ Before using the API, ensure you have:
 
 ```json
 {
-  "baseUrl": "http://localhost:5000/api",
-  "adminBaseUrl": "http://localhost:5000/api/admin",
+  "baseUrl": "http://localhost:7286/api",
+  "adminBaseUrl": "http://localhost:7286/api/admin",
   "authToken": "Bearer ...",      // Auto-filled
   "userId": "...",                // Auto-filled
   "page": "1",

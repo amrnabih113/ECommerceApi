@@ -27,8 +27,8 @@ This Postman collection contains complete API documentation for the ECommerce pl
 Edit the **Development** environment with your actual values:
 
 ```
-baseUrl: http://localhost:5000/api
-adminBaseUrl: http://localhost:5000/api/admin
+baseUrl: http://localhost:7286/api
+adminBaseUrl: http://localhost:7286/api/admin
 authToken: (Auto-filled after login)
 userId: (Auto-filled after login)
 ```
@@ -357,8 +357,8 @@ GET /api/products/by-brand/{{brandId}}
 
 | Variable | Purpose | Example |
 |----------|---------|---------|
-| `baseUrl` | API base URL | `http://localhost:5000/api` |
-| `adminBaseUrl` | Admin endpoints | `http://localhost:5000/api/admin` |
+| `baseUrl` | API base URL | `http://localhost:7286/api` |
+| `adminBaseUrl` | Admin endpoints | `http://localhost:7286/api/admin` |
 | `authToken` | JWT token (auto-set) | `Bearer eyJhbGc...` |
 | `userId` | Current user ID (auto-set) | `user-123` |
 | `productId` | Product ID for testing | `1` |
@@ -385,7 +385,7 @@ GET /api/products/by-brand/{{brandId}}
 ## 📞 API Support
 
 For more information, refer to:
-- Base URL: `http://localhost:5000`
+- Base URL: `http://localhost:7286`
 - Swagger/OpenAPI: `/swagger/index.html` (if available)
 - Environment: Development (local testing)
 
