@@ -14,9 +14,9 @@ namespace ECommerce.Models
         public int ProductId { get; set; }
         public Product Product { get; set; } = default!;
 
+        public string ProductName { get; set; } = default!;
         public int? ProductVariantId { get; set; }
         public ProductVariant? ProductVariant { get; set; }
-
         [Required]
         public int Quantity { get; set; }
 

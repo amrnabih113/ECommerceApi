@@ -1,1221 +1,1487 @@
 {
-  "info": {
-    "name": "ECommerce API",
-    "description": "Complete API collection for ECommerce platform",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "1",
-    "_postman_variable_scope": "environment"
-  },
-  "item": [
-    {
-      "name": "🔐 Authentication",
-      "item": [
+    "info": {
+        "name": "ECommerce API",
+        "description": "Complete API collection for ECommerce platform",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "1",
+        "_postman_variable_scope": "environment"
+    },
+    "item": [
         {
-          "name": "📝 Register",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"userName\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Test@123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/register",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "register"]
-            }
-          }
+            "name": "🔐 Authentication",
+            "item": [
+                {
+                    "name": "📝 Register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userName\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Test@123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/register",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔓 Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Test@123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔄 Refresh Token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/refresh-token",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "refresh-token"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🆘 Forgot Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/forgot-password",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "forgot-password"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✅ Verify OTP",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": \"123456\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/verify-otp",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "verify-otp"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔑 Reset Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"NewPassword@123\",\n  \"confirmPassword\": \"NewPassword@123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/auth/reset-password",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "reset-password"
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         {
-          "name": "🔓 Login",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Test@123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "login"]
-            }
-          }
+            "name": "📦 Products",
+            "item": [
+                {
+                    "name": "📋 Get All Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔍 Get Product by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🆕 Create Product",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Premium T-Shirt\",\n  \"description\": \"High-quality cotton t-shirt\",\n  \"price\": 29.99,\n  \"hasVariants\": true,\n  \"stockQuantity\": 0,\n  \"categoryId\": 1,\n  \"brandId\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/create",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "create"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✏️ Update Product",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated T-Shirt\",\n  \"description\": \"Updated description\",\n  \"price\": 34.99\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Product",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "📂 Get Products by Category",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/by-category/{{categoryId}}?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "by-category",
+                                "{{categoryId}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🏷️ Get Products by Brand",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/by-brand/{{brandId}}?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "by-brand",
+                                "{{brandId}}"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         {
-          "name": "🔄 Refresh Token",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/refresh-token",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "refresh-token"]
-            }
-          }
+            "name": "🖼️ Product Images",
+            "item": [
+                {
+                    "name": "📋 List Product Images",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/images?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "images"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔍 Get Single Image",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/images/{{imageId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "images",
+                                "{{imageId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "📤 Upload Image",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                },
+                                {
+                                    "key": "isMain",
+                                    "value": "true",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/images",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "images"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔄 Update Image",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": ""
+                                },
+                                {
+                                    "key": "isMain",
+                                    "value": "false",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/images/{{imageId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "images",
+                                "{{imageId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Image",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/images/{{imageId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "images",
+                                "{{imageId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         {
-          "name": "🆘 Forgot Password",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"test@example.com\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/forgot-password",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "forgot-password"]
-            }
-          }
+            "name": "🎨 Product Variants",
+            "item": [
+                {
+                    "name": "📋 Get Variants",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/variants",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "variants"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🆕 Create Variant",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[\n  {\n    \"size\": \"S\",\n    \"color\": \"Blue\",\n    \"stockQuantity\": 50\n  },\n  {\n    \"size\": \"M\",\n    \"color\": \"Blue\",\n    \"stockQuantity\": 60\n  }\n]"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/variants",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "variants"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✏️ Update Variant",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"size\": \"L\",\n  \"color\": \"Red\",\n  \"stockQuantity\": 45\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/variants/{{variantId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "variants",
+                                "{{variantId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Variant",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/variants/{{variantId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "variants",
+                                "{{variantId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         {
-          "name": "✅ Verify OTP",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": \"123456\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/verify-otp",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "verify-otp"]
-            }
-          }
+            "name": "⭐ Reviews",
+            "item": [
+                {
+                    "name": "📋 Get Product Reviews",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/reviews?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "reviews"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🆕 Create Review",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Great product!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/reviews",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "reviews"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✏️ Update Review",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Good product\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews/{{reviewId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews",
+                                "{{reviewId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Review",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews/{{reviewId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews",
+                                "{{reviewId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         {
-          "name": "🔑 Reset Password",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"test@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"NewPassword@123\",\n  \"confirmPassword\": \"NewPassword@123\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/reset-password",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "reset-password"]
-            }
-          }
+            "name": "❤️ WishList",
+            "item": [
+                {
+                    "name": "📋 Get My WishList",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/wishlist?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "wishlist"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "➕ Add to WishList",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/wishlist",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "wishlist"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "➖ Remove from WishList",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/wishlist",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "wishlist"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✅ Check if in WishList",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/{{productId}}/wishlist/check",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "{{productId}}",
+                                "wishlist",
+                                "check"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🛒 Cart",
+            "item": [
+                {
+                    "name": "📋 Get Cart Summary",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/cart/summary",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart",
+                                "summary"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🛒 Get Cart Items",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/cart",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "➕ Add to Cart (Product WITH Variants)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"productId\": 1,\n  \"productVariantId\": 5,\n  \"quantity\": 2\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/cart/items",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart",
+                                "items"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "➕ Add to Cart (Product WITHOUT Variants)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"productId\": 2,\n  \"quantity\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/cart/items",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart",
+                                "items"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✏️ Update Cart Item",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"quantity\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/cart/items/{{cartItemId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart",
+                                "items",
+                                "{{cartItemId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Remove from Cart",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/cart/items/{{cartItemId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart",
+                                "items",
+                                "{{cartItemId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Clear Cart",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/cart",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "cart"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "📂 Categories",
+            "item": [
+                {
+                    "name": "📋 Get All Categories",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/categories?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categories"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🆕 Create Category",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic devices\",\n  \"parentCategoryId\": null\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/categories",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categories"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✏️ Update Category",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Category\",\n  \"description\": \"Updated description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/categories/{{categoryId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categories",
+                                "{{categoryId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Category",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/categories/{{categoryId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categories",
+                                "{{categoryId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "🏷️ Brands",
+            "item": [
+                {
+                    "name": "📋 Get All Brands",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/brands?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "brands"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🆕 Create Brand",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Nike\",\n  \"description\": \"Leading sports brand\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/brands",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "brands"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "✏️ Update Brand",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Brand\",\n  \"description\": \"Updated description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/brands/{{brandId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "brands",
+                                "{{brandId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Brand",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/brands/{{brandId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "brands",
+                                "{{brandId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "👨‍💼 Admin Cart Management",
+            "item": [
+                {
+                    "name": "📋 Get All Carts",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{adminBaseUrl}}/carts?page=1&pageSize=10",
+                            "host": [
+                                "{{adminBaseUrl}}"
+                            ],
+                            "path": [
+                                "carts"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🔍 Get Specific Cart",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{adminBaseUrl}}/carts/{{cartId}}",
+                            "host": [
+                                "{{adminBaseUrl}}"
+                            ],
+                            "path": [
+                                "carts",
+                                "{{cartId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "👤 Get User's Cart",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{adminBaseUrl}}/carts/user/{{userId}}",
+                            "host": [
+                                "{{adminBaseUrl}}"
+                            ],
+                            "path": [
+                                "carts",
+                                "user",
+                                "{{userId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Cart",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{adminBaseUrl}}/carts/{{cartId}}",
+                            "host": [
+                                "{{adminBaseUrl}}"
+                            ],
+                            "path": [
+                                "carts",
+                                "{{cartId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "🗑️ Delete Cart Item",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{adminBaseUrl}}/cart-items/{{cartItemId}}",
+                            "host": [
+                                "{{adminBaseUrl}}"
+                            ],
+                            "path": [
+                                "cart-items",
+                                "{{cartItemId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
         }
-      ]
-    },
-    {
-      "name": "📦 Products",
-      "item": [
+    ],
+    "variable": [
         {
-          "name": "📋 Get All Products",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["products"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
+            "key": "baseUrl",
+            "value": "http://localhost:7286/api",
+            "type": "string"
         },
         {
-          "name": "🔍 Get Product by ID",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}"]
-            }
-          }
+            "key": "adminBaseUrl",
+            "value": "http://localhost:7286/api/admin",
+            "type": "string"
         },
         {
-          "name": "🆕 Create Product",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Premium T-Shirt\",\n  \"description\": \"High-quality cotton t-shirt\",\n  \"price\": 29.99,\n  \"hasVariants\": true,\n  \"stockQuantity\": 0,\n  \"categoryId\": 1,\n  \"brandId\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/create",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "create"]
-            }
-          }
+            "key": "authToken",
+            "value": "",
+            "type": "string"
         },
         {
-          "name": "✏️ Update Product",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated T-Shirt\",\n  \"description\": \"Updated description\",\n  \"price\": 34.99\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}"]
-            }
-          }
+            "key": "userId",
+            "value": "",
+            "type": "string"
         },
         {
-          "name": "🗑️ Delete Product",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}"]
-            }
-          }
+            "key": "productId",
+            "value": "1",
+            "type": "string"
         },
         {
-          "name": "📂 Get Products by Category",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/by-category/{{categoryId}}?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "by-category", "{{categoryId}}"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
+            "key": "imageId",
+            "value": "1",
+            "type": "string"
         },
         {
-          "name": "🏷️ Get Products by Brand",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/by-brand/{{brandId}}?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "by-brand", "{{brandId}}"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
+            "key": "variantId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "cartId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "cartItemId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "categoryId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "brandId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "reviewId",
+            "value": "1",
+            "type": "string"
         }
-      ]
-    },
-    {
-      "name": "🖼️ Product Images",
-      "item": [
-        {
-          "name": "📋 List Product Images",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/images?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "images"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "🔍 Get Single Image",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/images/{{imageId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "images", "{{imageId}}"]
-            }
-          }
-        },
-        {
-          "name": "📤 Upload Image",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": ""
-                },
-                {
-                  "key": "isMain",
-                  "value": "true",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/images",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "images"]
-            }
-          }
-        },
-        {
-          "name": "🔄 Update Image",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": ""
-                },
-                {
-                  "key": "isMain",
-                  "value": "false",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/images/{{imageId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "images", "{{imageId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Image",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/images/{{imageId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "images", "{{imageId}}"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "🎨 Product Variants",
-      "item": [
-        {
-          "name": "📋 Get Variants",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/variants",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "variants"]
-            }
-          }
-        },
-        {
-          "name": "🆕 Create Variant",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "[\n  {\n    \"size\": \"S\",\n    \"color\": \"Blue\",\n    \"stockQuantity\": 50\n  },\n  {\n    \"size\": \"M\",\n    \"color\": \"Blue\",\n    \"stockQuantity\": 60\n  }\n]"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/variants",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "variants"]
-            }
-          }
-        },
-        {
-          "name": "✏️ Update Variant",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"size\": \"L\",\n  \"color\": \"Red\",\n  \"stockQuantity\": 45\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/variants/{{variantId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "variants", "{{variantId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Variant",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/variants/{{variantId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "variants", "{{variantId}}"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "⭐ Reviews",
-      "item": [
-        {
-          "name": "📋 Get Product Reviews",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/reviews?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "reviews"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "🆕 Create Review",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Great product!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/reviews",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "reviews"]
-            }
-          }
-        },
-        {
-          "name": "✏️ Update Review",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Good product\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews/{{reviewId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["reviews", "{{reviewId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Review",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reviews/{{reviewId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["reviews", "{{reviewId}}"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "❤️ WishList",
-      "item": [
-        {
-          "name": "📋 Get My WishList",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/wishlist?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["wishlist"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "➕ Add to WishList",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/wishlist",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "wishlist"]
-            }
-          }
-        },
-        {
-          "name": "➖ Remove from WishList",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/wishlist",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "wishlist"]
-            }
-          }
-        },
-        {
-          "name": "✅ Check if in WishList",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/products/{{productId}}/wishlist/check",
-              "host": ["{{baseUrl}}"],
-              "path": ["products", "{{productId}}", "wishlist", "check"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "🛒 Cart",
-      "item": [
-        {
-          "name": "📋 Get Cart Summary",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/cart/summary",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "summary"]
-            }
-          }
-        },
-        {
-          "name": "🛒 Get Cart Items",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/cart",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart"]
-            }
-          }
-        },
-        {
-          "name": "➕ Add to Cart (Product WITH Variants)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"productId\": 1,\n  \"productVariantId\": 5,\n  \"quantity\": 2\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/cart/items",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items"]
-            }
-          }
-        },
-        {
-          "name": "➕ Add to Cart (Product WITHOUT Variants)",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"productId\": 2,\n  \"quantity\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/cart/items",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items"]
-            }
-          }
-        },
-        {
-          "name": "✏️ Update Cart Item",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"quantity\": 5\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/cart/items/{{cartItemId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items", "{{cartItemId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Remove from Cart",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/cart/items/{{cartItemId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items", "{{cartItemId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Clear Cart",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/cart",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "📂 Categories",
-      "item": [
-        {
-          "name": "📋 Get All Categories",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/categories?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["categories"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "🆕 Create Category",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Electronics\",\n  \"description\": \"Electronic devices\",\n  \"parentCategoryId\": null\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/categories",
-              "host": ["{{baseUrl}}"],
-              "path": ["categories"]
-            }
-          }
-        },
-        {
-          "name": "✏️ Update Category",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Category\",\n  \"description\": \"Updated description\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/categories/{{categoryId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["categories", "{{categoryId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Category",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/categories/{{categoryId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["categories", "{{categoryId}}"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "🏷️ Brands",
-      "item": [
-        {
-          "name": "📋 Get All Brands",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/brands?page=1&pageSize=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["brands"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "🆕 Create Brand",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Nike\",\n  \"description\": \"Leading sports brand\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/brands",
-              "host": ["{{baseUrl}}"],
-              "path": ["brands"]
-            }
-          }
-        },
-        {
-          "name": "✏️ Update Brand",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Updated Brand\",\n  \"description\": \"Updated description\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/brands/{{brandId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["brands", "{{brandId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Brand",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/brands/{{brandId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["brands", "{{brandId}}"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "👨‍💼 Admin Cart Management",
-      "item": [
-        {
-          "name": "📋 Get All Carts",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{adminBaseUrl}}/carts?page=1&pageSize=10",
-              "host": ["{{adminBaseUrl}}"],
-              "path": ["carts"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "pageSize",
-                  "value": "10"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "🔍 Get Specific Cart",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{adminBaseUrl}}/carts/{{cartId}}",
-              "host": ["{{adminBaseUrl}}"],
-              "path": ["carts", "{{cartId}}"]
-            }
-          }
-        },
-        {
-          "name": "👤 Get User's Cart",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{adminBaseUrl}}/carts/user/{{userId}}",
-              "host": ["{{adminBaseUrl}}"],
-              "path": ["carts", "user", "{{userId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Cart",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{adminBaseUrl}}/carts/{{cartId}}",
-              "host": ["{{adminBaseUrl}}"],
-              "path": ["carts", "{{cartId}}"]
-            }
-          }
-        },
-        {
-          "name": "🗑️ Delete Cart Item",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{authToken}}"
-              }
-            ],
-            "url": {
-              "raw": "{{adminBaseUrl}}/cart-items/{{cartItemId}}",
-              "host": ["{{adminBaseUrl}}"],
-              "path": ["cart-items", "{{cartItemId}}"]
-            }
-          }
-        }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:7286/api",
-      "type": "string"
-    },
-    {
-      "key": "adminBaseUrl",
-      "value": "http://localhost:7286/api/admin",
-      "type": "string"
-    },
-    {
-      "key": "authToken",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "userId",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "productId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "imageId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "variantId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "cartId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "cartItemId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "categoryId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "brandId",
-      "value": "1",
-      "type": "string"
-    },
-    {
-      "key": "reviewId",
-      "value": "1",
-      "type": "string"
-    }
-  ]
+    ]
 }
