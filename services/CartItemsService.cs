@@ -21,27 +21,59 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<CartItemDto>> AddToCartAsync(string userId, CartItemCreateDto dto)
         {
-            // Validate product variant exists
-            var productVariant = await _unitOfWork.ProductVariants.GetByIdAsync(dto.ProductVariantId);
-            if (productVariant == null)
+            // Validate product exists and is active
+            var product = await _unitOfWork.Products.GetByIdAsync(dto.ProductId);
+            if (product == null)
             {
-                throw new BadRequestException("Product variant not found.");
+                throw new BadRequestException("Product not found.");
             }
 
-            // Validate product exists and is active
-            var product = productVariant.Product;
-            if (product == null || !product.IsActive)
+            if (!product.IsActive)
             {
                 throw new BadRequestException("Product is not available for purchase.");
             }
 
-            // Validate stock
-            if (productVariant.StockQuantity < dto.Quantity)
+            if (product.HasVariants && !dto.ProductVariantId.HasValue)
             {
-                throw new BadRequestException($"Insufficient stock. Available: {productVariant.StockQuantity}, Requested: {dto.Quantity}");
+                throw new BadRequestException("This product has variants. You must select a variant (size, color, etc.).");
             }
 
-    
+            //  If HasVariants = false, VariantId must be NULL
+            if (!product.HasVariants && dto.ProductVariantId.HasValue)
+            {
+                throw new BadRequestException("This product does not have variants. VariantId must not be provided.");
+            }
+
+            ProductVariant? productVariant = null;
+            int availableStock = product.StockQuantity;
+            decimal unitPrice = product.Price;
+
+            // Handle products WITH variants
+            if (product.HasVariants && dto.ProductVariantId.HasValue)
+            {
+                productVariant = await _unitOfWork.ProductVariants.GetByIdAsync(dto.ProductVariantId.Value);
+                if (productVariant == null || productVariant.ProductId != product.Id)
+                {
+                    throw new BadRequestException("Product variant not found or does not belong to this product.");
+                }
+
+                // Use variant stock
+                availableStock = productVariant.StockQuantity;
+
+                // Calculate unit price with variant additional price
+                if (productVariant.AdditionalPrice.HasValue)
+                {
+                    unitPrice += productVariant.AdditionalPrice.Value;
+                }
+            }
+
+            // Validate stock
+            if (availableStock < dto.Quantity)
+            {
+                throw new BadRequestException($"Insufficient stock. Available: {availableStock}, Requested: {dto.Quantity}");
+            }
+
+            // Get or create cart
             var cart = await _unitOfWork.Carts.GetByUserIdAsync(userId);
             if (cart == null)
             {
@@ -53,40 +85,45 @@ namespace ECommerce.Services
                 cart = await _unitOfWork.Carts.AddAsync(cart);
             }
 
-            // Check if variant already exists in cart
-            var existingItem = await _unitOfWork.CartItems.GetByCartIdAndProductVariantIdAsync(cart.Id, dto.ProductVariantId);
+            // Check if item already exists in cart
+            CartItem? existingItem = null;
+            if (product.HasVariants && dto.ProductVariantId.HasValue)
+            {
+                existingItem = await _unitOfWork.CartItems.GetByCartIdAndProductVariantIdAsync(cart.Id, dto.ProductVariantId.Value);
+            }
+            else
+            {
+                existingItem = await _unitOfWork.CartItems.GetByCartIdAndProductIdAsync(cart.Id, dto.ProductId);
+            }
+
             if (existingItem != null)
             {
                 // Validate total quantity won't exceed available stock
-                if (productVariant.StockQuantity < (existingItem.Quantity + dto.Quantity))
+                if (availableStock < (existingItem.Quantity + dto.Quantity))
                 {
-                    throw new BadRequestException($"Insufficient stock. Available: {productVariant.StockQuantity}, Current in cart: {existingItem.Quantity}, Requested to add: {dto.Quantity}");
+                    throw new BadRequestException($"Insufficient stock. Available: {availableStock}, Current in cart: {existingItem.Quantity}, Requested to add: {dto.Quantity}");
                 }
 
                 existingItem.Quantity += dto.Quantity;
                 existingItem.UpdatedAt = DateTime.UtcNow;
                 await _unitOfWork.CartItems.UpdateAsync(existingItem);
                 await _unitOfWork.CompleteAsync();
+
                 var existingItemDto = _mapper.Map<CartItemDto>(existingItem);
                 return ApiResponse<CartItemDto>.Success(existingItemDto, "Product quantity updated in cart.");
-            }
-
-            // Calculate unit price (snapshot at time of adding to cart)
-            decimal unitPrice = product.Price;
-            if (productVariant.AdditionalPrice.HasValue)
-            {
-                unitPrice += productVariant.AdditionalPrice.Value;
             }
 
             // Add new item to cart
             var cartItem = new CartItem
             {
                 Quantity = dto.Quantity,
+                ProductId = dto.ProductId,
                 ProductVariantId = dto.ProductVariantId,
                 UnitPrice = unitPrice,
                 CartId = cart.Id,
                 CreatedAt = DateTime.UtcNow
             };
+
             var createdCartItem = await _unitOfWork.CartItems.AddAsync(cartItem);
             await _unitOfWork.CompleteAsync();
 
@@ -116,22 +153,38 @@ namespace ECommerce.Services
                 throw new BadRequestException("Cart item does not belong to your cart.");
             }
 
-            // Validate stock before updating
-            var productVariant = cartItem.ProductVariant;
-            if (productVariant == null)
+            // Determine available stock
+            int availableStock;
+            if (cartItem.ProductVariantId.HasValue)
             {
-                throw new BadRequestException("Product variant not found.");
+                var productVariant = cartItem.ProductVariant;
+                if (productVariant == null)
+                {
+                    throw new BadRequestException("Product variant not found.");
+                }
+                availableStock = productVariant.StockQuantity;
+            }
+            else
+            {
+                var product = cartItem.Product;
+                if (product == null)
+                {
+                    throw new BadRequestException("Product not found.");
+                }
+                availableStock = product.StockQuantity;
             }
 
-            if (productVariant.StockQuantity < quantity)
+            // Validate stock
+            if (availableStock < quantity)
             {
-                throw new BadRequestException($"Insufficient stock. Available: {productVariant.StockQuantity}, Requested: {quantity}");
+                throw new BadRequestException($"Insufficient stock. Available: {availableStock}, Requested: {quantity}");
             }
 
             cartItem.Quantity = quantity;
             cartItem.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.CartItems.UpdateAsync(cartItem);
             await _unitOfWork.CompleteAsync();
+
             var updatedCartItemDto = _mapper.Map<CartItemDto>(cartItem);
             return ApiResponse<CartItemDto>.Success(updatedCartItemDto, "Cart item quantity updated successfully.");
         }

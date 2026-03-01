@@ -42,6 +42,12 @@ public class MappingProfile : Profile
         CreateMap<ProductCreateDto, Product>();
         CreateMap<ProductUpdateDto, Product>();
 
+        // ProductVariant mappings
+        CreateMap<ProductVariant, ProductVariantDto>();
+        CreateMap<ProductVariantCreateDto, ProductVariant>();
+        CreateMap<ProductVariantUpdateDto, ProductVariant>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
         // Category mappings
         CreateMap<Category, CategoryDto>().ForMember(dest => dest.ProductsCount,
         opt => opt.MapFrom(src =>
@@ -65,12 +71,11 @@ public class MappingProfile : Profile
 
         // CartItem mappings
         CreateMap<CartItem, CartItemDto>()
-            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductVariant != null && src.ProductVariant.Product != null ? src.ProductVariant.Product.Name : string.Empty))
-            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.ProductId : 0))
-            .ForMember(dest => dest.VariantSize, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Size : string.Empty))
-            .ForMember(dest => dest.VariantColor, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Color : string.Empty))
-            .ForMember(dest => dest.AdditionalPrice, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.AdditionalPrice : 0))
-            .ForMember(dest => dest.VariantImageUrl, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.ImageUrl : string.Empty));
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product != null ? src.Product.Name : string.Empty))
+            .ForMember(dest => dest.VariantSize, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Size : null))
+            .ForMember(dest => dest.VariantColor, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Color : null))
+            .ForMember(dest => dest.AdditionalPrice, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.AdditionalPrice : null))
+            .ForMember(dest => dest.VariantImageUrl, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.ImageUrl : null));
         CreateMap<CartItemCreateDto, CartItem>();
         CreateMap<CartItemUpdateDto, CartItem>();
     }

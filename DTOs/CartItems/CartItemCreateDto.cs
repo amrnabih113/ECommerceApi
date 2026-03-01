@@ -9,6 +9,8 @@ namespace ECommerce.DTOs.CartItems
         public int Quantity { get; set; }
 
         [Required]
-        public int ProductVariantId { get; set; }
+        public int ProductId { get; set; }
+
+        public int? ProductVariantId { get; set; }
     }
 }

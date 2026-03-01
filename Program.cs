@@ -116,6 +116,7 @@ public partial class Program
         builder.Services.AddScoped<ICartItemsRepository, CartItemsRepository>();
         builder.Services.AddScoped<ICartItemsService, CartItemsService>();
         builder.Services.AddScoped<IProductVariantsRepository, ProductVariantsRepository>();
+        builder.Services.AddScoped<IProductVariantsService, ProductVariantsService>();
 
         // Swagger Configuration
         builder.Services.AddEndpointsApiExplorer();

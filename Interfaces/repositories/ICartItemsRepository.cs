@@ -6,5 +6,7 @@ namespace ECommerce.Interfaces.Repositories
     {
         Task<(IEnumerable<CartItem> Items, int TotalItems)> GetByCartIdAsync(int cartId, int page = 1, int pageSize = 10);
         Task<CartItem?> GetByCartIdAndProductVariantIdAsync(int cartId, int productVariantId);
+        Task<CartItem?> GetByCartIdAndProductIdAsync(int cartId, int productId);
+        Task<int> CountByProductVariantAsync(int productVariantId);
     }
 }

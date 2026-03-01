@@ -31,6 +31,9 @@ namespace ECommerce.Models
         public decimal DiscountPercentage { get; set; }
 
         [Required]
+        public bool HasVariants { get; set; } = false;
+
+        [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
         public int StockQuantity { get; set; }
 
