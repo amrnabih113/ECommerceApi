@@ -21,7 +21,7 @@ namespace ECommerce.Controllers
         }
 
         // User Endpoints
-        [HttpPost("api/cart/items/add")]
+        [HttpPost("api/cart/items")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(typeof(ApiResponse<CartItemDto>), 200)]
         public async Task<IActionResult> AddToCart([FromBody] CartItemCreateDto dto)
@@ -37,7 +37,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpPut("api/cart/items/quantity/{itemId:int}")]
+        [HttpPut("api/cart/items/{itemId:int}")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(typeof(ApiResponse<CartItemDto>), 200)]
         public async Task<IActionResult> UpdateQuantity([FromRoute] int itemId, [FromBody] CartItemUpdateDto dto)
@@ -53,7 +53,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("api/cart/items/remove/{itemId:int}")]
+        [HttpDelete("api/cart/items/{itemId:int}")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         public async Task<IActionResult> RemoveFromCart([FromRoute] int itemId)
@@ -65,6 +65,6 @@ namespace ECommerce.Controllers
             var response = await _cartItemsService.RemoveFromCartAsync(userId, itemId);
             return Ok(response);
         }
-        
+
     }
 }

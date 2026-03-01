@@ -32,7 +32,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("api/cart/clear")]
+        [HttpDelete("api/cart")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         public async Task<IActionResult> ClearCart()
