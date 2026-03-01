@@ -54,10 +54,11 @@ postman/
 - 📦 **Products** - CRUD operations, filtering
 - 🎨 **Product Variants** - Size/Color management
 - 🛒 **Cart** - Shopping cart operations
+- ❤️ **WishList** - Favorites, add/remove, check favorites
 - 📂 **Categories & Brands** - Master data
 - 👨‍💼 **Admin Management** - Cart controls
 
-**Total Endpoints:** 45+
+**Total Endpoints:** 49+
 
 ### Environment: `Development.json`
 
@@ -102,6 +103,17 @@ See: [QUICK_START.md - Customer Flow](QUICK_START.md#customer-shop)
 3. View all carts → GET /api/admin/carts
 ```
 See: [README.md - Admin Endpoints](README.md#-admin-endpoints)
+
+### 4️⃣ Manage WishList (Favorites)
+```
+1. Login → POST /api/auth/login
+2. Browse products → GET /api/products (returns isFavorite status)
+3. Add to wishlist → POST /api/products/{id}/wishlist
+4. View my favorites → GET /api/wishlist
+5. Remove from wishlist → DELETE /api/products/{id}/wishlist
+6. Check if favorite → GET /api/products/{id}/wishlist/check
+```
+See: [README.md - WishList Management](README.md#-wishlist-management)
 
 ---
 

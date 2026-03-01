@@ -220,6 +220,103 @@ Returns:
 
 ---
 
+## ❤️ WishList Management
+
+### Add Product to WishList
+
+```json
+POST /api/products/{{productId}}/wishlist
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Product added to wishlist successfully.",
+  "data": {
+    "id": 1,
+    "productId": 5,
+    "product": {
+      "id": 5,
+      "name": "Premium T-Shirt",
+      "isFavorite": true,
+      ...
+    },
+    "createdAt": "2026-03-01T12:30:00Z"
+  }
+}
+```
+
+### Remove Product from WishList
+
+```json
+DELETE /api/products/{{productId}}/wishlist
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Product removed from wishlist successfully.",
+  "data": null
+}
+```
+
+### Get My WishList
+
+```
+GET /api/wishlist?page=1&pageSize=10
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Wishlist fetched successfully.",
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "productId": 5,
+        "product": {
+          "id": 5,
+          "name": "Premium T-Shirt",
+          "price": 29.99,
+          "isFavorite": true,
+          "categoryId": 1,
+          "categoryName": "Clothing",
+          "brandId": 2,
+          "brandName": "Nike",
+          ...
+        },
+        "createdAt": "2026-03-01T10:15:00Z"
+      },
+      ...
+    ],
+    "totalItems": 15,
+    "page": 1,
+    "pageSize": 10
+  }
+}
+```
+
+### Check if Product is in WishList
+
+```
+GET /api/products/{{productId}}/wishlist/check
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Wishlist item check completed.",
+  "data": true          // or false
+}
+```
+
+### 🏷️ WishList Notes
+
+- **Duplicates**: Cannot add same product twice (returns error if already exists)
+- **IsFavorite Flag**: Automatically set to `true` for products in wishlist
+- **Pagination**: Wishlist supports page and pageSize parameters
+- **Auth Required**: All wishlist endpoints require authentication
+- **Product Details**: Returns full ProductDto with all details
+
+---
+
 ## 🏢 Admin Endpoints
 
 ### Cart Management (Admin Only)

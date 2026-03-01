@@ -56,6 +56,15 @@ GET /api/cart
 GET /api/cart/summary      ← Shows subtotal, tax, total
 ```
 
+#### Manage WishList (New!)
+```
+POST /api/products/{id}/wishlist              ← Add to favorites
+DELETE /api/products/{id}/wishlist            ← Remove from favorites
+GET /api/wishlist?page=1&pageSize=10          ← View all favorites
+GET /api/products/{id}/wishlist/check         ← Check if favorite
+```
+**Note:** Products endpoint returns `isFavorite: true/false` based on your wishlist
+
 ---
 
 ## 🛑 Key Differences
@@ -89,9 +98,18 @@ GET /api/cart/summary      ← Shows subtotal, tax, total
 ### Customer: Shop
 ```
 1. POST /api/auth/login → Get token
-2. GET /api/products → Browse
+2. GET /api/products → Browse (shows isFavorite for your favorites)
 3. POST /api/cart/items → Add selected variant
 4. GET /api/cart/summary → View total
+```
+
+### Customer: Manage Favorites
+```
+1. POST /api/auth/login → Get token
+2. POST /api/products/{id}/wishlist → Add to favorites
+3. GET /api/wishlist → View all favorites (paginated)
+4. DELETE /api/products/{id}/wishlist → Remove from favorites
+5. GET /api/products/{id}/wishlist/check → Check if product is favorite
 ```
 
 ---
@@ -101,6 +119,7 @@ GET /api/cart/summary      ← Shows subtotal, tax, total
 **Products:** `GET, POST, PUT, DELETE /api/products`
 **Variants:** `GET, POST, PUT, DELETE /api/products/{id}/variants`
 **Cart:** `GET, POST, PUT, DELETE /api/cart, /api/cart/items`
+**WishList:** `GET, POST, DELETE /api/wishlist, /api/products/{id}/wishlist`
 **Admin:** `GET, DELETE /api/admin/carts, /api/admin/cart-items`
 
 ---
