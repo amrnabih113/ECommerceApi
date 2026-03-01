@@ -7,6 +7,7 @@ namespace ECommerce.Interfaces.Services
     {
         // User endpoints
         Task<ApiResponse<CartDto>> GetByUserIdAsync(string userId);
+        Task<ApiResponse<CartSummaryDto>> GetCartSummaryAsync(string userId);
         Task<ApiResponse> ClearCartAsync(string userId);
 
         // Admin endpoints

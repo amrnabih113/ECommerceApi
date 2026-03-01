@@ -47,6 +47,46 @@ namespace ECommerce.Services
             return ApiResponse.SuccessResponse("Cart cleared successfully.");
         }
 
+        public async Task<ApiResponse<CartSummaryDto>> GetCartSummaryAsync(string userId)
+        {
+            var cart = await _unitOfWork.Carts.GetByUserIdAsync(userId);
+            if (cart == null)
+            {
+                throw new BadRequestException("Cart not found for this user.");
+            }
+
+            // Calculate totals
+            decimal subtotal = 0;
+            int totalItems = 0;
+
+            if (cart.Items != null && cart.Items.Any())
+            {
+                subtotal = cart.Items.Sum(item => item.UnitPrice * item.Quantity);
+                totalItems = cart.Items.Sum(item => item.Quantity);
+            }
+
+            // Tax rate: 14% (configurable)
+            decimal taxRate = 0.14m;
+            decimal tax = subtotal * taxRate;
+
+            // Discount: 0 for now (can be extended with coupon system)
+            decimal discount = 0;
+
+            decimal total = subtotal + tax - discount;
+
+            var summary = new CartSummaryDto
+            {
+                CartId = cart.Id,
+                TotalItems = totalItems,
+                Subtotal = subtotal,
+                Tax = tax,
+                Discount = discount,
+                Total = total
+            };
+
+            return ApiResponse<CartSummaryDto>.Success(summary, "Cart summary calculated successfully.");
+        }
+
         // Admin methods
         public async Task<ApiResponse<PageResult<CartDto>>> GetAllAsync(int page = 1, int pageSize = 10)
         {

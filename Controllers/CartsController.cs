@@ -32,6 +32,19 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
+        [HttpGet("api/cart/summary")]
+        [Authorize(Roles = "User")]
+        [ProducesResponseType(typeof(ApiResponse<CartSummaryDto>), 200)]
+        public async Task<IActionResult> GetCartSummary()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(ApiResponse.ErrorResponse("User not authenticated."));
+
+            var response = await _cartsService.GetCartSummaryAsync(userId);
+            return Ok(response);
+        }
+
         [HttpDelete("api/cart")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(typeof(ApiResponse), 200)]
@@ -45,6 +58,27 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
+        // Admin Endpoints
+        [HttpGet("api/admin/carts")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ApiResponse<PageResult<CartDto>>), 200)]
+        public async Task<IActionResult> GetAllCarts(int page = 1, int pageSize = 10)
+        {
+            if (page < 1 || pageSize < 1)
+                return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
+
+            var response = await _cartsService.GetAllAsync(page, pageSize);
+            return Ok(response);
+        }
+
+        [HttpGet("api/admin/carts/{id:int}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ApiResponse<CartDto>), 200)]
+        public async Task<IActionResult> GetCartById([FromRoute] int id)
+        {
+            var response = await _cartsService.GetByIdAsync(id);
+            return Ok(response);
+        }
 
         [HttpGet("api/admin/carts/user/{userId}")]
         [Authorize(Roles = "Admin")]

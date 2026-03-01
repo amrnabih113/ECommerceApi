@@ -7,7 +7,8 @@ namespace ECommerce.DTOs.CartItems
         public int ProductVariantId { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; } = default!;
-        public decimal ProductPrice { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice => UnitPrice * Quantity;
         public string VariantSize { get; set; } = default!;
         public string VariantColor { get; set; } = default!;
         public decimal? AdditionalPrice { get; set; }

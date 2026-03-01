@@ -67,7 +67,6 @@ public class MappingProfile : Profile
         CreateMap<CartItem, CartItemDto>()
             .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductVariant != null && src.ProductVariant.Product != null ? src.ProductVariant.Product.Name : string.Empty))
             .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.ProductId : 0))
-            .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.ProductVariant != null && src.ProductVariant.Product != null ? src.ProductVariant.Product.Price : 0))
             .ForMember(dest => dest.VariantSize, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Size : string.Empty))
             .ForMember(dest => dest.VariantColor, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Color : string.Empty))
             .ForMember(dest => dest.AdditionalPrice, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.AdditionalPrice : 0))

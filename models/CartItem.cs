@@ -18,8 +18,15 @@ namespace ECommerce.Models
         public ProductVariant ProductVariant { get; set; } = null!;
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal UnitPrice { get; set; }
+
+        [Required]
         public int CartId { get; set; }
 
         public Cart Cart { get; set; } = null!;
+
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
     }
 }

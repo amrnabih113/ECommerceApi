@@ -21,13 +21,27 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<CartItemDto>> AddToCartAsync(string userId, CartItemCreateDto dto)
         {
+            // Validate product variant exists
             var productVariant = await _unitOfWork.ProductVariants.GetByIdAsync(dto.ProductVariantId);
             if (productVariant == null)
             {
                 throw new BadRequestException("Product variant not found.");
             }
 
-            // Get or create cart for user
+            // Validate product exists and is active
+            var product = productVariant.Product;
+            if (product == null || !product.IsActive)
+            {
+                throw new BadRequestException("Product is not available for purchase.");
+            }
+
+            // Validate stock
+            if (productVariant.StockQuantity < dto.Quantity)
+            {
+                throw new BadRequestException($"Insufficient stock. Available: {productVariant.StockQuantity}, Requested: {dto.Quantity}");
+            }
+
+    
             var cart = await _unitOfWork.Carts.GetByUserIdAsync(userId);
             if (cart == null)
             {
@@ -43,6 +57,12 @@ namespace ECommerce.Services
             var existingItem = await _unitOfWork.CartItems.GetByCartIdAndProductVariantIdAsync(cart.Id, dto.ProductVariantId);
             if (existingItem != null)
             {
+                // Validate total quantity won't exceed available stock
+                if (productVariant.StockQuantity < (existingItem.Quantity + dto.Quantity))
+                {
+                    throw new BadRequestException($"Insufficient stock. Available: {productVariant.StockQuantity}, Current in cart: {existingItem.Quantity}, Requested to add: {dto.Quantity}");
+                }
+
                 existingItem.Quantity += dto.Quantity;
                 existingItem.UpdatedAt = DateTime.UtcNow;
                 await _unitOfWork.CartItems.UpdateAsync(existingItem);
@@ -51,11 +71,19 @@ namespace ECommerce.Services
                 return ApiResponse<CartItemDto>.Success(existingItemDto, "Product quantity updated in cart.");
             }
 
+            // Calculate unit price (snapshot at time of adding to cart)
+            decimal unitPrice = product.Price;
+            if (productVariant.AdditionalPrice.HasValue)
+            {
+                unitPrice += productVariant.AdditionalPrice.Value;
+            }
+
             // Add new item to cart
             var cartItem = new CartItem
             {
                 Quantity = dto.Quantity,
                 ProductVariantId = dto.ProductVariantId,
+                UnitPrice = unitPrice,
                 CartId = cart.Id,
                 CreatedAt = DateTime.UtcNow
             };
@@ -86,6 +114,18 @@ namespace ECommerce.Services
             if (userCart == null || cartItem.CartId != userCart.Id)
             {
                 throw new BadRequestException("Cart item does not belong to your cart.");
+            }
+
+            // Validate stock before updating
+            var productVariant = cartItem.ProductVariant;
+            if (productVariant == null)
+            {
+                throw new BadRequestException("Product variant not found.");
+            }
+
+            if (productVariant.StockQuantity < quantity)
+            {
+                throw new BadRequestException($"Insufficient stock. Available: {productVariant.StockQuantity}, Requested: {quantity}");
             }
 
             cartItem.Quantity = quantity;
