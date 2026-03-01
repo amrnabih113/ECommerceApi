@@ -1,93 +1,93 @@
 {
-  "id": "ecommerce-globals",
-  "name": "ECommerce Global Variables",
-  "values": [
-    {
-      "key": "timeout",
-      "value": "5000",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "pageSize_default",
-      "value": "10",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "pageSize_all",
-      "value": "100",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testProductId",
-      "value": "1",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testVariantId",
-      "value": "1",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testCategoryId",
-      "value": "1",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testBrandId",
-      "value": "1",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testProductWithVariants_id",
-      "value": "",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testProductWithoutVariants_id",
-      "value": "",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testUserEmail",
-      "value": "testuser@example.com",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "testUserPassword",
-      "value": "Test@123456",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "adminUserEmail",
-      "value": "admin@example.com",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "adminUserPassword",
-      "value": "Admin@123456",
-      "enabled": true,
-      "type": "string"
-    },
-    {
-      "key": "refreshToken",
-      "value": "",
-      "enabled": true,
-      "type": "string"
-    }
-  ],
-  "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2026-03-01T00:00:00.000Z",
-  "_postman_exported_using": "Postman/11.0.0"
+    "id": "ecommerce-globals",
+    "name": "ECommerce Global Variables",
+    "values": [
+        {
+            "key": "timeout",
+            "value": "5000",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "pageSize_default",
+            "value": "10",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "pageSize_all",
+            "value": "100",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testProductId",
+            "value": "1",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testVariantId",
+            "value": "1",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testCategoryId",
+            "value": "1",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testBrandId",
+            "value": "1",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testProductWithVariants_id",
+            "value": "",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testProductWithoutVariants_id",
+            "value": "",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testUserEmail",
+            "value": "testuser@example.com",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "testUserPassword",
+            "value": "Test@123456",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "adminUserEmail",
+            "value": "admin@example.com",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "adminUserPassword",
+            "value": "Admin@123456",
+            "enabled": true,
+            "type": "string"
+        },
+        {
+            "key": "refreshToken",
+            "value": "",
+            "enabled": true,
+            "type": "string"
+        }
+    ],
+    "_postman_variable_scope": "globals",
+    "_postman_exported_at": "2026-03-01T00:00:00.000Z",
+    "_postman_exported_using": "Postman/11.0.0"
 }
