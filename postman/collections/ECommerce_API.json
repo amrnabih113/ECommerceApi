@@ -8,10 +8,10 @@
     },
     "item": [
         {
-            "name": "🔐 Authentication",
+            "name": "Authentication",
             "item": [
                 {
-                    "name": "📝 Register",
+                    "name": "Register",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -34,10 +34,19 @@
                                 "register"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "body": "{\"success\":true,\"message\":\"User registered successfully\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"testuser\",\"email\":\"test@example.com\",\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\"refreshToken\":\"refresh-token-123\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🔓 Login",
+                    "name": "Login",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -60,10 +69,19 @@
                                 "login"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "body": "{\"success\":true,\"message\":\"Login successful\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"testuser\",\"email\":\"test@example.com\",\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\"refreshToken\":\"refresh-token-123\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🔄 Refresh Token",
+                    "name": "Refresh Token",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -89,7 +107,7 @@
                     }
                 },
                 {
-                    "name": "🆘 Forgot Password",
+                    "name": "Forgot Password",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -115,7 +133,7 @@
                     }
                 },
                 {
-                    "name": "✅ Verify OTP",
+                    "name": "Verify OTP",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -141,7 +159,7 @@
                     }
                 },
                 {
-                    "name": "🔑 Reset Password",
+                    "name": "Reset Password",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -169,10 +187,10 @@
             ]
         },
         {
-            "name": "📦 Products",
+            "name": "Products",
             "item": [
                 {
-                    "name": "📋 Get All Products",
+                    "name": "Get All Products",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -200,10 +218,19 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "body": "{\"success\":true,\"message\":\"Products retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Premium T-Shirt\",\"description\":\"High quality cotton\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false,\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🔍 Get Product by ID",
+                    "name": "Get Product by ID",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -225,7 +252,7 @@
                     }
                 },
                 {
-                    "name": "🆕 Create Product",
+                    "name": "Create Product",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -255,7 +282,7 @@
                     }
                 },
                 {
-                    "name": "✏️ Update Product",
+                    "name": "Update Product",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -285,7 +312,7 @@
                     }
                 },
                 {
-                    "name": "🗑️ Delete Product",
+                    "name": "Delete Product",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -375,10 +402,10 @@
             ]
         },
         {
-            "name": "🖼️ Product Images",
+            "name": "Product Images",
             "item": [
                 {
-                    "name": "📋 List Product Images",
+                    "name": "List Product Images",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -435,7 +462,7 @@
                     }
                 },
                 {
-                    "name": "📤 Upload Image",
+                    "name": "Upload Image",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -512,7 +539,7 @@
                     }
                 },
                 {
-                    "name": "🗑️ Delete Image",
+                    "name": "Delete Image",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -774,10 +801,10 @@
             ]
         },
         {
-            "name": "❤️ WishList",
+            "name": "WishList",
             "item": [
                 {
-                    "name": "📋 Get My WishList",
+                    "name": "Get My WishList",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -805,10 +832,19 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "body": "{\"success\":true,\"message\":\"WishList retrieved\",\"data\":{\"items\":[{\"id\":1,\"productId\":1,\"product\":{\"id\":1,\"name\":\"Premium T-Shirt\",\"price\":29.99,\"isFavorite\":true},\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "➕ Add to WishList",
+                    "name": "Add to WishList",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -831,7 +867,7 @@
                     }
                 },
                 {
-                    "name": "➖ Remove from WishList",
+                    "name": "Remove from WishList",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -854,7 +890,7 @@
                     }
                 },
                 {
-                    "name": "✅ Check if in WishList",
+                    "name": "Check if in WishList",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -880,10 +916,10 @@
             ]
         },
         {
-            "name": "🛒 Cart",
+            "name": "Cart",
             "item": [
                 {
-                    "name": "📋 Get Cart Summary",
+                    "name": "Get Cart Summary",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -905,7 +941,7 @@
                     }
                 },
                 {
-                    "name": "🛒 Get Cart Items",
+                    "name": "Get Cart Items",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -923,7 +959,16 @@
                                 "cart"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "body": "{\"success\":true,\"message\":\"Cart items\",\"data\":{\"id\":1,\"userId\":\"user-123\",\"items\":[{\"id\":1,\"productId\":1,\"quantity\":2,\"unitPrice\":29.99,\"totalPrice\":59.98}],\"totalPrice\":89.97}}"
+                        }
+                    ]
                 },
                 {
                     "name": "➕ Add to Cart (Product WITH Variants)",
@@ -986,7 +1031,7 @@
                     }
                 },
                 {
-                    "name": "✏️ Update Cart Item",
+                    "name": "Update Cart Item",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -1017,7 +1062,7 @@
                     }
                 },
                 {
-                    "name": "🗑️ Remove from Cart",
+                    "name": "Remove from Cart",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -1040,7 +1085,7 @@
                     }
                 },
                 {
-                    "name": "🗑️ Clear Cart",
+                    "name": "Clear Cart",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -1063,10 +1108,10 @@
             ]
         },
         {
-            "name": "📂 Categories",
+            "name": "Categories",
             "item": [
                 {
-                    "name": "📋 Get All Categories",
+                    "name": "Get All Categories",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1097,7 +1142,7 @@
                     }
                 },
                 {
-                    "name": "🆕 Create Category",
+                    "name": "Create Category",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1126,7 +1171,7 @@
                     }
                 },
                 {
-                    "name": "✏️ Update Category",
+                    "name": "Update Category",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -1156,7 +1201,7 @@
                     }
                 },
                 {
-                    "name": "🗑️ Delete Category",
+                    "name": "Delete Category",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -1180,10 +1225,10 @@
             ]
         },
         {
-            "name": "🏷️ Brands",
+            "name": "Brands",
             "item": [
                 {
-                    "name": "📋 Get All Brands",
+                    "name": "Get All Brands",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1214,7 +1259,7 @@
                     }
                 },
                 {
-                    "name": "🆕 Create Brand",
+                    "name": "Create Brand",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1243,7 +1288,7 @@
                     }
                 },
                 {
-                    "name": "✏️ Update Brand",
+                    "name": "Update Brand",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -1273,7 +1318,7 @@
                     }
                 },
                 {
-                    "name": "🗑️ Delete Brand",
+                    "name": "Delete Brand",
                     "request": {
                         "method": "DELETE",
                         "header": [
