@@ -17,6 +17,7 @@ namespace ECommerce.DTOs.Products
         public string CategoryName { get; set; } = default!;
         public int BrandId { get; set; }
         public string BrandName { get; set; } = default!;
+        public bool IsFavorite { get; set; } = false;
         public ICollection<ProductImageDto> Images { get; set; } = new List<ProductImageDto>();
         public ICollection<ProductVariantDto> Variants { get; set; } = new List<ProductVariantDto>();
         public ICollection<ReviewDto> Reviews { get; set; } = new List<ReviewDto>();

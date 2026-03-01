@@ -15,6 +15,7 @@ namespace ECommerce.DTOs.Products
         public string CategoryName { get; set; } = default!;
         public int BrandId { get; set; }
         public string BrandName { get; set; } = default!;
+        public bool IsFavorite { get; set; } = false;
 
         public DateTime CreatedAt { get; set; }
 

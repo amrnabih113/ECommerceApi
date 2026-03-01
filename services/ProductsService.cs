@@ -40,12 +40,22 @@ namespace ECommerce.Services
             return ApiResponse.SuccessResponse("Product deleted successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<ProductDto>>> GetAllAsync(int page = 1, int pageSize = 10)
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetAllAsync(int page = 1, int pageSize = 10, string? userId = null)
         {
             var (products, totalItems) = await _unitOfWork.Products.GetPagedAsync(page, pageSize);
 
             var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
 
+            // Set IsFavorite for each product if userId is provided
+            if (!string.IsNullOrEmpty(userId))
+            {
+                foreach (var dto in dtos)
+                {
+                    var isFavorite = await _unitOfWork.WishList.ExistsAsync(userId, dto.Id);
+                    dto.IsFavorite = isFavorite;
+                }
+            }
+
             var pagedResult = new PageResult<ProductDto>
             {
                 Items = dtos,
@@ -57,10 +67,21 @@ namespace ECommerce.Services
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, int page = 1, int pageSize = 10)
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, int page = 1, int pageSize = 10, string? userId = null)
         {
             var (products, totalItems) = await _unitOfWork.Products.GetByBrandIdAsync(brandId, page, pageSize);
             var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
+
+            // Set IsFavorite for each product if userId is provided
+            if (!string.IsNullOrEmpty(userId))
+            {
+                foreach (var dto in dtos)
+                {
+                    var isFavorite = await _unitOfWork.WishList.ExistsAsync(userId, dto.Id);
+                    dto.IsFavorite = isFavorite;
+                }
+            }
+
             var pagedResult = new PageResult<ProductDto>
             {
                 Items = dtos,
@@ -71,10 +92,21 @@ namespace ECommerce.Services
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<ProductDto>>> GetByCategoryAsync(int categoryId, int page = 1, int pageSize = 10)
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetByCategoryAsync(int categoryId, int page = 1, int pageSize = 10, string? userId = null)
         {
             var (products, totalItems) = await _unitOfWork.Products.GetByCategoryIdAsync(categoryId, page, pageSize);
             var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
+
+            // Set IsFavorite for each product if userId is provided
+            if (!string.IsNullOrEmpty(userId))
+            {
+                foreach (var dto in dtos)
+                {
+                    var isFavorite = await _unitOfWork.WishList.ExistsAsync(userId, dto.Id);
+                    dto.IsFavorite = isFavorite;
+                }
+            }
+
             var pagedResult = new PageResult<ProductDto>
             {
                 Items = dtos,
@@ -85,7 +117,7 @@ namespace ECommerce.Services
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }
 
-        public async Task<ApiResponse<ProductDetailsDto>> GetByIdAsync(int id)
+        public async Task<ApiResponse<ProductDetailsDto>> GetByIdAsync(int id, string? userId = null)
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id);
             if (product == null)
@@ -93,6 +125,14 @@ namespace ECommerce.Services
                 throw new BadRequestException("Product not found.");
             }
             var productDto = _mapper.Map<ProductDetailsDto>(product);
+
+            // Set IsFavorite if userId is provided
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var isFavorite = await _unitOfWork.WishList.ExistsAsync(userId, productDto.Id);
+                productDto.IsFavorite = isFavorite;
+            }
+
             return ApiResponse<ProductDetailsDto>.Success(productDto, "Product fetched successfully.");
         }
 

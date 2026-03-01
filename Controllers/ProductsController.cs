@@ -3,6 +3,7 @@ using ECommerce.DTOs.Products;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ECommerce.Controllers
 {
@@ -24,7 +25,9 @@ namespace ECommerce.Controllers
         {
             if (page < 1 || pageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
-            var response = await _productsService.GetAllAsync(page, pageSize);
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.GetAllAsync(page, pageSize, userId);
             return Ok(response);
         }
 
@@ -33,7 +36,8 @@ namespace ECommerce.Controllers
         [ProducesResponseType(typeof(ApiResponse<ProductDetailsDto>), 200)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var response = await _productsService.GetByIdAsync(id);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.GetByIdAsync(id, userId);
             return Ok(response);
         }
 
@@ -78,7 +82,9 @@ namespace ECommerce.Controllers
         {
             if (page < 1 || pageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
-            var response = await _productsService.GetByBrandAsync(brandId, page, pageSize);
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.GetByBrandAsync(brandId, page, pageSize, userId);
             return Ok(response);
         }
 
@@ -89,7 +95,9 @@ namespace ECommerce.Controllers
         {
             if (page < 1 || pageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
-            var response = await _productsService.GetByCategoryAsync(categoryId, page, pageSize);
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.GetByCategoryAsync(categoryId, page, pageSize, userId);
             return Ok(response);
         }
     }

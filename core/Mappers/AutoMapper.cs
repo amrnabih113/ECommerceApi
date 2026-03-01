@@ -5,6 +5,7 @@ using ECommerce.DTOs.CartItems;
 using ECommerce.DTOs.Categories;
 using ECommerce.DTOs.Products;
 using ECommerce.DTOs.Reviews;
+using ECommerce.DTOs.WishLists;
 using ECommerce.Models;
 
 public class MappingProfile : Profile
@@ -100,5 +101,10 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.VariantImageUrl, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.ImageUrl : null));
         CreateMap<CartItemCreateDto, CartItem>();
         CreateMap<CartItemUpdateDto, CartItem>();
+
+        // WishList mappings
+        CreateMap<WishList, WishListItemDto>()
+            .ForMember(dest => dest.Product,
+                opt => opt.MapFrom(src => src.Product));
     }
 }

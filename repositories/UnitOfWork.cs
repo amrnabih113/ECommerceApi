@@ -15,6 +15,7 @@ namespace ECommerce.Repositories
         public IReviewsRepository Reviews { get; private set; }
         public IProductImagesRepository ProductImages { get; private set; }
         public IProductVariantsRepository ProductVariants { get; private set; }
+        public IWishListRepository WishList { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
@@ -27,6 +28,7 @@ namespace ECommerce.Repositories
             Reviews = new ReviewsRepository(_context);
             ProductImages = new ProductImagesRepository(_context);
             ProductVariants = new ProductVariantsRepository(_context);
+            WishList = new WishListRepository(_context);
         }
 
         public async Task<int> CompleteAsync()

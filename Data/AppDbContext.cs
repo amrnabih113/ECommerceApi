@@ -31,6 +31,7 @@ namespace ECommerce.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<WishList> WishLists { get; set; }
 
     }
 }

@@ -126,6 +126,7 @@ public partial class Program
         builder.Services.AddScoped<IProductImagesService, ProductImagesService>();
         builder.Services.AddScoped<IProductVariantsRepository, ProductVariantsRepository>();
         builder.Services.AddScoped<IProductVariantsService, ProductVariantsService>();
+        builder.Services.AddScoped<IWishListService, WishListService>();
 
         // Swagger Configuration
         builder.Services.AddEndpointsApiExplorer();

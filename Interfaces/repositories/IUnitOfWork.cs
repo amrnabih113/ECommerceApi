@@ -17,6 +17,8 @@ namespace ECommerce.Interfaces.Repositories
 
         IProductVariantsRepository ProductVariants { get; }
 
+        IWishListRepository WishList { get; }
+
         Task<int> CompleteAsync();
     }
 }
