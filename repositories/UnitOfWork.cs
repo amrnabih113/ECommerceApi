@@ -13,6 +13,7 @@ namespace ECommerce.Repositories
         public ICartsRepository Carts { get; private set; }
         public ICartItemsRepository CartItems { get; private set; }
         public IReviewsRepository Reviews { get; private set; }
+        public IProductImagesRepository ProductImages { get; private set; }
         public IProductVariantsRepository ProductVariants { get; private set; }
 
         public UnitOfWork(AppDbContext context)
@@ -24,6 +25,7 @@ namespace ECommerce.Repositories
             Carts = new CartsRepository(_context);
             CartItems = new CartItemsRepository(_context);
             Reviews = new ReviewsRepository(_context);
+            ProductImages = new ProductImagesRepository(_context);
             ProductVariants = new ProductVariantsRepository(_context);
         }
 

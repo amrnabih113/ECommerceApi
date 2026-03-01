@@ -22,9 +22,13 @@ public partial class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Configurations
         builder.Services.Configure<JWTConfig>(builder.Configuration.GetSection("Jwt"));
         builder.Services.Configure<EmailSettingsConfig>(
             builder.Configuration.GetSection("EmailSettings")
+        );
+        builder.Services.Configure<CloudinaryConfig>(
+            builder.Configuration.GetSection("CloudinarySettings")
         );
 
         // Add Services
@@ -103,6 +107,7 @@ public partial class Program
         builder.Services.AddAutoMapper(typeof(MappingProfile));
 
         builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         builder.Services.AddScoped<IAuthService, AuthService>();
@@ -117,6 +122,8 @@ public partial class Program
         builder.Services.AddScoped<ICartItemsService, CartItemsService>();
         builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
         builder.Services.AddScoped<IReviewsService, ReviewsService>();
+        builder.Services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
+        builder.Services.AddScoped<IProductImagesService, ProductImagesService>();
         builder.Services.AddScoped<IProductVariantsRepository, ProductVariantsRepository>();
         builder.Services.AddScoped<IProductVariantsService, ProductVariantsService>();
 

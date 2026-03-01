@@ -52,6 +52,11 @@ public class MappingProfile : Profile
         CreateMap<ProductCreateDto, Product>();
         CreateMap<ProductUpdateDto, Product>();
 
+        CreateMap<ProductImage, ProductImageDto>()
+            .ForMember(dest => dest.Url,
+            opt => opt.MapFrom(src => src.ImageUrl));
+
+
         // Review mappings
         CreateMap<Review, ReviewDto>()
                 .ForMember(dest => dest.UserName,

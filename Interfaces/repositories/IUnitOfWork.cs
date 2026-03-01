@@ -13,6 +13,8 @@ namespace ECommerce.Interfaces.Repositories
 
         IReviewsRepository Reviews { get; }
 
+        IProductImagesRepository ProductImages { get; }
+
         IProductVariantsRepository ProductVariants { get; }
 
         Task<int> CompleteAsync();

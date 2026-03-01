@@ -27,8 +27,6 @@ namespace ECommerce.Repositories
             return (items, totalItems);
         }
 
-
-
         public async Task<(IEnumerable<Product> Items, int TotalItems)> GetByCategoryIdAsync(int categoryId, int page = 1, int pageSize = 10)
         {
             var query = _dbSet.Where(p => p.CategoryId == categoryId)
