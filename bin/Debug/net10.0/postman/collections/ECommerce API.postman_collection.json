@@ -384,14 +384,12 @@
                 {
                   "key": "pageNumber",
                   "value": "1",
-                  "description": "Page number for pagination",
-                  "uuid": "2559fb4f-4b6d-45e0-950f-8766e0bb4e25"
+                  "description": "Page number for pagination"
                 },
                 {
                   "key": "pageSize",
                   "value": "10",
-                  "description": "Number of items per page",
-                  "uuid": "061fb6e3-2494-4658-b216-9c20376d84a0"
+                  "description": "Number of items per page"
                 }
               ]
             },
@@ -591,14 +589,12 @@
                 {
                   "key": "pageNumber",
                   "value": "1",
-                  "description": "Page number for pagination",
-                  "uuid": "20354625-934b-4d2a-8bc2-186fb4ac6327"
+                  "description": "Page number for pagination"
                 },
                 {
                   "key": "pageSize",
                   "value": "10",
-                  "description": "Number of items per page",
-                  "uuid": "20e465d6-8b2f-45b2-a82a-6de438906e55"
+                  "description": "Number of items per page"
                 }
               ]
             },
@@ -700,12 +696,12 @@
   },
   "variable": [
     {
-      "id": "bce7b5d9-86fd-4ff2-9006-903200f78790",
+      "id": "d926d7d3-c40a-4322-88c1-6c864b489882",
       "key": "baseUrl",
       "value": "https://localhost:7286/api"
     },
     {
-      "id": "353de369-5d03-477f-885d-bca87adf6ba3",
+      "id": "d529744f-21ed-43fb-af64-7497b92f9faa",
       "key": "accessToken",
       "value": ""
     }

@@ -70,8 +70,9 @@ namespace ECommerce.Controllers
         [Route("{id:int}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(ApiResponse<bool>), 200)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            
             var response = await _brandsService.DeleteAsync(id);
             return Ok(response);
         }

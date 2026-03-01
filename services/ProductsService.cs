@@ -85,18 +85,18 @@ namespace ECommerce.Services
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }
 
-        public async Task<ApiResponse<ProductDto>> GetByIdAsync(int id)
+        public async Task<ApiResponse<ProductDetailsDto>> GetByIdAsync(int id)
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id);
             if (product == null)
             {
                 throw new BadRequestException("Product not found.");
             }
-            var productDto = _mapper.Map<ProductDto>(product);
-            return ApiResponse<ProductDto>.Success(productDto, "Product fetched successfully.");
+            var productDto = _mapper.Map<ProductDetailsDto>(product);
+            return ApiResponse<ProductDetailsDto>.Success(productDto, "Product fetched successfully.");
         }
 
-        public async Task<ApiResponse<ProductDto>> UpdateAsync(int id, ProductUpdateDto dto)
+        public async Task<ApiResponse<ProductDetailsDto>> UpdateAsync(int id, ProductUpdateDto dto)
         {
             var product = await _unitOfWork.Products.GetByIdAsync(id);
             if (product == null)
@@ -107,9 +107,11 @@ namespace ECommerce.Services
             product.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.Products.UpdateAsync(product);
             await _unitOfWork.CompleteAsync();
-            var updatedProductDto = _mapper.Map<ProductDto>(product);
-            return ApiResponse<ProductDto>.Success(updatedProductDto, "Product updated successfully.");
+            var updatedProductDto = _mapper.Map<ProductDetailsDto>(product);
+            return ApiResponse<ProductDetailsDto>.Success(updatedProductDto, "Product updated successfully.");
         }
+
+
     }
 
 

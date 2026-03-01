@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
@@ -11,9 +12,10 @@ namespace ECommerce.Models
         public int Quantity { get; set; }
 
         [Required]
-        public int ProductId { get; set; }
+        [ForeignKey(nameof(ProductVariant))]
+        public int ProductVariantId { get; set; }
 
-        public Product Product { get; set; } = null!;
+        public ProductVariant ProductVariant { get; set; } = null!;
 
         [Required]
         public int CartId { get; set; }

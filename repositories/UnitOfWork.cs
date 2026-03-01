@@ -10,6 +10,9 @@ namespace ECommerce.Repositories
         public IProductsRepository Products { get; private set; }
         public ICategoriesRepository Categories { get; private set; }
         public IBrandsRepository Brands { get; private set; }
+        public ICartsRepository Carts { get; private set; }
+        public ICartItemsRepository CartItems { get; private set; }
+        public IProductVariantsRepository ProductVariants { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
@@ -17,6 +20,9 @@ namespace ECommerce.Repositories
             Products = new ProductsRepository(_context);
             Categories = new CategoriesRepository(_context);
             Brands = new BrandsRepository(_context);
+            Carts = new CartsRepository(_context);
+            CartItems = new CartItemsRepository(_context);
+            ProductVariants = new ProductVariantsRepository(_context);
         }
 
         public async Task<int> CompleteAsync()

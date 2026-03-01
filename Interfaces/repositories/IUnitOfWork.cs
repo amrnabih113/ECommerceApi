@@ -7,6 +7,12 @@ namespace ECommerce.Interfaces.Repositories
 
         IBrandsRepository Brands { get; }
 
+        ICartsRepository Carts { get; }
+
+        ICartItemsRepository CartItems { get; }
+
+        IProductVariantsRepository ProductVariants { get; }
+
         Task<int> CompleteAsync();
     }
 }

@@ -11,7 +11,7 @@ namespace ECommerce.Repositories
 
         public async Task<(IEnumerable<Product> Items, int TotalItems)> GetByBrandIdAsync(int brandId, int page = 1, int pageSize = 10)
         {
-            var query = _dbSet.Where(p => p.BrandId == brandId);
+            var query = _dbSet.Where(p => p.BrandId == brandId).Include(p => p.Images).Include(p => p.Variants);
 
             var totalItems = await query.CountAsync();
 

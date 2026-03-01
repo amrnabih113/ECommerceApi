@@ -30,7 +30,7 @@ namespace ECommerce.Controllers
 
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(ApiResponse<ProductDto>), 200)]
+        [ProducesResponseType(typeof(ApiResponse<ProductDetailsDto>), 200)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var response = await _productsService.GetByIdAsync(id);
@@ -40,7 +40,7 @@ namespace ECommerce.Controllers
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "Admin")]
-
+        [ProducesResponseType(typeof(ApiResponse<ProductDto>), 200)]
         public async Task<IActionResult> Create([FromBody] ProductCreateDto dto)
         {
             if (!ModelState.IsValid)
@@ -51,7 +51,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpPut("{id:int}")]
-
+        [ProducesResponseType(typeof(ApiResponse<ProductDetailsDto>), 200)]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateDto dto)
         {
@@ -64,6 +64,7 @@ namespace ECommerce.Controllers
 
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _productsService.DeleteAsync(id);

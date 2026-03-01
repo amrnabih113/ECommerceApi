@@ -11,7 +11,6 @@ namespace ECommerce.Models
         public string ImageUrl { get; set; } = null!;
         [Required]
         public bool IsMain { get; set; }
-
         [ForeignKey(nameof(ProductId))]
         [Required]
         public int ProductId { get; set; }
