@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using ECommerce.DTOs.Reviews;
 
 namespace ECommerce.DTOs.Products
 {
@@ -18,6 +19,9 @@ namespace ECommerce.DTOs.Products
         public string BrandName { get; set; } = default!;
         public ICollection<ProductImageDto> Images { get; set; } = new List<ProductImageDto>();
         public ICollection<ProductVariantDto> Variants { get; set; } = new List<ProductVariantDto>();
+        public ICollection<ReviewDto> Reviews { get; set; } = new List<ReviewDto>();
+        public double AverageRating { get; set; }
+        public int ReviewsCount { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

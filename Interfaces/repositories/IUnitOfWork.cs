@@ -11,6 +11,8 @@ namespace ECommerce.Interfaces.Repositories
 
         ICartItemsRepository CartItems { get; }
 
+        IReviewsRepository Reviews { get; }
+
         IProductVariantsRepository ProductVariants { get; }
 
         Task<int> CompleteAsync();

@@ -4,6 +4,7 @@ using ECommerce.DTOs.Carts;
 using ECommerce.DTOs.CartItems;
 using ECommerce.DTOs.Categories;
 using ECommerce.DTOs.Products;
+using ECommerce.DTOs.Reviews;
 using ECommerce.Models;
 
 public class MappingProfile : Profile
@@ -38,10 +39,26 @@ public class MappingProfile : Profile
       .ForMember(dest => dest.Images,
           opt => opt.MapFrom(src => src.Images))
         .ForMember(dest => dest.Variants,
-          opt => opt.MapFrom(src => src.Variants));
+                    opt => opt.MapFrom(src => src.Variants))
+                .ForMember(dest => dest.Reviews,
+                    opt => opt.MapFrom(src => src.Reviews
+                        .OrderByDescending(r => r.Rating)
+                        .ThenByDescending(r => r.CreatedAt)
+                        .Take(5)))
+                .ForMember(dest => dest.ReviewsCount,
+                    opt => opt.MapFrom(src => src.Reviews.Count))
+                .ForMember(dest => dest.AverageRating,
+                    opt => opt.MapFrom(src => src.Reviews.Any() ? Math.Round(src.Reviews.Average(r => (double)r.Rating), 2) : 0));
         CreateMap<ProductCreateDto, Product>();
         CreateMap<ProductUpdateDto, Product>();
 
+        // Review mappings
+        CreateMap<Review, ReviewDto>()
+                .ForMember(dest => dest.UserName,
+                opt => opt.MapFrom(src => src.User != null ? (src.User.FullName ?? src.User.UserName ?? string.Empty) : string.Empty))
+                .ForMember(dest => dest.UserImageUrl,
+                opt => opt.MapFrom(src => src.User != null ? src.User.ImageUrl : null));
+        CreateMap<ReviewCreateDto, Review>();
         // ProductVariant mappings
         CreateMap<ProductVariant, ProductVariantDto>();
         CreateMap<ProductVariantCreateDto, ProductVariant>();

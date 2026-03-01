@@ -115,6 +115,8 @@ public partial class Program
         builder.Services.AddScoped<ICartsService, CartsService>();
         builder.Services.AddScoped<ICartItemsRepository, CartItemsRepository>();
         builder.Services.AddScoped<ICartItemsService, CartItemsService>();
+        builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
+        builder.Services.AddScoped<IReviewsService, ReviewsService>();
         builder.Services.AddScoped<IProductVariantsRepository, ProductVariantsRepository>();
         builder.Services.AddScoped<IProductVariantsService, ProductVariantsService>();
 
