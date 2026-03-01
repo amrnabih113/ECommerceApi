@@ -65,6 +65,16 @@ GET /api/products/{id}/wishlist/check         ← Check if favorite
 ```
 **Note:** Products endpoint returns `isFavorite: true/false` based on your wishlist
 
+#### Manage Product Images (Admin)
+```
+POST /api/products/{id}/images (multipart)    ← Upload image (Cloudinary)
+PUT /api/products/{id}/images/{imageId} (multipart) ← Replace image
+DELETE /api/products/{id}/images/{imageId}    ← Delete image
+GET /api/products/{id}/images                 ← List images
+GET /api/products/{id}/images/{imageId}       ← Get single image
+```
+**Formats:** JPG, PNG, GIF, WebP (auto-deleted from Cloudinary)
+
 ---
 
 ## 🛑 Key Differences

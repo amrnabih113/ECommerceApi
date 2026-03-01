@@ -220,6 +220,132 @@ Returns:
 
 ---
 
+## 🖼️ Product Images Management (Admin)
+
+### Upload Product Image
+
+```json
+POST /api/products/{{productId}}/images
+Content-Type: multipart/form-data
+
+Form Data:
+- file: (image file) ← JPG, PNG, GIF, WebP
+- isMain: true       ← Set as main product image
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Image uploaded successfully.",
+  "data": {
+    "id": 1,
+    "productId": 5,
+    "imageUrl": "https://res.cloudinary.com/...",
+    "isMain": true,
+    "createdAt": "2026-03-01T12:30:00Z",
+    "updatedAt": "2026-03-01T12:30:00Z"
+  }
+}
+```
+
+### Update Product Image
+
+```json
+PUT /api/products/{{productId}}/images/{{imageId}}
+Content-Type: multipart/form-data
+
+Form Data:
+- file: (new image file)    ← Replace with new image
+- isMain: true              ← Update main status
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Image updated successfully.",
+  "data": {
+    "id": 1,
+    "productId": 5,
+    "imageUrl": "https://res.cloudinary.com/...",
+    "isMain": true,
+    "createdAt": "2026-03-01T12:30:00Z",
+    "updatedAt": "2026-03-01T14:00:00Z"
+  }
+}
+```
+
+### Delete Product Image
+
+```
+DELETE /api/products/{{productId}}/images/{{imageId}}
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Image deleted successfully.",
+  "data": null
+}
+```
+
+**Note:** Old image automatically deleted from Cloudinary
+
+### List Product Images
+
+```
+GET /api/products/{{productId}}/images?page=1&pageSize=10
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Images fetched successfully.",
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "productId": 5,
+        "imageUrl": "https://res.cloudinary.com/...",
+        "isMain": true,
+        "createdAt": "2026-03-01T12:30:00Z",
+        "updatedAt": "2026-03-01T12:30:00Z"
+      },
+      ...
+    ],
+    "totalItems": 5,
+    "page": 1,
+    "pageSize": 10
+  }
+}
+```
+
+### Get Single Product Image
+
+```
+GET /api/products/{{productId}}/images/{{imageId}}
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Image fetched successfully.",
+  "data": {
+    "id": 1,
+    "productId": 5,
+    "imageUrl": "https://res.cloudinary.com/...",
+    "isMain": true,
+    "createdAt": "2026-03-01T12:30:00Z",
+    "updatedAt": "2026-03-01T12:30:00Z"
+  }
+}
+```
+
+### 🖼️ Product Images Notes
+
+- **Admin Only**: All image endpoints require Admin role
+- **File Formats**: JPG, JPEG, PNG, GIF, WebP supported
+- **Cloudinary Storage**: Images stored on Cloudinary CDN
+- **Automatic Deletion**: Old images deleted from Cloudinary when updated/deleted
+- **Main Image**: Product.ImageUrl always points to image with `isMain=true`
+- **Auto Main Assignment**: If main image deleted, another image automatically promoted to main
+
+---
+
 ## ❤️ WishList Management
 
 ### Add Product to WishList

@@ -52,13 +52,15 @@ postman/
 **Sections:**
 - 🔐 **Authentication** - Register, Login, Refresh Token, Forgot Password, Verify OTP, Reset Password
 - 📦 **Products** - CRUD operations, filtering
+- 🖼️ **Product Images** - Upload, update, delete (Cloudinary CDN)
 - 🎨 **Product Variants** - Size/Color management
 - 🛒 **Cart** - Shopping cart operations
 - ❤️ **WishList** - Favorites, add/remove, check favorites
 - 📂 **Categories & Brands** - Master data
+- ⭐ **Reviews** - Product ratings and comments
 - 👨‍💼 **Admin Management** - Cart controls
 
-**Total Endpoints:** 49+
+**Total Endpoints:** 54+
 
 ### Environment: `Development.json`
 
@@ -82,8 +84,9 @@ postman/
 ### 1️⃣ Create Product with Variants (Admin)
 ```
 1. Create product → POST /api/products/create
-2. Add variants → POST /api/products/{id}/variants (×3)
-3. Stock auto-calculated → GET /api/products/{id}
+2. Upload images → POST /api/products/{id}/images (×2-3)
+3. Add variants → POST /api/products/{id}/variants (×3)
+4. Stock auto-calculated → GET /api/products/{id}
 ```
 See: [README.md - Product Management](README.md#-product-management)
 
