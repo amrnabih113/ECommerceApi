@@ -2551,6 +2551,289 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "Profile",
+            "item": [
+                {
+                    "name": "Get My Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/me",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile",
+                                "me"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Profile retrieved successfully\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"johndoe\",\"email\":\"john@example.com\",\"fullName\":\"John Doe\",\"profileImageUrl\":\"https://res.cloudinary.com/demo/image/upload/profile.jpg\",\"phoneNumber\":\"+1234567890\",\"address\":\"123 Main St\",\"emailConfirmed\":true,\"createdAt\":\"2024-01-01T00:00:00Z\"}}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get User by ID (Admin)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/user/{{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile",
+                                "user",
+                                "{{userId}}"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"User profile retrieved successfully\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"johndoe\",\"email\":\"john@example.com\",\"fullName\":\"John Doe\",\"profileImageUrl\":\"https://res.cloudinary.com/demo/image/upload/profile.jpg\",\"phoneNumber\":\"+1234567890\",\"address\":\"123 Main St\",\"emailConfirmed\":true,\"createdAt\":\"2024-01-01T00:00:00Z\"}}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Profile",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fullName\": \"John Doe Updated\",\n  \"phoneNumber\": \"+1234567890\",\n  \"address\": \"456 New Street, City, Country\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/profile",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Profile updated successfully\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"johndoe\",\"email\":\"john@example.com\",\"fullName\":\"John Doe Updated\",\"profileImageUrl\":\"https://res.cloudinary.com/demo/image/upload/profile.jpg\",\"phoneNumber\":\"+1234567890\",\"address\":\"456 New Street, City, Country\",\"emailConfirmed\":true,\"createdAt\":\"2024-01-01T00:00:00Z\"}}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Change Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"currentPassword\": \"OldPassword@123\",\n  \"newPassword\": \"NewPassword@456\",\n  \"confirmNewPassword\": \"NewPassword@456\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/change-password",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile",
+                                "change-password"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Password changed successfully\",\"data\":null}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Upload Profile Image",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "image",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/upload-image",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile",
+                                "upload-image"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Profile image uploaded successfully\",\"data\":\"https://res.cloudinary.com/demo/image/upload/v1234567890/ecommerce/profiles/profile-image.jpg\"}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Profile Image",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/delete-image",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile",
+                                "delete-image"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Account",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/profile/delete-account",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "profile",
+                                "delete-account"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "variable": [

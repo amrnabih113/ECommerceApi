@@ -127,6 +127,7 @@ public partial class Program
         builder.Services.AddScoped<IProductVariantsRepository, ProductVariantsRepository>();
         builder.Services.AddScoped<IProductVariantsService, ProductVariantsService>();
         builder.Services.AddScoped<IWishListService, WishListService>();
+        builder.Services.AddScoped<IProfileService, ProfileService>();
 
         // Swagger Configuration
         builder.Services.AddEndpointsApiExplorer();
@@ -149,6 +150,7 @@ public partial class Program
                 In = ParameterLocation.Header,
                 Description = "Enter JWT token like: Bearer {your token}"
             });
+
             options.AddServer(new OpenApiServer
             {
                 Url = "https://localhost:7286"

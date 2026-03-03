@@ -4,6 +4,7 @@ using ECommerce.DTOs.Carts;
 using ECommerce.DTOs.CartItems;
 using ECommerce.DTOs.Categories;
 using ECommerce.DTOs.Products;
+using ECommerce.DTOs.Profile;
 using ECommerce.DTOs.Reviews;
 using ECommerce.DTOs.WishLists;
 using ECommerce.Models;
@@ -106,5 +107,10 @@ public class MappingProfile : Profile
         CreateMap<WishList, WishListItemDto>()
             .ForMember(dest => dest.Product,
                 opt => opt.MapFrom(src => src.Product));
+
+        // Profile mappings
+        CreateMap<ApplicationUser, ProfileDto>();
+        CreateMap<UpdateProfileDto, ApplicationUser>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }
