@@ -13,5 +13,7 @@ namespace ECommerce.Interfaces.Services
         Task<ApiResponse> DeleteAsync(int id);
         Task<ApiResponse<PageResult<ProductDto>>> GetByCategoryAsync(int categoryId, ProductQueryDto query, string? userId = null);
         Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, ProductQueryDto query, string? userId = null);
+        Task<ApiResponse<PageResult<ProductDto>>> SearchAsync(string term, int page = 1, int pageSize = 10, string? userId = null);
+        Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5);
     }
 }

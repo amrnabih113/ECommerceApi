@@ -11,7 +11,10 @@ namespace ECommerce.Interfaces.Repositories
 
         Task<(IEnumerable<Product> Items, int TotalItems)> GetByBrandIdAsync(int brandId, ProductQueryDto query);
 
-        //  Task<IEnumerable<Product>> SearchAsync(string query);
+        Task<(IEnumerable<Product> Items, int TotalItems)> SearchAsync(string term, int page, int pageSize);
+        Task<IEnumerable<string>> GetSearchRecommendationsAsync(string term, int size = 5);
+        Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<int> ids);
+
     }
 
 }

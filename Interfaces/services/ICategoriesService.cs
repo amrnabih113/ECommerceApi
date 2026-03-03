@@ -12,5 +12,7 @@ namespace ECommerce.Interfaces.Services
         Task<ApiResponse<CategoryDto>> CreateAsync(CategoryCreateDto dto);
         Task<ApiResponse<CategoryDto>> UpdateAsync(int id, CategoryUpdateDto dto);
         Task<ApiResponse<bool>> DeleteAsync(int id);
+        Task<ApiResponse<PageResult<CategoryDto>>> SearchAsync(string term, int page = 1, int pageSize = 10);
+        Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5);
     }
 }

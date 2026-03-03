@@ -71,14 +71,6 @@ namespace ECommerce.Repositories
                 .Include(p => p.Images)
                 .Include(p => p.Variants);
 
-            if (!string.IsNullOrWhiteSpace(query.Search))
-            {
-                var search = query.Search.Trim().ToLower();
-                productsQuery = productsQuery.Where(p =>
-                    p.Name.ToLower().Contains(search) ||
-                    p.Description.ToLower().Contains(search));
-            }
-
             if (query.BrandId.HasValue)
                 productsQuery = productsQuery.Where(p => p.BrandId == query.BrandId.Value);
 
@@ -109,6 +101,94 @@ namespace ECommerce.Repositories
             };
 
             return productsQuery.AsNoTracking();
+        }
+
+        public async Task<(IEnumerable<Product> Items, int TotalItems)> SearchAsync(string term, int page, int pageSize)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 10 : pageSize;
+
+            var normalizedTerm = term.Trim();
+
+            try
+            {
+                var fullTextQuery = _dbSet
+                    .Include(p => p.Category)
+                    .Include(p => p.Brand)
+                    .Include(p => p.Images)
+                    .Include(p => p.Variants)
+                    .Where(p =>
+                        EF.Functions.FreeText(p.Name, normalizedTerm) ||
+                        EF.Functions.FreeText(p.Description, normalizedTerm))
+                    .OrderBy(p => p.Name)
+                    .ThenBy(p => p.Id)
+                    .AsNoTracking();
+
+                var totalItems = await fullTextQuery.CountAsync();
+                var items = await fullTextQuery
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (items, totalItems);
+            }
+            catch
+            {
+                var fallbackTerm = normalizedTerm.ToLower();
+                var fallbackQuery = _dbSet
+                    .Include(p => p.Category)
+                    .Include(p => p.Brand)
+                    .Include(p => p.Images)
+                    .Include(p => p.Variants)
+                    .Where(p =>
+                        p.Name.ToLower().Contains(fallbackTerm) ||
+                        p.Description.ToLower().Contains(fallbackTerm) ||
+                        p.Brand.Name.ToLower().Contains(fallbackTerm) ||
+                        p.Category.Name.ToLower().Contains(fallbackTerm))
+                    .OrderBy(p => p.Name)
+                    .ThenBy(p => p.Id)
+                    .AsNoTracking();
+
+                var totalItems = await fallbackQuery.CountAsync();
+                var items = await fallbackQuery
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (items, totalItems);
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetSearchRecommendationsAsync(string term, int size = 5)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Enumerable.Empty<string>();
+
+            var normalizedTerm = term.Trim().ToLower();
+
+            return await _dbSet
+                .Where(p => p.Name.ToLower().StartsWith(normalizedTerm))
+                .OrderBy(p => p.Name)
+                .Select(p => p.Name)
+                .Distinct()
+                .Take(size)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<int> ids)
+        {
+            var idSet = ids.Distinct().ToList();
+            if (!idSet.Any()) return Enumerable.Empty<Product>();
+
+            return await _dbSet
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.Images)
+                .Include(p => p.Variants)
+                .Where(p => idSet.Contains(p.Id))
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public override async Task<Product?> GetByIdAsync(int id)

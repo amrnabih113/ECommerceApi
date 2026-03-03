@@ -102,5 +102,29 @@ namespace ECommerce.Services
             var updatedCategoryDto = _mapper.Map<CategoryDto>(category);
             return ApiResponse<CategoryDto>.Success(updatedCategoryDto, "Category updated successfully.");
         }
+
+        public async Task<ApiResponse<PageResult<CategoryDto>>> SearchAsync(string term, int page = 1, int pageSize = 10)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 10 : pageSize;
+
+            var (categories, totalItems) = await _unitOfWork.Categories.SearchAsync(term, page, pageSize);
+            var dtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+            var pagedResult = new PageResult<CategoryDto>
+            {
+                Items = dtos,
+                TotalItems = totalItems,
+                Page = page,
+                PageSize = pageSize
+            };
+
+            return ApiResponse<PageResult<CategoryDto>>.Success(pagedResult, "Categories search completed successfully.");
+        }
+
+        public async Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5)
+        {
+            var recommendations = await _unitOfWork.Categories.GetSearchRecommendationsAsync(term, size);
+            return ApiResponse<IEnumerable<string>>.Success(recommendations, "Category recommendations fetched successfully.");
+        }
     }
 }

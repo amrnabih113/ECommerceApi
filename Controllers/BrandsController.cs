@@ -80,5 +80,35 @@ namespace ECommerce.Controllers
             var response = await _brandsService.DeleteAsync(id);
             return Ok(response);
         }
+
+        [HttpGet("search")]
+        [ProducesResponseType(typeof(ApiResponse<PageResult<BrandDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> Search([FromQuery] string term, int page = 1, int pageSize = 10)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return BadRequest(ApiResponse.ErrorResponse("Search term is required."));
+
+            if (page < 1 || pageSize < 1)
+                return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
+
+            var response = await _brandsService.SearchAsync(term, page, pageSize);
+            return Ok(response);
+        }
+
+        [HttpGet("search/recommendations")]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<string>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> GetSearchRecommendations([FromQuery] string term, int size = 5)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return BadRequest(ApiResponse.ErrorResponse("Search term is required."));
+
+            if (size < 1)
+                return BadRequest(ApiResponse.ErrorResponse("size must be greater than 0."));
+
+            var response = await _brandsService.GetSearchRecommendationsAsync(term, size);
+            return Ok(response);
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace ECommerce.Interfaces.Services
         Task<ApiResponse<BrandDto>> CreateAsync(BrandCreateDto dto);
         Task<ApiResponse<BrandDto>> UpdateAsync(int id, BrandUpdateDto dto);
         Task<ApiResponse<bool>> DeleteAsync(int id);
+        Task<ApiResponse<PageResult<BrandDto>>> SearchAsync(string term, int page = 1, int pageSize = 10);
+        Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5);
     }
 }

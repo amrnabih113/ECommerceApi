@@ -109,5 +109,36 @@ namespace ECommerce.Controllers
             var response = await _productsService.GetByCategoryAsync(categoryId, query, userId);
             return Ok(response);
         }
+
+        [HttpGet("search")]
+        [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> Search([FromQuery] string term, int page = 1, int pageSize = 10)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return BadRequest(ApiResponse.ErrorResponse("Search term is required."));
+
+            if (page < 1 || pageSize < 1)
+                return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.SearchAsync(term, page, pageSize, userId);
+            return Ok(response);
+        }
+
+        [HttpGet("search/recommendations")]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<string>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> GetSearchRecommendations([FromQuery] string term, int size = 5)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return BadRequest(ApiResponse.ErrorResponse("Search term is required."));
+
+            if (size < 1)
+                return BadRequest(ApiResponse.ErrorResponse("size must be greater than 0."));
+
+            var response = await _productsService.GetSearchRecommendationsAsync(term, size);
+            return Ok(response);
+        }
     }
 }

@@ -37,14 +37,6 @@ namespace ECommerce.Repositories
                 .Include(c => c.Products)
                 .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(query.Search))
-            {
-                var search = query.Search.Trim().ToLower();
-                categoriesQuery = categoriesQuery.Where(c =>
-                    c.Name.ToLower().Contains(search) ||
-                    (c.Description != null && c.Description.ToLower().Contains(search)));
-            }
-
             if (query.IsActive.HasValue)
                 categoriesQuery = categoriesQuery.Where(c => c.IsActive == query.IsActive.Value);
             else
@@ -76,6 +68,83 @@ namespace ECommerce.Repositories
 
 
             return (items, totalItems);
+        }
+
+        public async Task<(IEnumerable<Category> Items, int TotalItems)> SearchAsync(string term, int page, int pageSize)
+        {
+            page = page <= 0 ? 1 : page;
+            pageSize = pageSize <= 0 ? 10 : pageSize;
+
+            var normalizedTerm = term.Trim();
+
+            try
+            {
+                var fullTextQuery = _dbSet
+                    .Include(c => c.Products)
+                    .Where(c =>
+                        EF.Functions.FreeText(c.Name, normalizedTerm) ||
+                        (c.Description != null && EF.Functions.FreeText(c.Description, normalizedTerm)))
+                    .OrderBy(c => c.Name)
+                    .ThenBy(c => c.Id)
+                    .AsNoTracking();
+
+                var totalItems = await fullTextQuery.CountAsync();
+                var items = await fullTextQuery
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (items, totalItems);
+            }
+            catch
+            {
+                var fallbackTerm = normalizedTerm.ToLower();
+                var fallbackQuery = _dbSet
+                    .Include(c => c.Products)
+                    .Where(c =>
+                        c.Name.ToLower().Contains(fallbackTerm) ||
+                        (c.Description != null && c.Description.ToLower().Contains(fallbackTerm)))
+                    .OrderBy(c => c.Name)
+                    .ThenBy(c => c.Id)
+                    .AsNoTracking();
+
+                var totalItems = await fallbackQuery.CountAsync();
+                var items = await fallbackQuery
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (items, totalItems);
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetSearchRecommendationsAsync(string term, int size = 5)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Enumerable.Empty<string>();
+
+            var normalizedTerm = term.Trim().ToLower();
+
+            return await _dbSet
+                .Where(c => c.Name.ToLower().StartsWith(normalizedTerm))
+                .OrderBy(c => c.Name)
+                .Select(c => c.Name)
+                .Distinct()
+                .Take(size)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Category>> GetByIdsAsync(IEnumerable<int> ids)
+        {
+            var idSet = ids.Distinct().ToList();
+            if (!idSet.Any()) return Enumerable.Empty<Category>();
+
+            return await _dbSet
+                .Include(c => c.Products)
+                .Where(c => idSet.Contains(c.Id))
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Category>> GetRootCategoriesAsync()
