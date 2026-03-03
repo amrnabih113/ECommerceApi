@@ -346,6 +346,181 @@ Response (200 OK):
 
 ---
 
+## 🔍 Search & Recommendations
+
+### Search Products
+
+```
+GET /api/products/search?term=shirt&page=1&pageSize=10
+
+Query Parameters:
+- term (required)    : Search term (product name/description)
+- page (optional)    : Page number (default: 1)
+- pageSize (optional): Items per page (default: 10)
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Products searched",
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "name": "Premium T-Shirt",
+        "description": "High quality cotton",
+        "price": 29.99,
+        "categoryId": 1,
+        "brandId": 1,
+        "hasVariants": true,
+        "isFavorite": false,
+        "createdAt": "2026-03-01T10:00:00Z"
+      },
+      {
+        "id": 2,
+        "name": "Classic Shirt",
+        "description": "Casual wear",
+        "price": 24.99,
+        "categoryId": 1,
+        "brandId": 2,
+        "hasVariants": false,
+        "isFavorite": true
+      }
+    ],
+    "page": 1,
+    "pageSize": 10,
+    "totalCount": 2
+  }
+}
+```
+
+### Product Search Recommendations (Autocomplete)
+
+```
+GET /api/products/search/recommendations?term=shi&size=5
+
+Query Parameters:
+- term (required): Prefix to match (min 2 chars)
+- size (optional): Max results (default: 5)
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Recommendations retrieved",
+  "data": [
+    "Premium T-Shirt",
+    "Classic Shirt",
+    "Shirt Dress",
+    "Shirt Set",
+    "Shirt Combo"
+  ]
+}
+```
+
+### Search Brands
+
+```
+GET /api/brands/search?term=nike&page=1&pageSize=10
+
+Query Parameters: Same as products search
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Brands searched",
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "name": "Nike",
+        "description": "Leading sports brand",
+        "createdAt": "2026-03-01T10:00:00Z"
+      },
+      {
+        "id": 5,
+        "name": "Nike Pro",
+        "description": "Premium Nike line",
+        "createdAt": "2026-03-01T10:00:00Z"
+      }
+    ],
+    "page": 1,
+    "pageSize": 10,
+    "totalCount": 2
+  }
+}
+```
+
+### Brand Search Recommendations (Autocomplete)
+
+```
+GET /api/brands/search/recommendations?term=nik&size=5
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Recommendations retrieved",
+  "data": ["Nike", "Nike Pro", "Nike Sport", "Nike Premium", "Nike Air"]
+}
+```
+
+### Search Categories
+
+```
+GET /api/categories/search?term=clothing&page=1&pageSize=10
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Categories searched",
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "name": "Clothing",
+        "description": "All clothing items",
+        "parentCategoryId": null,
+        "createdAt": "2026-03-01T10:00:00Z"
+      },
+      {
+        "id": 3,
+        "name": "Casual Clothing",
+        "description": "Casual wear",
+        "parentCategoryId": 1,
+        "createdAt": "2026-03-01T10:00:00Z"
+      }
+    ],
+    "page": 1,
+    "pageSize": 10,
+    "totalCount": 2
+  }
+}
+```
+
+### Category Search Recommendations (Autocomplete)
+
+```
+GET /api/categories/search/recommendations?term=clot&size=5
+
+Response (200 OK):
+{
+  "success": true,
+  "message": "Recommendations retrieved",
+  "data": ["Clothing", "Casual Clothing", "Formal Clothing"]
+}
+```
+
+### 🔍 Search Features
+
+- **Full-Text Search**: Uses SQL Server Full-Text Search for performance
+- **Graceful Fallback**: If full-text not enabled, falls back to LIKE query
+- **Deterministic Results**: Always ordered by Name then ID for consistent pagination
+- **Pagination**: All search endpoints support page and pageSize
+- **Recommendations**: Returns prefix-matched suggestions for autocomplete UI
+- **IsFavorite Flag**: Product search enriches results with user's wishlist status
+- **Multi-field Search**: Products search across Name and Description
+- **Case-Insensitive**: All searches are case-insensitive
+
+---
+
 ## ❤️ WishList Management
 
 ### Add Product to WishList

@@ -73,47 +73,24 @@ namespace ECommerce.Repositories
             page = page <= 0 ? 1 : page;
             pageSize = pageSize <= 0 ? 10 : pageSize;
 
-            var normalizedTerm = term.Trim();
+            var normalizedTerm = term.Trim().ToLower();
 
-            try
-            {
-                var fullTextQuery = _dbSet
-                    .Include(b => b.Products)
-                    .Where(b =>
-                        EF.Functions.FreeText(b.Name, normalizedTerm) ||
-                        (b.Description != null && EF.Functions.FreeText(b.Description, normalizedTerm)))
-                    .OrderBy(b => b.Name)
-                    .ThenBy(b => b.Id)
-                    .AsNoTracking();
+            var query = _dbSet
+                .Include(b => b.Products)
+                .Where(b =>
+                    EF.Functions.Like(b.Name, $"%{normalizedTerm}%") ||
+                    (b.Description != null && EF.Functions.Like(b.Description, $"%{normalizedTerm}%")))
+                .OrderBy(b => b.Name)
+                .ThenBy(b => b.Id)
+                .AsNoTracking();
 
-                var totalItems = await fullTextQuery.CountAsync();
-                var items = await fullTextQuery
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
+            var totalItems = await query.CountAsync();
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
-                return (items, totalItems);
-            }
-            catch
-            {
-                var fallbackTerm = normalizedTerm.ToLower();
-                var fallbackQuery = _dbSet
-                    .Include(b => b.Products)
-                    .Where(b =>
-                        b.Name.ToLower().Contains(fallbackTerm) ||
-                        (b.Description != null && b.Description.ToLower().Contains(fallbackTerm)))
-                    .OrderBy(b => b.Name)
-                    .ThenBy(b => b.Id)
-                    .AsNoTracking();
-
-                var totalItems = await fallbackQuery.CountAsync();
-                var items = await fallbackQuery
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-                return (items, totalItems);
-            }
+            return (items, totalItems);
         }
 
         public async Task<IEnumerable<string>> GetSearchRecommendationsAsync(string term, int size = 5)
@@ -121,10 +98,10 @@ namespace ECommerce.Repositories
             if (string.IsNullOrWhiteSpace(term))
                 return Enumerable.Empty<string>();
 
-            var normalizedTerm = term.Trim().ToLower();
+            var normalizedTerm = term.Trim();
 
             return await _dbSet
-                .Where(b => b.Name.ToLower().StartsWith(normalizedTerm))
+                .Where(b => EF.Functions.Like(b.Name, $"%{normalizedTerm}%"))
                 .OrderBy(b => b.Name)
                 .Select(b => b.Name)
                 .Distinct()

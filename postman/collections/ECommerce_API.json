@@ -553,6 +553,127 @@
                             "body": "{\"success\":true,\"message\":\"Products retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Premium T-Shirt\",\"price\":29.99,\"brandId\":1,\"isFavorite\":false}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
                         }
                     ]
+                },
+                {
+                    "name": "Search Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/search?term=shirt&page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "term",
+                                    "value": "shirt"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Products searched\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Premium T-Shirt\",\"description\":\"High quality cotton\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false,\"createdAt\":\"2026-03-01T10:00:00Z\"},{\"id\":2,\"name\":\"Classic Shirt\",\"description\":\"Casual wear\",\"price\":24.99,\"categoryId\":1,\"brandId\":2,\"hasVariants\":false,\"isFavorite\":true}],\"page\":1,\"pageSize\":10,\"totalCount\":2}}"
+                        },
+                        {
+                            "name": "No Results",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Products searched\",\"data\":{\"items\":[],\"page\":1,\"pageSize\":10,\"totalCount\":0}}"
+                        },
+                        {
+                            "name": "Missing Term",
+                            "status": "Bad Request",
+                            "code": 400,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":false,\"message\":\"Search term is required.\"}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Product Recommendations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/search/recommendations?term=shi&size=5",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "search",
+                                "recommendations"
+                            ],
+                            "query": [
+                                {
+                                    "key": "term",
+                                    "value": "shi"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "5"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Recommendations retrieved\",\"data\":[\"Premium T-Shirt\",\"Classic Shirt\",\"Shirt Dress\",\"Shirt Set\",\"Shirt Combo\"]}"
+                        }
+                    ]
                 }
             ]
         },
@@ -1750,6 +1871,103 @@
                             "body": ""
                         }
                     ]
+                },
+                {
+                    "name": "Search Categories",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/categories/search?term=clothing&page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categories",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "term",
+                                    "value": "clothing"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Categories searched\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Clothing\",\"description\":\"All clothing items\",\"parentCategoryId\":null,\"createdAt\":\"2026-03-01T10:00:00Z\"},{\"id\":3,\"name\":\"Casual Clothing\",\"description\":\"Casual wear\",\"parentCategoryId\":1,\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":2}}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Category Recommendations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/categories/search/recommendations?term=clot&size=5",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categories",
+                                "search",
+                                "recommendations"
+                            ],
+                            "query": [
+                                {
+                                    "key": "term",
+                                    "value": "clot"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "5"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Recommendations retrieved\",\"data\":[\"Clothing\",\"Casual Clothing\",\"Formal Clothing\"]}"
+                        }
+                    ]
                 }
             ]
         },
@@ -1921,6 +2139,103 @@
                                 }
                             ],
                             "body": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Brands",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/brands/search?term=nike&page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "brands",
+                                "search"
+                            ],
+                            "query": [
+                                {
+                                    "key": "term",
+                                    "value": "nike"
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Brands searched\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Nike\",\"description\":\"Leading sports brand\",\"createdAt\":\"2026-03-01T10:00:00Z\"},{\"id\":5,\"name\":\"Nike Pro\",\"description\":\"Premium Nike line\",\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":2}}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Search Brand Recommendations",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/brands/search/recommendations?term=nik&size=5",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "brands",
+                                "search",
+                                "recommendations"
+                            ],
+                            "query": [
+                                {
+                                    "key": "term",
+                                    "value": "nik"
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "5"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Recommendations retrieved\",\"data\":[\"Nike\",\"Nike Pro\",\"Nike Sport\",\"Nike Premium\",\"Nike Air\"]}"
                         }
                     ]
                 }

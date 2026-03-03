@@ -166,6 +166,32 @@ public partial class Program
             await RoleSeeder.SeedRolesAsync(roleManager);
         }
 
+        // Seed Users
+        using (var scope = app.Services.CreateScope())
+        {
+            var userManager =
+                scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager =
+                scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            await UserSeeder.SeedUsersAsync(userManager, roleManager);
+        }
+
+        // Seed Data
+        using (var scope = app.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            await BrandSeeder.SeedBrandsAsync(context);
+            await CategorySeeder.SeedCategoriesAsync(context);
+            await ProductSeeder.SeedProductsAsync(context);
+            await ProductImageSeeder.SeedProductImagesAsync(context);
+            await ProductVariantSeeder.SeedProductVariantsAsync(context);
+            await ReviewSeeder.SeedReviewsAsync(context);
+            await CartSeeder.SeedCartAsync(context);
+            await WishListSeeder.SeedWishListAsync(context);
+        }
+
         // Middleware Pipeline
         if (app.Environment.IsDevelopment())
         {

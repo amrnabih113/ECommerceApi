@@ -51,16 +51,17 @@ postman/
 
 **Sections:**
 - 🔐 **Authentication** - Register, Login, Refresh Token, Forgot Password, Verify OTP, Reset Password
-- 📦 **Products** - CRUD operations, filtering
+- 📦 **Products** - CRUD operations, filtering, **Search & Recommendations**
+- 🔍 **Search** - Products, Brands, Categories with autocomplete recommendations
 - 🖼️ **Product Images** - Upload, update, delete (Cloudinary CDN)
 - 🎨 **Product Variants** - Size/Color management
 - 🛒 **Cart** - Shopping cart operations
 - ❤️ **WishList** - Favorites, add/remove, check favorites
-- 📂 **Categories & Brands** - Master data
+- 📂 **Categories & Brands** - Master data with search
 - ⭐ **Reviews** - Product ratings and comments
 - 👨‍💼 **Admin Management** - Cart controls
 
-**Total Endpoints:** 54+
+**Total Endpoints:** 60+ (including 6 new search endpoints)
 
 ### Environment: `Development.json`
 
@@ -118,6 +119,15 @@ See: [README.md - Admin Endpoints](README.md#-admin-endpoints)
 ```
 See: [README.md - WishList Management](README.md#-wishlist-management)
 
+### 5️⃣ Product Search with Autocomplete
+```
+1. Get search suggestions → GET /api/products/search/recommendations?term=shi&size=5
+2. Full search → GET /api/products/search?term=shirt&page=1&pageSize=10
+3. Same for brands → GET /api/brands/search & GET /api/brands/search/recommendations
+4. Same for categories → GET /api/categories/search & GET /api/categories/search/recommendations
+```
+See: [README.md - Search & Recommendations](README.md#-search--recommendations)
+
 ---
 
 ## 🛑 Key Business Rules
@@ -173,6 +183,7 @@ See: [README.md - Response Format](README.md#-api-response-format)
 
 ### For Frontend Developers
 - Product browsing: [README.md - Product Management](README.md#-product-management)
+- **Search & Autocomplete**: [README.md - Search & Recommendations](README.md#-search--recommendations)
 - Cart operations: [README.md - Shopping Cart Logic](README.md#-shopping-cart-logic)
 - Common workflows: [QUICK_START.md](QUICK_START.md)
 
@@ -198,6 +209,7 @@ See: [README.md - Response Format](README.md#-api-response-format)
 |------|----------|------|
 | Get started quickly | [QUICK_START.md](QUICK_START.md) | 5 min |
 | Understand stock system | [API_SPECIFICATION.md](specs/API_SPECIFICATION.md#stock-management-system) | 10 min |
+| Implement search/autocomplete | [README.md - Search & Recommendations](README.md#-search--recommendations) | 5 min |
 | Find specific endpoint | [README.md](README.md) | 2 min |
 | Test cart flow | Collection → Cart section | 5 min |
 | Debug error | [README.md - Troubleshooting](README.md#-troubleshooting) | 3 min |
