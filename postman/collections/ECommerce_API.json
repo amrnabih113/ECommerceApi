@@ -40,7 +40,12 @@
                             "name": "Success",
                             "status": "Created",
                             "code": 201,
-                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
                             "body": "{\"success\":true,\"message\":\"User registered successfully\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"testuser\",\"email\":\"test@example.com\",\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\"refreshToken\":\"refresh-token-123\"}}"
                         }
                     ]
@@ -75,7 +80,12 @@
                             "name": "Success",
                             "status": "OK",
                             "code": 200,
-                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
                             "body": "{\"success\":true,\"message\":\"Login successful\",\"data\":{\"id\":\"user-id-123\",\"userName\":\"testuser\",\"email\":\"test@example.com\",\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\"refreshToken\":\"refresh-token-123\"}}"
                         }
                     ]
@@ -104,7 +114,21 @@
                                 "refresh-token"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Token refreshed\",\"data\":{\"token\":\"new-jwt-token\",\"refreshToken\":\"new-refresh-token\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Forgot Password",
@@ -130,7 +154,21 @@
                                 "forgot-password"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"OTP sent to email\",\"data\":null}"
+                        }
+                    ]
                 },
                 {
                     "name": "Verify OTP",
@@ -156,7 +194,21 @@
                                 "verify-otp"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"OTP verified successfully\",\"data\":null}"
+                        }
+                    ]
                 },
                 {
                     "name": "Reset Password",
@@ -182,7 +234,21 @@
                                 "reset-password"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Password reset successfully\",\"data\":null}"
+                        }
+                    ]
                 }
             ]
         },
@@ -224,7 +290,12 @@
                             "name": "Success",
                             "status": "OK",
                             "code": 200,
-                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
                             "body": "{\"success\":true,\"message\":\"Products retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Premium T-Shirt\",\"description\":\"High quality cotton\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false,\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
                         }
                     ]
@@ -249,7 +320,21 @@
                                 "{{productId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Product retrieved\",\"data\":{\"id\":1,\"name\":\"Premium T-Shirt\",\"description\":\"High quality cotton\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Create Product",
@@ -279,7 +364,21 @@
                                 "create"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Product created\",\"data\":{\"id\":1,\"name\":\"Premium T-Shirt\",\"description\":\"High-quality cotton t-shirt\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Update Product",
@@ -309,7 +408,21 @@
                                 "{{productId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Product updated\",\"data\":{\"id\":1,\"name\":\"Updated T-Shirt\",\"description\":\"Updated description\",\"price\":34.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Delete Product",
@@ -331,10 +444,24 @@
                                 "{{productId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 },
                 {
-                    "name": "📂 Get Products by Category",
+                    "name": "Get Products by Category",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -364,10 +491,24 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Products retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Premium T-Shirt\",\"description\":\"High quality cotton\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🏷️ Get Products by Brand",
+                    "name": "Get Products by Brand",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -397,7 +538,21 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Products retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Premium T-Shirt\",\"price\":29.99,\"brandId\":1,\"isFavorite\":false}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 }
             ]
         },
@@ -435,10 +590,24 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Images retrieved\",\"data\":{\"items\":[{\"id\":1,\"productId\":1,\"url\":\"https://res.cloudinary.com/demo/image/upload/v1\",\"isMain\":true,\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🔍 Get Single Image",
+                    "name": "Get Single Image",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -459,7 +628,21 @@
                                 "{{imageId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Image retrieved\",\"data\":{\"id\":1,\"productId\":1,\"url\":\"https://res.cloudinary.com/demo/image/upload/v1\",\"isMain\":true,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Upload Image",
@@ -497,10 +680,24 @@
                                 "images"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Image uploaded\",\"data\":{\"id\":1,\"productId\":1,\"url\":\"https://res.cloudinary.com/demo/image/upload/v1\",\"isMain\":true,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🔄 Update Image",
+                    "name": "Update Image",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -536,7 +733,21 @@
                                 "{{imageId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Image updated\",\"data\":{\"id\":1,\"productId\":1,\"url\":\"https://res.cloudinary.com/demo/image/upload/v2\",\"isMain\":false,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Delete Image",
@@ -560,15 +771,29 @@
                                 "{{imageId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "🎨 Product Variants",
+            "name": "Product Variants",
             "item": [
                 {
-                    "name": "📋 Get Variants",
+                    "name": "Get Variants",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -588,10 +813,24 @@
                                 "variants"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Variants retrieved\",\"data\":[{\"id\":1,\"size\":\"M\",\"color\":\"Blue\",\"stockQuantity\":50}]}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🆕 Create Variant",
+                    "name": "Create Variant",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -619,10 +858,24 @@
                                 "variants"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Variants created\",\"data\":[{\"id\":1,\"size\":\"S\",\"color\":\"Blue\",\"stockQuantity\":50},{\"id\":2,\"size\":\"M\",\"color\":\"Blue\",\"stockQuantity\":60}]}"
+                        }
+                    ]
                 },
                 {
-                    "name": "✏️ Update Variant",
+                    "name": "Update Variant",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -651,10 +904,24 @@
                                 "{{variantId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Variant updated\",\"data\":{\"id\":1,\"size\":\"L\",\"color\":\"Red\",\"stockQuantity\":45}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🗑️ Delete Variant",
+                    "name": "Delete Variant",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -675,15 +942,29 @@
                                 "{{variantId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "⭐ Reviews",
+            "name": "Reviews",
             "item": [
                 {
-                    "name": "📋 Get Product Reviews",
+                    "name": "Get Product Reviews",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -713,10 +994,24 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Reviews retrieved\",\"data\":{\"items\":[{\"id\":1,\"rating\":5,\"comment\":\"Great product!\",\"userName\":\"testuser\",\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🆕 Create Review",
+                    "name": "Create Review",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -744,10 +1039,24 @@
                                 "reviews"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Review created\",\"data\":{\"id\":1,\"productId\":1,\"rating\":5,\"comment\":\"Great product!\",\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "✏️ Update Review",
+                    "name": "Update Review",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -774,10 +1083,24 @@
                                 "{{reviewId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Review updated\",\"data\":{\"id\":1,\"productId\":1,\"rating\":4,\"comment\":\"Good product\",\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🗑️ Delete Review",
+                    "name": "Delete Review",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -796,7 +1119,21 @@
                                 "{{reviewId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         },
@@ -838,7 +1175,12 @@
                             "name": "Success",
                             "status": "OK",
                             "code": 200,
-                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
                             "body": "{\"success\":true,\"message\":\"WishList retrieved\",\"data\":{\"items\":[{\"id\":1,\"productId\":1,\"product\":{\"id\":1,\"name\":\"Premium T-Shirt\",\"price\":29.99,\"isFavorite\":true},\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
                         }
                     ]
@@ -864,7 +1206,21 @@
                                 "wishlist"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Added to wishlist\",\"data\":{\"id\":1,\"productId\":1,\"product\":{\"id\":1,\"name\":\"Premium T-Shirt\",\"price\":29.99,\"isFavorite\":true},\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Remove from WishList",
@@ -887,7 +1243,21 @@
                                 "wishlist"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 },
                 {
                     "name": "Check if in WishList",
@@ -911,7 +1281,21 @@
                                 "check"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Check completed\",\"data\":true}"
+                        }
+                    ]
                 }
             ]
         },
@@ -938,7 +1322,21 @@
                                 "summary"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Cart summary\",\"data\":{\"totalItems\":2,\"totalPrice\":89.97,\"itemCount\":2}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get Cart Items",
@@ -965,13 +1363,18 @@
                             "name": "Success",
                             "status": "OK",
                             "code": 200,
-                            "header": [{"key": "Content-Type", "value": "application/json"}],
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
                             "body": "{\"success\":true,\"message\":\"Cart items\",\"data\":{\"id\":1,\"userId\":\"user-123\",\"items\":[{\"id\":1,\"productId\":1,\"quantity\":2,\"unitPrice\":29.99,\"totalPrice\":59.98}],\"totalPrice\":89.97}}"
                         }
                     ]
                 },
                 {
-                    "name": "➕ Add to Cart (Product WITH Variants)",
+                    "name": "Add to Cart (Product WITH Variants)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -998,10 +1401,24 @@
                                 "items"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Item added to cart\",\"data\":{\"id\":1,\"productId\":1,\"variantId\":5,\"quantity\":2,\"unitPrice\":29.99,\"totalPrice\":59.98}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "➕ Add to Cart (Product WITHOUT Variants)",
+                    "name": "Add to Cart (Product WITHOUT Variants)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1028,7 +1445,21 @@
                                 "items"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Item added to cart\",\"data\":{\"id\":2,\"productId\":2,\"quantity\":1,\"unitPrice\":19.99,\"totalPrice\":19.99}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Update Cart Item",
@@ -1059,7 +1490,21 @@
                                 "{{cartItemId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Cart item updated\",\"data\":{\"id\":1,\"productId\":1,\"quantity\":5,\"unitPrice\":29.99,\"totalPrice\":149.95}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Remove from Cart",
@@ -1082,7 +1527,21 @@
                                 "{{cartItemId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 },
                 {
                     "name": "Clear Cart",
@@ -1103,7 +1562,21 @@
                                 "cart"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         },
@@ -1139,7 +1612,21 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Categories retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Clothing\",\"description\":\"Clothing items\",\"parentCategoryId\":null,\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Create Category",
@@ -1168,7 +1655,21 @@
                                 "categories"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Category created\",\"data\":{\"id\":2,\"name\":\"Electronics\",\"description\":\"Electronic devices\",\"parentCategoryId\":null,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Update Category",
@@ -1198,7 +1699,21 @@
                                 "{{categoryId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Category updated\",\"data\":{\"id\":1,\"name\":\"Updated Category\",\"description\":\"Updated description\",\"parentCategoryId\":null,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Delete Category",
@@ -1220,7 +1735,21 @@
                                 "{{categoryId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         },
@@ -1256,7 +1785,21 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Brands retrieved\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Nike\",\"description\":\"Leading sports brand\",\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Create Brand",
@@ -1285,7 +1828,21 @@
                                 "brands"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Brand created\",\"data\":{\"id\":1,\"name\":\"Nike\",\"description\":\"Leading sports brand\",\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Update Brand",
@@ -1315,7 +1872,21 @@
                                 "{{brandId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Brand updated\",\"data\":{\"id\":1,\"name\":\"Updated Brand\",\"description\":\"Updated description\",\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
                     "name": "Delete Brand",
@@ -1337,15 +1908,29 @@
                                 "{{brandId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         },
         {
-            "name": "👨‍💼 Admin Cart Management",
+            "name": "Admin Cart Management",
             "item": [
                 {
-                    "name": "📋 Get All Carts",
+                    "name": "Get All Carts",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1373,10 +1958,24 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Carts retrieved\",\"data\":{\"items\":[{\"id\":1,\"userId\":\"user-123\",\"totalPrice\":99.97,\"itemCount\":3,\"createdAt\":\"2026-03-01T10:00:00Z\"}],\"page\":1,\"pageSize\":10,\"totalCount\":1}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🔍 Get Specific Cart",
+                    "name": "Get Specific Cart",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1395,10 +1994,24 @@
                                 "{{cartId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Cart retrieved\",\"data\":{\"id\":1,\"userId\":\"user-123\",\"items\":[{\"id\":1,\"productId\":1,\"productName\":\"Laptop\",\"quantity\":1,\"unitPrice\":29.99,\"totalPrice\":29.99}],\"totalPrice\":29.99,\"itemCount\":1,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "👤 Get User's Cart",
+                    "name": "Get User's Cart",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1418,10 +2031,24 @@
                                 "{{userId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"User cart retrieved\",\"data\":{\"id\":1,\"userId\":\"user-123\",\"items\":[{\"id\":1,\"productId\":1,\"productName\":\"Laptop\",\"quantity\":2,\"unitPrice\":29.99,\"totalPrice\":59.98}],\"totalPrice\":59.98,\"itemCount\":2,\"createdAt\":\"2026-03-01T10:00:00Z\"}}"
+                        }
+                    ]
                 },
                 {
-                    "name": "🗑️ Delete Cart",
+                    "name": "Delete Cart",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -1440,10 +2067,24 @@
                                 "{{cartId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 },
                 {
-                    "name": "🗑️ Delete Cart Item",
+                    "name": "Delete Cart Item",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -1462,7 +2103,21 @@
                                 "{{cartItemId}}"
                             ]
                         }
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "No Content",
+                            "code": 204,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": ""
+                        }
+                    ]
                 }
             ]
         }
