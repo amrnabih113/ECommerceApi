@@ -266,7 +266,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{baseUrl}}/products?page=1&pageSize=10",
+                            "raw": "{{baseUrl}}/products?page=1&pageSize=10&sortBy=name&sortOrder=asc&minPrice=10&maxPrice=200&brandId={{brandId}}&categoryId={{categoryId}}&isActive=true&hasVariants=true",
                             "host": [
                                 "{{baseUrl}}"
                             ],
@@ -276,11 +276,61 @@
                             "query": [
                                 {
                                     "key": "page",
-                                    "value": "1"
+                                    "value": "1",
+                                    "description": "Page number (default: 1)"
                                 },
                                 {
                                     "key": "pageSize",
-                                    "value": "10"
+                                    "value": "10",
+                                    "description": "Items per page (default: 10)"
+                                },
+                                {
+                                    "key": "sortBy",
+                                    "value": "name",
+                                    "description": "Sort field: name, price, createdat, rating (default: id)",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "sortOrder",
+                                    "value": "asc",
+                                    "description": "Sort direction: asc or desc (default: asc)",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "minPrice",
+                                    "value": "10",
+                                    "description": "Minimum price filter",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "maxPrice",
+                                    "value": "200",
+                                    "description": "Maximum price filter",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "brandId",
+                                    "value": "{{brandId}}",
+                                    "description": "Filter by brand ID",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "categoryId",
+                                    "value": "{{categoryId}}",
+                                    "description": "Filter by category ID",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "description": "Filter by active status (true/false)",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "hasVariants",
+                                    "value": "true",
+                                    "description": "Filter by variant availability (true/false)",
+                                    "disabled": true
                                 }
                             ]
                         }
@@ -471,7 +521,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{baseUrl}}/products/by-category/{{categoryId}}?page=1&pageSize=10",
+                            "raw": "{{baseUrl}}/products/by-category/{{categoryId}}?page=1&pageSize=10&sortBy=price&sortOrder=asc&minPrice=10&maxPrice=200",
                             "host": [
                                 "{{baseUrl}}"
                             ],
@@ -483,11 +533,37 @@
                             "query": [
                                 {
                                     "key": "page",
-                                    "value": "1"
+                                    "value": "1",
+                                    "description": "Page number"
                                 },
                                 {
                                     "key": "pageSize",
-                                    "value": "10"
+                                    "value": "10",
+                                    "description": "Items per page"
+                                },
+                                {
+                                    "key": "sortBy",
+                                    "value": "price",
+                                    "description": "Sort field: name, price, createdat, rating",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "sortOrder",
+                                    "value": "asc",
+                                    "description": "Sort direction: asc or desc",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "minPrice",
+                                    "value": "10",
+                                    "description": "Minimum price",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "maxPrice",
+                                    "value": "200",
+                                    "description": "Maximum price",
+                                    "disabled": true
                                 }
                             ]
                         }
@@ -518,7 +594,7 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{baseUrl}}/products/by-brand/{{brandId}}?page=1&pageSize=10",
+                            "raw": "{{baseUrl}}/products/by-brand/{{brandId}}?page=1&pageSize=10&sortBy=price&sortOrder=asc&minPrice=10&maxPrice=200",
                             "host": [
                                 "{{baseUrl}}"
                             ],
@@ -530,11 +606,37 @@
                             "query": [
                                 {
                                     "key": "page",
-                                    "value": "1"
+                                    "value": "1",
+                                    "description": "Page number"
                                 },
                                 {
                                     "key": "pageSize",
-                                    "value": "10"
+                                    "value": "10",
+                                    "description": "Items per page"
+                                },
+                                {
+                                    "key": "sortBy",
+                                    "value": "price",
+                                    "description": "Sort field: name, price, createdat, rating",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "sortOrder",
+                                    "value": "asc",
+                                    "description": "Sort direction: asc or desc",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "minPrice",
+                                    "value": "10",
+                                    "description": "Minimum price",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "maxPrice",
+                                    "value": "200",
+                                    "description": "Maximum price",
+                                    "disabled": true
                                 }
                             ]
                         }
@@ -576,11 +678,13 @@
                             "query": [
                                 {
                                     "key": "term",
-                                    "value": "shirt"
+                                    "value": "shirt",
+                                    "description": "Search term (searches product name and description)"
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1"
+                                    "value": "1",
+                                    "description": "Page number"
                                 },
                                 {
                                     "key": "pageSize",
@@ -651,11 +755,13 @@
                             "query": [
                                 {
                                     "key": "term",
-                                    "value": "shi"
+                                    "value": "shi",
+                                    "description": "Search term (returns products that CONTAIN this term)"
                                 },
                                 {
                                     "key": "size",
-                                    "value": "5"
+                                    "value": "5",
+                                    "description": "Number of recommendations to return"
                                 }
                             ]
                         }
@@ -1894,15 +2000,18 @@
                             "query": [
                                 {
                                     "key": "term",
-                                    "value": "clothing"
+                                    "value": "clothing",
+                                    "description": "Search term (searches category name and description)"
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1"
+                                    "value": "1",
+                                    "description": "Page number"
                                 },
                                 {
                                     "key": "pageSize",
-                                    "value": "10"
+                                    "value": "10",
+                                    "description": "Items per page"
                                 }
                             ]
                         }
@@ -1945,11 +2054,13 @@
                             "query": [
                                 {
                                     "key": "term",
-                                    "value": "clot"
+                                    "value": "clot",
+                                    "description": "Search term (returns categories that CONTAIN this term)"
                                 },
                                 {
                                     "key": "size",
-                                    "value": "5"
+                                    "value": "5",
+                                    "description": "Number of recommendations to return"
                                 }
                             ]
                         }
@@ -2164,15 +2275,18 @@
                             "query": [
                                 {
                                     "key": "term",
-                                    "value": "nike"
+                                    "value": "nike",
+                                    "description": "Search term (searches brand name and description)"
                                 },
                                 {
                                     "key": "page",
-                                    "value": "1"
+                                    "value": "1",
+                                    "description": "Page number"
                                 },
                                 {
                                     "key": "pageSize",
-                                    "value": "10"
+                                    "value": "10",
+                                    "description": "Items per page"
                                 }
                             ]
                         }
@@ -2215,11 +2329,13 @@
                             "query": [
                                 {
                                     "key": "term",
-                                    "value": "nik"
+                                    "value": "nik",
+                                    "description": "Search term (returns brands that CONTAIN this term)"
                                 },
                                 {
                                     "key": "size",
-                                    "value": "5"
+                                    "value": "5",
+                                    "description": "Number of recommendations to return"
                                 }
                             ]
                         }

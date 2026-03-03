@@ -4,12 +4,12 @@
     "values": [
         {
             "key": "baseUrl",
-            "value": "http://localhost:7286/api",
+            "value": "https://localhost:7286/api",
             "enabled": true
         },
         {
             "key": "adminBaseUrl",
-            "value": "http://localhost:7286/api/admin",
+            "value": "https://localhost:7286/api/admin",
             "enabled": true
         },
         {

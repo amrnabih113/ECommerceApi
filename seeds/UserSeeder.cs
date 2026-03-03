@@ -55,7 +55,11 @@ namespace ECommerce.Seeds
                 var result = await userManager.CreateAsync(regularUser, "Customer@123");
                 if (result.Succeeded)
                 {
+                    var user = await userManager.FindByEmailAsync(userEmail);
+                    user!.EmailConfirmed = true;
+                    await userManager.UpdateAsync(user);
                     await userManager.AddToRoleAsync(regularUser, AppConstants.UserRole);
+
                 }
             }
         }
