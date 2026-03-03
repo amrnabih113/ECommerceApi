@@ -55,16 +55,16 @@ namespace ECommerce.Services
 
         }
 
-        public async Task<ApiResponse<PageResult<CategoryDto>>> GetAllCategoriesAsync(int page = 1, int pageSize = 10)
+        public async Task<ApiResponse<PageResult<CategoryDto>>> GetAllCategoriesAsync(CategoryQueryDto query)
         {
-            var (categories, totalItems) = await _unitOfWork.Categories.GetPagedAsync(page, pageSize);
+            var (categories, totalItems) = await _unitOfWork.Categories.GetPagedAsync(query);
             var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
             var pagedResult = new PageResult<CategoryDto>
             {
                 Items = categoriesDto,
                 TotalItems = totalItems,
-                Page = page,
-                PageSize = pageSize
+                Page = query.Page,
+                PageSize = query.PageSize
             };
             return ApiResponse<PageResult<CategoryDto>>.Success(pagedResult, "Categories retrieved successfully.");
         }

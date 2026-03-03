@@ -23,11 +23,15 @@ namespace ECommerce.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PageResult<BrandDto>>), 200)]
-        public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] BrandQueryDto query)
         {
-            if (page < 1 || pageSize < 1)
+            if (query.Page < 1 || query.PageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
-            var response = await _brandsService.GetAllAsync(page, pageSize);
+
+            if (query.MinProductsCount.HasValue && query.MinProductsCount.Value < 0)
+                return BadRequest(ApiResponse.ErrorResponse("minProductsCount cannot be negative."));
+
+            var response = await _brandsService.GetAllAsync(query);
             return Ok(response);
         }
 
@@ -72,7 +76,7 @@ namespace ECommerce.Controllers
         [ProducesResponseType(typeof(ApiResponse<bool>), 200)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            
+
             var response = await _brandsService.DeleteAsync(id);
             return Ok(response);
         }

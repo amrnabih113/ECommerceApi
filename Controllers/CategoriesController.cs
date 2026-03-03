@@ -40,9 +40,12 @@ namespace ECommerce.Controllers
         }
         [HttpGet()]
         [ProducesResponseType(typeof(ApiResponse<PageResult<CategoryDto>>), 200)]
-        public async Task<IActionResult> GetAllCategories(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAllCategories([FromQuery] CategoryQueryDto query)
         {
-            var categories = await _categoriesService.GetAllCategoriesAsync(page, pageSize);
+            if (query.Page < 1 || query.PageSize < 1)
+                return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
+
+            var categories = await _categoriesService.GetAllCategoriesAsync(query);
             return Ok(categories);
         }
 

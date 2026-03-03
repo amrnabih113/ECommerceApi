@@ -42,16 +42,16 @@ namespace ECommerce.Services
             return ApiResponse<bool>.Success(true, "Brand deleted successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<BrandDto>>> GetAllAsync(int page = 1, int pageSize = 10)
+        public async Task<ApiResponse<PageResult<BrandDto>>> GetAllAsync(BrandQueryDto query)
         {
-            var (brands, totalItems) = await _unitOfWork.Brands.GetPagedAsync(page, pageSize);
+            var (brands, totalItems) = await _unitOfWork.Brands.GetPagedAsync(query);
             var dtos = _mapper.Map<IEnumerable<BrandDto>>(brands);
             var pagedResult = new PageResult<BrandDto>
             {
                 Items = dtos,
                 TotalItems = totalItems,
-                Page = page,
-                PageSize = pageSize
+                Page = query.Page,
+                PageSize = query.PageSize
             };
             return ApiResponse<PageResult<BrandDto>>.Success(pagedResult, "Brands fetched successfully.");
         }

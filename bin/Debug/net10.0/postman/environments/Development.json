@@ -61,6 +61,21 @@
             "key": "pageSize",
             "value": "10",
             "enabled": true
+        },
+        {
+            "key": "imageId",
+            "value": "1",
+            "enabled": true
+        },
+        {
+            "key": "reviewId",
+            "value": "1",
+            "enabled": true
+        },
+        {
+            "key": "refreshToken",
+            "value": "",
+            "enabled": true
         }
     ],
     "_postman_variable_scope": "environment",

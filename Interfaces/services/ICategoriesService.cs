@@ -6,7 +6,7 @@ namespace ECommerce.Interfaces.Services
     public interface ICategoriesService
     {
         Task<ApiResponse<IEnumerable<CategoryDto>>> GetRootCategoriesAsync();
-        Task<ApiResponse<PageResult<CategoryDto>>> GetAllCategoriesAsync(int page = 1, int pageSize = 20);
+        Task<ApiResponse<PageResult<CategoryDto>>> GetAllCategoriesAsync(CategoryQueryDto query);
         Task<ApiResponse<IEnumerable<CategoryDto>>> GetSubCategoriesAsync(int parentId);
         Task<ApiResponse<CategoryDto>> GetByIdAsync(int id);
         Task<ApiResponse<CategoryDto>> CreateAsync(CategoryCreateDto dto);

@@ -40,9 +40,9 @@ namespace ECommerce.Services
             return ApiResponse.SuccessResponse("Product deleted successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<ProductDto>>> GetAllAsync(int page = 1, int pageSize = 10, string? userId = null)
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetAllAsync(ProductQueryDto query, string? userId = null)
         {
-            var (products, totalItems) = await _unitOfWork.Products.GetPagedAsync(page, pageSize);
+            var (products, totalItems) = await _unitOfWork.Products.GetPagedAsync(query);
 
             var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
 
@@ -60,16 +60,16 @@ namespace ECommerce.Services
             {
                 Items = dtos,
                 TotalItems = totalItems,
-                Page = page,
-                PageSize = pageSize
+                Page = query.Page,
+                PageSize = query.PageSize
             };
 
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, int page = 1, int pageSize = 10, string? userId = null)
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, ProductQueryDto query, string? userId = null)
         {
-            var (products, totalItems) = await _unitOfWork.Products.GetByBrandIdAsync(brandId, page, pageSize);
+            var (products, totalItems) = await _unitOfWork.Products.GetByBrandIdAsync(brandId, query);
             var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
 
             // Set IsFavorite for each product if userId is provided
@@ -86,15 +86,15 @@ namespace ECommerce.Services
             {
                 Items = dtos,
                 TotalItems = totalItems,
-                Page = page,
-                PageSize = pageSize
+                Page = query.Page,
+                PageSize = query.PageSize
             };
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }
 
-        public async Task<ApiResponse<PageResult<ProductDto>>> GetByCategoryAsync(int categoryId, int page = 1, int pageSize = 10, string? userId = null)
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetByCategoryAsync(int categoryId, ProductQueryDto query, string? userId = null)
         {
-            var (products, totalItems) = await _unitOfWork.Products.GetByCategoryIdAsync(categoryId, page, pageSize);
+            var (products, totalItems) = await _unitOfWork.Products.GetByCategoryIdAsync(categoryId, query);
             var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
 
             // Set IsFavorite for each product if userId is provided
@@ -111,8 +111,8 @@ namespace ECommerce.Services
             {
                 Items = dtos,
                 TotalItems = totalItems,
-                Page = page,
-                PageSize = pageSize
+                Page = query.Page,
+                PageSize = query.PageSize
             };
             return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
         }

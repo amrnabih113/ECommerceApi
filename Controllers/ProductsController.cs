@@ -21,13 +21,16 @@ namespace ECommerce.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
-        public async Task<IActionResult> GetAll(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetAll([FromQuery] ProductQueryDto query)
         {
-            if (page < 1 || pageSize < 1)
+            if (query.Page < 1 || query.PageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
 
+            if (query.MinPrice.HasValue && query.MaxPrice.HasValue && query.MinPrice > query.MaxPrice)
+                return BadRequest(ApiResponse.ErrorResponse("minPrice cannot be greater than maxPrice."));
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var response = await _productsService.GetAllAsync(page, pageSize, userId);
+            var response = await _productsService.GetAllAsync(query, userId);
             return Ok(response);
         }
 
@@ -78,26 +81,32 @@ namespace ECommerce.Controllers
         [HttpGet("by-brand/{brandId:int}")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<IActionResult> GetByBrand(int brandId, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetByBrand(int brandId, [FromQuery] ProductQueryDto query)
         {
-            if (page < 1 || pageSize < 1)
+            if (query.Page < 1 || query.PageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
 
+            if (query.MinPrice.HasValue && query.MaxPrice.HasValue && query.MinPrice > query.MaxPrice)
+                return BadRequest(ApiResponse.ErrorResponse("minPrice cannot be greater than maxPrice."));
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var response = await _productsService.GetByBrandAsync(brandId, page, pageSize, userId);
+            var response = await _productsService.GetByBrandAsync(brandId, query, userId);
             return Ok(response);
         }
 
         [HttpGet("by-category/{categoryId:int}")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
-        public async Task<IActionResult> GetByCategory(int categoryId, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetByCategory(int categoryId, [FromQuery] ProductQueryDto query)
         {
-            if (page < 1 || pageSize < 1)
+            if (query.Page < 1 || query.PageSize < 1)
                 return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
 
+            if (query.MinPrice.HasValue && query.MaxPrice.HasValue && query.MinPrice > query.MaxPrice)
+                return BadRequest(ApiResponse.ErrorResponse("minPrice cannot be greater than maxPrice."));
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var response = await _productsService.GetByCategoryAsync(categoryId, page, pageSize, userId);
+            var response = await _productsService.GetByCategoryAsync(categoryId, query, userId);
             return Ok(response);
         }
     }
