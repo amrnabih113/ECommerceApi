@@ -276,6 +276,10 @@ namespace ECommerce.Services
             if (order == null)
                 return ApiResponse<OrderDto>.Error("Order not found.");
 
+            // Parse status string to enum
+            if (!Enum.TryParse<OrderStatus>(dto.Status, true, out var newStatus))
+                return ApiResponse<OrderDto>.Error($"Invalid status: {dto.Status}. Valid values: Pending, Paid, Shipped, Delivered, Cancelled");
+
             // Business rules for status transitions
             if (order.Status == OrderStatus.Cancelled)
                 return ApiResponse<OrderDto>.Error("Cannot update a cancelled order.");
@@ -283,7 +287,7 @@ namespace ECommerce.Services
             if (order.Status == OrderStatus.Delivered)
                 return ApiResponse<OrderDto>.Error("Cannot update a delivered order.");
 
-            order.Status = dto.Status;
+            order.Status = newStatus;
             if (!string.IsNullOrWhiteSpace(dto.Notes))
                 order.Notes = dto.Notes;
 
