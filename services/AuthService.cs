@@ -62,7 +62,7 @@ namespace ECommerce.Services
             };
 
             return ApiResponse<RegisterResponseDto>
-                .Success(response, "Registration successful. Please verify your email.");
+                .SuccessResponse(response, "Registration successful. Please verify your email.");
         }
 
 
@@ -109,7 +109,7 @@ namespace ECommerce.Services
             };
 
             return ApiResponse<LoginResponseDto>
-                .Success(response, "Login successful.");
+                .SuccessResponse(response, "Login successful.");
         }
 
 
@@ -159,7 +159,7 @@ namespace ECommerce.Services
                 AccessToken = accessToken,
                 RefreshToken = refreshPlain
             };
-            return ApiResponse<VerifyOtpResponseDto>.Success(response, "OTP verified successfully.");
+            return ApiResponse<VerifyOtpResponseDto>.SuccessResponse(response, "OTP verified successfully.");
         }
 
         public async Task<ApiResponse> ForgotPasswordAsync(ForgotPasswordDto dto)
@@ -237,7 +237,7 @@ namespace ECommerce.Services
             await _refreshRepo.AddAsync(newRefreshToken);
             await _refreshRepo.SaveAsync();
 
-            return ApiResponse<object>.Success(new
+            return ApiResponse<object>.SuccessResponse(new
             {
                 AccessToken = accessToken,
                 RefreshToken = newRefreshPlain

@@ -299,29 +299,46 @@ namespace ECommerce.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DiscountAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DiscountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(24)");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<decimal?>("MaximumDiscountAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("MinimumOrderAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UsageLimit")
+                    b.Property<int?>("UsageLimit")
                         .HasColumnType("int");
 
                     b.Property<int>("UsedCount")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ValidUntil")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -375,6 +392,16 @@ namespace ECommerce.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShippingAddressId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("ShippingPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -402,6 +429,8 @@ namespace ECommerce.Migrations
 
                     b.HasIndex("CouponId");
 
+                    b.HasIndex("ShippingAddressId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
@@ -424,6 +453,10 @@ namespace ECommerce.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ProductVariantId")
                         .HasColumnType("int");
 
@@ -445,6 +478,69 @@ namespace ECommerce.Migrations
                     b.HasIndex("ProductVariantId");
 
                     b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(24)");
+
+                    b.Property<decimal?>("RefundedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("RefundedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(24)");
+
+                    b.Property<string>("StripeChargeId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Product", b =>
@@ -649,6 +745,39 @@ namespace ECommerce.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("ECommerce.Models.UserCoupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AssignedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("CanUse")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CouponId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("UserUsageCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCoupons");
+                });
+
             modelBuilder.Entity("ECommerce.Models.WishList", b =>
                 {
                     b.Property<int>("Id")
@@ -815,7 +944,7 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.Address", b =>
                 {
                     b.HasOne("ECommerce.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Addresses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -887,16 +1016,23 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.Order", b =>
                 {
                     b.HasOne("ECommerce.Models.Coupon", "Coupon")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("CouponId");
 
-                    b.HasOne("ECommerce.Models.ApplicationUser", "User")
+                    b.HasOne("ECommerce.Models.Address", "ShippingAddress")
                         .WithMany()
+                        .HasForeignKey("ShippingAddressId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ECommerce.Models.ApplicationUser", "User")
+                        .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Coupon");
+
+                    b.Navigation("ShippingAddress");
 
                     b.Navigation("User");
                 });
@@ -924,6 +1060,17 @@ namespace ECommerce.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ProductVariant");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.Payment", b =>
+                {
+                    b.HasOne("ECommerce.Models.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("ECommerce.Models.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Product", b =>
@@ -993,6 +1140,25 @@ namespace ECommerce.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.UserCoupon", b =>
+                {
+                    b.HasOne("ECommerce.Models.Coupon", "Coupon")
+                        .WithMany("UserCoupons")
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECommerce.Models.ApplicationUser", "User")
+                        .WithMany("UserCoupons")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Coupon");
 
                     b.Navigation("User");
                 });
@@ -1067,6 +1233,15 @@ namespace ECommerce.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ECommerce.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("UserCoupons");
+                });
+
             modelBuilder.Entity("ECommerce.Models.Brand", b =>
                 {
                     b.Navigation("Products");
@@ -1084,9 +1259,18 @@ namespace ECommerce.Migrations
                     b.Navigation("SubCategories");
                 });
 
+            modelBuilder.Entity("ECommerce.Models.Coupon", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("UserCoupons");
+                });
+
             modelBuilder.Entity("ECommerce.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Product", b =>

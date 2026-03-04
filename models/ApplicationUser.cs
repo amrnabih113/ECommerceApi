@@ -10,5 +10,10 @@ namespace ECommerce.Models
         public string? Address { get; set; }
         [Url]
         public string? ImageUrl { get; set; }
+
+        
+        public ICollection<UserCoupon> UserCoupons { get; set; } = new List<UserCoupon>();
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
     }
 }

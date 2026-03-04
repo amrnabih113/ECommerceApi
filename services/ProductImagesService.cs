@@ -53,7 +53,7 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<ProductImageDto>>.Success(pagedResult, "Product images fetched successfully.");
+            return ApiResponse<PageResult<ProductImageDto>>.SuccessResponse(pagedResult, "Product images fetched successfully.");
         }
 
         public async Task<ApiResponse<ProductImageDto>> GetByIdAsync(int productId, int imageId)
@@ -71,7 +71,7 @@ namespace ECommerce.Services
             }
 
             var imageDto = _mapper.Map<ProductImageDto>(image);
-            return ApiResponse<ProductImageDto>.Success(imageDto, "Product image fetched successfully.");
+            return ApiResponse<ProductImageDto>.SuccessResponse(imageDto, "Product image fetched successfully.");
         }
 
         public async Task<ApiResponse<ProductImageDto>> UploadAsync(int productId, ProductImageUploadDto dto)
@@ -112,7 +112,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var imageDto = _mapper.Map<ProductImageDto>(createdImage);
-            return ApiResponse<ProductImageDto>.Success(imageDto, "Product image uploaded successfully.");
+            return ApiResponse<ProductImageDto>.SuccessResponse(imageDto, "Product image uploaded successfully.");
         }
 
         public async Task<ApiResponse<ProductImageDto>> UpdateAsync(int productId, int imageId, ProductImageUpdateDto dto)
@@ -175,7 +175,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var imageDto = _mapper.Map<ProductImageDto>(image);
-            return ApiResponse<ProductImageDto>.Success(imageDto, "Product image updated successfully.");
+            return ApiResponse<ProductImageDto>.SuccessResponse(imageDto, "Product image updated successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(int productId, int imageId)

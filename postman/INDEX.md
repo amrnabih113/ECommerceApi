@@ -16,6 +16,8 @@ postman/
 │   └── API_SPECIFICATION.md         ← Detailed API spec
 ├── README.md                        ← Full documentation
 ├── QUICK_START.md                   ← 5-minute setup
+├── STRIPE_TESTING_GUIDE.md          ← Payment testing workflow
+├── ORDERS_COUPONS_ENDPOINTS.md      ← Orders & Coupons quick reference
 └── INDEX.md                         ← This file
 ```
 
@@ -37,7 +39,18 @@ postman/
    - Response formats
    - Troubleshooting
 
-3. **[API_SPECIFICATION.md](specs/API_SPECIFICATION.md)** - Technical details
+3. **[STRIPE_TESTING_GUIDE.md](STRIPE_TESTING_GUIDE.md)** - Payment testing
+   - Complete local payment flow
+   - Stripe CLI setup
+   - Test card numbers
+   - Coupon testing
+
+4. **[ORDERS_COUPONS_ENDPOINTS.md](ORDERS_COUPONS_ENDPOINTS.md)** - Quick reference
+   - All Orders endpoints
+   - All Coupons endpoints
+   - New environment variables
+
+5. **[API_SPECIFICATION.md](specs/API_SPECIFICATION.md)** - Technical details
    - Data models
    - Business rules
    - Error handling
@@ -59,9 +72,12 @@ postman/
 - ❤️ **WishList** - Favorites, add/remove, check favorites
 - 📂 **Categories & Brands** - Master data with search
 - ⭐ **Reviews** - Product ratings and comments
-- 👨‍💼 **Admin Management** - Cart controls
+- �️ **Orders** - Create, track, payment intents, cancel orders
+- 💳 **Coupons** - User coupons, admin assignment, bulk operations
+- 🔔 **Webhooks** - Stripe payment webhooks
+- 👨‍💼 **Admin Management** - Cart controls, order status updates
 
-**Total Endpoints:** 60+ (including 6 new search endpoints)
+**Total Endpoints:** 80+ (including Orders, Payments, Coupons management)
 
 ### Environment: `Development.json`
 
@@ -69,6 +85,10 @@ postman/
 - `baseUrl` - API base (localhost:7286/api)
 - `authToken` - Auto-set after login
 - `userId` - Auto-set after login
+- `orderId` - Order ID for testing
+- `addressId` - Address ID for orders
+- `couponId` - Coupon ID for admin operations
+- `couponCode` - Coupon code to test
 - Test IDs for quick testing
 
 ### Globals: `Global_Variables.json`
@@ -128,6 +148,25 @@ See: [README.md - WishList Management](README.md#-wishlist-management)
 ```
 See: [README.md - Search & Recommendations](README.md#-search--recommendations)
 
+### 6️⃣ Complete Order & Payment (Stripe)
+```
+1. Login → POST /api/auth/login
+2. Create order → POST /api/orders
+3. Create payment → POST /api/orders/{id}/payment
+4. Confirm in Stripe Dashboard → Webhook fires → Order status: Paid
+5. Verify order → GET /api/orders/{id}
+```
+See: [STRIPE_TESTING_GUIDE.md](STRIPE_TESTING_GUIDE.md)
+
+### 7️⃣ Admin Coupon Management
+```
+1. Create coupon → POST /api/coupons (admin)
+2. Assign to user → POST /api/coupons/{id}/assign-user/{userId}
+3. User views → GET /api/coupons/my-coupons
+4. User applies → POST /api/orders (with couponCode)
+```
+See: [ORDERS_COUPONS_ENDPOINTS.md](ORDERS_COUPONS_ENDPOINTS.md)
+
 ---
 
 ## 🛑 Key Business Rules
@@ -185,20 +224,25 @@ See: [README.md - Response Format](README.md#-api-response-format)
 - Product browsing: [README.md - Product Management](README.md#-product-management)
 - **Search & Autocomplete**: [README.md - Search & Recommendations](README.md#-search--recommendations)
 - Cart operations: [README.md - Shopping Cart Logic](README.md#-shopping-cart-logic)
+- **Orders & Payments**: [STRIPE_TESTING_GUIDE.md](STRIPE_TESTING_GUIDE.md)
 - Common workflows: [QUICK_START.md](QUICK_START.md)
 
 ### For Backend Developers
 - API architecture: [API_SPECIFICATION.md](specs/API_SPECIFICATION.md)
 - Data models: [API_SPECIFICATION.md - Data Model](specs/API_SPECIFICATION.md#data-model)
+- **Payment Integration**: [STRIPE_TESTING_GUIDE.md](STRIPE_TESTING_GUIDE.md)
 - Error handling: [API_SPECIFICATION.md - Error Handling](specs/API_SPECIFICATION.md#error-handling)
 
 ### For QA/Testers
 - Test workflows: [README.md - Common Workflows](README.md#-common-workflows)
+- **Payment Testing**: [STRIPE_TESTING_GUIDE.md](STRIPE_TESTING_GUIDE.md)
+- **Coupon Testing**: [ORDERS_COUPONS_ENDPOINTS.md](ORDERS_COUPONS_ENDPOINTS.md)
 - Error scenarios: [README.md - Troubleshooting](README.md#-troubleshooting)
 - All endpoints: [Collection ECommerce_API.json](collections/ECommerce_API.json)
 
 ### For Admins
 - Admin endpoints: [README.md - Admin Endpoints](README.md#-admin-endpoints)
+- **Coupon Management**: [ORDERS_COUPONS_ENDPOINTS.md](ORDERS_COUPONS_ENDPOINTS.md)
 - Stock management: [API_SPECIFICATION.md - Stock Management](specs/API_SPECIFICATION.md#stock-management-system)
 
 ---
@@ -208,6 +252,8 @@ See: [README.md - Response Format](README.md#-api-response-format)
 | Task | Resource | Time |
 |------|----------|------|
 | Get started quickly | [QUICK_START.md](QUICK_START.md) | 5 min |
+| **Test payment flow** | [STRIPE_TESTING_GUIDE.md](STRIPE_TESTING_GUIDE.md) | 10 min |
+| **Manage coupons** | [ORDERS_COUPONS_ENDPOINTS.md](ORDERS_COUPONS_ENDPOINTS.md) | 5 min |
 | Understand stock system | [API_SPECIFICATION.md](specs/API_SPECIFICATION.md#stock-management-system) | 10 min |
 | Implement search/autocomplete | [README.md - Search & Recommendations](README.md#-search--recommendations) | 5 min |
 | Find specific endpoint | [README.md](README.md) | 2 min |
@@ -248,6 +294,8 @@ Before using the API, ensure you have:
 - ✅ `Global_Variables.json` - Test constants
 - ✅ `README.md` - Full documentation
 - ✅ `QUICK_START.md` - Setup guide
+- ✅ `STRIPE_TESTING_GUIDE.md` - Payment testing workflow
+- ✅ `ORDERS_COUPONS_ENDPOINTS.md` - Orders & Coupons reference
 - ✅ `API_SPECIFICATION.md` - Technical reference
 
 ---
@@ -286,7 +334,7 @@ Before using the API, ensure you have:
 
 ## 📝 Last Updated
 
-**Date:** March 1, 2026
+**Date:** March 4, 2026
 **API Version:** 1.0.0
 **Framework:** ASP.NET Core 10.0
 

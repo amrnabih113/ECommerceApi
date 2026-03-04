@@ -30,7 +30,7 @@ namespace ECommerce.Controllers
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized(ApiResponse.ErrorResponse("User not authenticated."));
 
-            var response = await _profileService.GetProfileAsync(userId);
+            var response = await _profileService.GetUserByIdAsync(userId);
             return Ok(response);
         }
 
@@ -83,7 +83,6 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-      
         [HttpPost("upload-image")]
         [ProducesResponseType(typeof(ApiResponse<string>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
@@ -106,12 +105,9 @@ namespace ECommerce.Controllers
 
             var result = await _profileService.UploadProfileImageAsync(userId, file);
             var imageUrl = result.Data?.ImageUrl ?? string.Empty;
-            return Ok(ApiResponse<string>.Success(imageUrl, "Profile image uploaded successfully."));
+            return Ok(ApiResponse<string>.SuccessResponse(imageUrl, "Profile image uploaded successfully."));
         }
 
-        /// <summary>
-        /// Delete profile image
-        /// </summary>
         [HttpDelete("delete-image")]
         [ProducesResponseType(typeof(ApiResponse), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]

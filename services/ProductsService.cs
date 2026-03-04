@@ -25,7 +25,7 @@ namespace ECommerce.Services
             var createdProduct = await _unitOfWork.Products.AddAsync(product);
             await _unitOfWork.CompleteAsync();
             var productDto = _mapper.Map<ProductDto>(createdProduct);
-            return ApiResponse<ProductDto>.Success(productDto, "Product created successfully.");
+            return ApiResponse<ProductDto>.SuccessResponse(productDto, "Product created successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(int id)
@@ -64,7 +64,7 @@ namespace ECommerce.Services
                 PageSize = query.PageSize
             };
 
-            return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
+            return ApiResponse<PageResult<ProductDto>>.SuccessResponse(pagedResult, "Products fetched successfully.");
         }
 
         public async Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, ProductQueryDto query, string? userId = null)
@@ -89,7 +89,7 @@ namespace ECommerce.Services
                 Page = query.Page,
                 PageSize = query.PageSize
             };
-            return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
+            return ApiResponse<PageResult<ProductDto>>.SuccessResponse(pagedResult, "Products fetched successfully.");
         }
 
         public async Task<ApiResponse<PageResult<ProductDto>>> GetByCategoryAsync(int categoryId, ProductQueryDto query, string? userId = null)
@@ -114,7 +114,7 @@ namespace ECommerce.Services
                 Page = query.Page,
                 PageSize = query.PageSize
             };
-            return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products fetched successfully.");
+            return ApiResponse<PageResult<ProductDto>>.SuccessResponse(pagedResult, "Products fetched successfully.");
         }
 
         public async Task<ApiResponse<ProductDetailsDto>> GetByIdAsync(int id, string? userId = null)
@@ -133,7 +133,7 @@ namespace ECommerce.Services
                 productDto.IsFavorite = isFavorite;
             }
 
-            return ApiResponse<ProductDetailsDto>.Success(productDto, "Product fetched successfully.");
+            return ApiResponse<ProductDetailsDto>.SuccessResponse(productDto, "Product fetched successfully.");
         }
 
         public async Task<ApiResponse<ProductDetailsDto>> UpdateAsync(int id, ProductUpdateDto dto)
@@ -148,7 +148,7 @@ namespace ECommerce.Services
             await _unitOfWork.Products.UpdateAsync(product);
             await _unitOfWork.CompleteAsync();
             var updatedProductDto = _mapper.Map<ProductDetailsDto>(product);
-            return ApiResponse<ProductDetailsDto>.Success(updatedProductDto, "Product updated successfully.");
+            return ApiResponse<ProductDetailsDto>.SuccessResponse(updatedProductDto, "Product updated successfully.");
         }
 
         public async Task<ApiResponse<PageResult<ProductDto>>> SearchAsync(string term, int page = 1, int pageSize = 10, string? userId = null)
@@ -177,13 +177,13 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<ProductDto>>.Success(pagedResult, "Products search completed successfully.");
+            return ApiResponse<PageResult<ProductDto>>.SuccessResponse(pagedResult, "Products search completed successfully.");
         }
 
         public async Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5)
         {
             var recommendations = await _unitOfWork.Products.GetSearchRecommendationsAsync(term, size);
-            return ApiResponse<IEnumerable<string>>.Success(recommendations, "Product recommendations fetched successfully.");
+            return ApiResponse<IEnumerable<string>>.SuccessResponse(recommendations, "Product recommendations fetched successfully.");
         }
 
 

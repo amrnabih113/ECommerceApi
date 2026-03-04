@@ -110,7 +110,7 @@ namespace ECommerce.Services
                 await _unitOfWork.CompleteAsync();
 
                 var existingItemDto = _mapper.Map<CartItemDto>(existingItem);
-                return ApiResponse<CartItemDto>.Success(existingItemDto, "Product quantity updated in cart.");
+                return ApiResponse<CartItemDto>.SuccessResponse(existingItemDto, "Product quantity updated in cart.");
             }
 
             // Add new item to cart
@@ -130,7 +130,7 @@ namespace ECommerce.Services
             // Reload the cart item with relations for mapping
             var item = await _unitOfWork.CartItems.GetByIdAsync(createdCartItem.Id);
             var cartItemDto = _mapper.Map<CartItemDto>(item);
-            return ApiResponse<CartItemDto>.Success(cartItemDto, "Product added to cart successfully.");
+            return ApiResponse<CartItemDto>.SuccessResponse(cartItemDto, "Product added to cart successfully.");
         }
 
         public async Task<ApiResponse<CartItemDto>> UpdateQuantityAsync(string userId, int cartItemId, int quantity)
@@ -186,7 +186,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var updatedCartItemDto = _mapper.Map<CartItemDto>(cartItem);
-            return ApiResponse<CartItemDto>.Success(updatedCartItemDto, "Cart item quantity updated successfully.");
+            return ApiResponse<CartItemDto>.SuccessResponse(updatedCartItemDto, "Cart item quantity updated successfully.");
         }
 
         public async Task<ApiResponse> RemoveFromCartAsync(string userId, int cartItemId)
@@ -221,7 +221,7 @@ namespace ECommerce.Services
                 Page = page,
                 PageSize = pageSize
             };
-            return ApiResponse<PageResult<CartItemDto>>.Success(pagedResult, "Cart items fetched successfully.");
+            return ApiResponse<PageResult<CartItemDto>>.SuccessResponse(pagedResult, "Cart items fetched successfully.");
         }
 
         public async Task<ApiResponse<CartItemDto>> GetByIdAsync(int id)
@@ -232,7 +232,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Cart item not found.");
             }
             var cartItemDto = _mapper.Map<CartItemDto>(cartItem);
-            return ApiResponse<CartItemDto>.Success(cartItemDto, "Cart item fetched successfully.");
+            return ApiResponse<CartItemDto>.SuccessResponse(cartItemDto, "Cart item fetched successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(int id)

@@ -38,7 +38,7 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<ReviewDto>>.Success(pagedResult, "Reviews fetched successfully.");
+            return ApiResponse<PageResult<ReviewDto>>.SuccessResponse(pagedResult, "Reviews fetched successfully.");
         }
 
         public async Task<ApiResponse<ReviewDto>> CreateAsync(string userId, int productId, ReviewCreateDto dto)
@@ -75,7 +75,7 @@ namespace ECommerce.Services
 
             var loadedReview = await _unitOfWork.Reviews.GetByIdAsync(createdReview.Id);
             var reviewDto = _mapper.Map<ReviewDto>(loadedReview);
-            return ApiResponse<ReviewDto>.Success(reviewDto, "Review created successfully.");
+            return ApiResponse<ReviewDto>.SuccessResponse(reviewDto, "Review created successfully.");
         }
 
         public async Task<ApiResponse<ReviewDto>> UpdateAsync(string userId, int reviewId, ReviewUpdateDto dto)
@@ -100,7 +100,7 @@ namespace ECommerce.Services
 
             var updatedReview = await _unitOfWork.Reviews.GetByIdAsync(reviewId);
             var reviewDto = _mapper.Map<ReviewDto>(updatedReview);
-            return ApiResponse<ReviewDto>.Success(reviewDto, "Review updated successfully.");
+            return ApiResponse<ReviewDto>.SuccessResponse(reviewDto, "Review updated successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(string userId, int reviewId)

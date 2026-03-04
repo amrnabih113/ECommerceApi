@@ -3,6 +3,9 @@ using ECommerce.DTOs.Brands;
 using ECommerce.DTOs.Carts;
 using ECommerce.DTOs.CartItems;
 using ECommerce.DTOs.Categories;
+using ECommerce.DTOs.Coupons;
+using ECommerce.DTOs.Orders;
+using ECommerce.DTOs.Payments;
 using ECommerce.DTOs.Products;
 using ECommerce.DTOs.Profile;
 using ECommerce.DTOs.Reviews;
@@ -112,5 +115,33 @@ public class MappingProfile : Profile
         CreateMap<ApplicationUser, ProfileDto>();
         CreateMap<UpdateProfileDto, ApplicationUser>()
             .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        // Order mappings
+        CreateMap<Order, OrderDto>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems))
+            .ForMember(dest => dest.ShippingAddress, opt => opt.MapFrom(src => src.ShippingAddress))
+            .ForMember(dest => dest.Coupon, opt => opt.MapFrom(src => src.Coupon))
+            .ForMember(dest => dest.Payment, opt => opt.MapFrom(src => src.Payment));
+
+        CreateMap<OrderItem, OrderItemDto>()
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product != null ? src.Product.Name : string.Empty))
+            .ForMember(dest => dest.ProductImageUrl, opt => opt.MapFrom(src => src.Product != null && src.Product.Images.Any()
+                ? src.Product.Images.FirstOrDefault(img => img.IsMain)!.ImageUrl
+                : null))
+            .ForMember(dest => dest.VariantSize, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Size : null))
+            .ForMember(dest => dest.VariantColor, opt => opt.MapFrom(src => src.ProductVariant != null ? src.ProductVariant.Color : null));
+
+        // Address mappings
+        CreateMap<Address, AddressDto>();
+
+        // Coupon mappings
+        CreateMap<Coupon, CouponDto>();
+        CreateMap<CreateCouponDto, Coupon>();
+        CreateMap<UpdateCouponDto, Coupon>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        // Payment mappings
+        CreateMap<Payment, PaymentDto>();
     }
 }

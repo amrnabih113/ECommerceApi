@@ -23,7 +23,7 @@ namespace ECommerce.Services
             var addresses = await _unitOfWork.Addresses.GetByUserIdAsync(userId);
 
             var addressDtos = _mapper.Map<List<AddressDto>>(addresses);
-            return ApiResponse<List<AddressDto>>.Success(addressDtos);
+            return ApiResponse<List<AddressDto>>.SuccessResponse(addressDtos);
         }
 
         public async Task<ApiResponse<AddressDto>> GetByIdAsync(int id, string userId)
@@ -34,7 +34,7 @@ namespace ECommerce.Services
                 return ApiResponse<AddressDto>.Error("Address not found.");
 
             var addressDto = _mapper.Map<AddressDto>(address);
-            return ApiResponse<AddressDto>.Success(addressDto);
+            return ApiResponse<AddressDto>.SuccessResponse(addressDto);
         }
 
         public async Task<ApiResponse<AddressDto>> CreateAsync(CreateAddressDto dto, string userId)
@@ -52,7 +52,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var addressDto = _mapper.Map<AddressDto>(address);
-            return ApiResponse<AddressDto>.Success(addressDto, "Address created successfully.");
+            return ApiResponse<AddressDto>.SuccessResponse(addressDto, "Address created successfully.");
         }
 
         public async Task<ApiResponse<AddressDto>> UpdateAsync(int id, UpdateAddressDto dto, string userId)
@@ -71,7 +71,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var addressDto = _mapper.Map<AddressDto>(address);
-            return ApiResponse<AddressDto>.Success(addressDto, "Address updated successfully.");
+            return ApiResponse<AddressDto>.SuccessResponse(addressDto, "Address updated successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(int id, string userId)

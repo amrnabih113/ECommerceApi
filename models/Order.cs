@@ -33,9 +33,17 @@ namespace ECommerce.Models
         [Column(TypeName = "nvarchar(24)")]
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
-        // Coupon relation (optional)
+        public int? ShippingAddressId { get; set; }
+        public Address? ShippingAddress { get; set; }
+
+        [MaxLength(500)]
+        public string? Notes { get; set; }
+
         public int? CouponId { get; set; }
         public Coupon? Coupon { get; set; }
+
+        public int? PaymentId { get; set; }
+        public Payment? Payment { get; set; }
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

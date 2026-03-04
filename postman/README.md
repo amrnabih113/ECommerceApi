@@ -3,12 +3,19 @@
 ## 📚 Overview
 
 This Postman collection contains complete API documentation for the ECommerce platform, including all endpoints for:
-- **Authentication** (Register, Login)
+- **Authentication** (Register, Login, Refresh Token)
 - **Products** (CRUD, filtering by brand/category)
 - **Product Variants** (Size, Color, Stock management)
 - **Shopping Cart** (Add, Remove, Update, Clear)
 - **Categories & Brands** (CRUD operations)
-- **Admin Management** (Cart management, user data)
+- **Addresses** (User shipping addresses management)
+- **Orders & Payments** (Create orders, payment intents, coupon management)
+- **Coupons** (User coupons, admin assignment, bulk operations)
+- **Admin Management** (Cart management, user data, coupon distribution)
+
+### 🎯 Quick Links
+- **Stripe & Orders Testing**: See [STRIPE_TESTING_GUIDE.md](./STRIPE_TESTING_GUIDE.md) for complete local payment testing workflow
+- **Stripe Setup**: See `../STRIPE_SETUP_GUIDE.md` for configuration
 
 ---
 
@@ -48,23 +55,31 @@ POST /api/auth/register
 ```
 **Response:** `authToken`, `userId`, `refreshToken` (auto-set in environment)
 
----
+### 2. Login to Get Token (Test Users Available!)
 
-### 2. Login to Get Token
+**🧪 Pre-seeded Test Users:**
+
+**Admin:**
 ```
 POST /api/auth/login
 {
-  "email": "test@example.com",
-  "password": "Test@123"
+  "email": "admin@ecommerce.com",
+  "password": "Admin@123"
 }
 ```
+
+**Customers (Pick any):**
+- `customer@example.com` / `Customer@123` (John Doe - 3 addresses)
+- `jane@example.com` / `JaneSmith@123` (Jane Smith - 2 addresses)
+- `mike@example.com` / `MikeJohnson@123` (Mike Johnson - 3 addresses)
+- `sarah@example.com` / `SarahWilliams@123` (Sarah Williams - 2 addresses)
+
+See [TEST_USERS_AND_ADDRESSES.md](../TEST_USERS_AND_ADDRESSES.md) for complete list with all addresses.
 
 **Auto-set variables:**
 - `authToken` → Used for all authenticated requests
 - `userId` → Your user ID
 - `refreshToken` → Used to refresh expired tokens
-
----
 
 ### 3. Refresh Access Token
 ```
@@ -76,8 +91,6 @@ POST /api/auth/refresh-token
 **Use when:** Access token expires (typically after 15-30 minutes)
 **Returns:** New `authToken` (auto-set)
 
----
-
 ### 4. Forgot Password (Part 1)
 ```
 POST /api/auth/forgot-password
@@ -86,8 +99,6 @@ POST /api/auth/forgot-password
 }
 ```
 **Effect:** Sends OTP code to user's email
-
----
 
 ### 5. Verify OTP (Part 2)
 ```
@@ -98,8 +109,6 @@ POST /api/auth/verify-otp
 }
 ```
 **Effect:** Validates OTP code sent to email
-
----
 
 ### 6. Reset Password (Part 3)
 ```
@@ -112,8 +121,6 @@ POST /api/auth/reset-password
 }
 ```
 **Effect:** Sets new password if OTP is verified
-
----
 
 ## 📦 Product Management
 
@@ -751,7 +758,173 @@ GET /api/products/by-brand/{{brandId}}
 
 ---
 
-## 📋 Environment Variables
+## 📍 Addresses Management
+
+**⚠️ Important**: Users must create at least one address before placing orders.
+
+### Get My Addresses
+```
+GET /api/addresses
+```
+
+**Returns:** List of user's saved addresses
+
+### Create Address
+```
+POST /api/addresses
+{
+  "country": "USA",
+  "city": "New York",
+  "street": "123 Main St, Apt 4B",
+  "postalCode": "10001"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Address created successfully.",
+  "data": {
+    "id": 1,
+    "country": "USA",
+    "city": "New York",
+    "street": "123 Main St, Apt 4B",
+    "postalCode": "10001"
+  }
+}
+```
+
+### Update Address
+```
+PUT /api/addresses/{id}
+{
+  "country": "USA",
+  "city": "Los Angeles",
+  "street": "456 Oak Ave",
+  "postalCode": "90001"
+}
+```
+
+### Delete Address
+```
+DELETE /api/addresses/{id}
+```
+
+**Note:** Cannot delete an address if it's used in active orders.
+
+---
+
+## 💳 Orders & Payments
+
+### Create an Order
+```
+POST /api/orders
+{
+  "addressId": 1,
+  "orderItems": [
+    {
+      "productId": 1,
+      "quantity": 2,
+      "price": 99.99
+    }
+  ],
+  "couponCode": "SAVE10"
+}
+```
+
+**Response:** `{ "id": 101, "status": "Pending", "totalAmount": 189.98 }`
+
+### Create Payment Intent for Order
+```
+POST /api/orders/{{orderId}}/payment
+{
+  "paymentMethodType": "card"
+}
+```
+
+**Response:** `{ "clientSecret": "pi_test_xx", "paymentIntentId": "pi_test_xx" }`
+
+### Get Order Details
+```
+GET /api/orders/{{orderId}}
+```
+
+### Get User's Orders
+```
+GET /api/orders/my-orders?page=1&limit=10
+```
+
+---
+
+## 🎟️ Coupons & User Access
+
+### Get My Available Coupons (User)
+```
+GET /api/coupons/my-coupons?page=1&limit=10
+```
+
+**Only returns coupons assigned to current user**
+
+### Get Active Coupons (Public)
+```
+GET /api/coupons/active
+```
+
+### Assign Coupon to User (Admin)
+```
+POST /api/coupons/{{couponId}}/assign-user/{{userId}}
+{
+  "canUse": true
+}
+```
+
+### Bulk Assign Coupon (Admin)
+```
+POST /api/coupons/{{couponId}}/assign-users
+{
+  "userIds": ["user-1", "user-2", "user-3"],
+  "canUse": true
+}
+```
+
+### Remove Coupon from User (Admin)
+```
+DELETE /api/coupons/{{couponId}}/remove-user/{{userId}}
+```
+
+### Get Coupon Users (Admin)
+```
+GET /api/coupons/{{couponId}}/users?page=1&limit=10
+```
+
+**Returns:** List of users assigned to coupon with their usage info
+
+---
+
+## 🔔 Testing Payment Flow
+
+⚠️ **Important**: Before testing payments locally, you need:
+
+1. **Stripe CLI running**:
+   ```bash
+   stripe listen --forward-to https://localhost:7286/api/webhooks/stripe
+   ```
+
+2. **Application running**:
+   ```bash
+   dotnet run
+   ```
+
+3. **See [STRIPE_TESTING_GUIDE.md](./STRIPE_TESTING_GUIDE.md)** for complete step-by-step flow with:
+   - Test card numbers
+   - Payment confirmation in Stripe Dashboard
+   - Webhook verification
+   - Coupon application testing
+
+---
+
+## �📋 Environment Variables
 
 | Variable | Purpose | Example |
 |----------|---------|---------|
@@ -764,6 +937,10 @@ GET /api/products/by-brand/{{brandId}}
 | `cartId` | Cart ID for admin testing | `1` |
 | `categoryId` | Category ID | `1` |
 | `brandId` | Brand ID | `1` |
+| `orderId` | Order ID (set after create) | `101` |
+| `addressId` | Address ID for orders | `1` |
+| `couponCode` | Coupon code to test | `SAVE10` |
+| `couponId` | Coupon ID for admin ops | `1` |
 | `page` | Pagination page | `1` |
 | `pageSize` | Items per page | `10` |
 
@@ -789,4 +966,4 @@ For more information, refer to:
 
 ---
 
-**Last Updated:** March 1, 2026
+**Last Updated:** March 4, 2026

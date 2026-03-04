@@ -28,7 +28,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Cart not found for this user.");
             }
             var cartDto = _mapper.Map<CartDto>(cart);
-            return ApiResponse<CartDto>.Success(cartDto, "Cart fetched successfully.");
+            return ApiResponse<CartDto>.SuccessResponse(cartDto, "Cart fetched successfully.");
         }
 
         public async Task<ApiResponse> ClearCartAsync(string userId)
@@ -84,7 +84,7 @@ namespace ECommerce.Services
                 Total = total
             };
 
-            return ApiResponse<CartSummaryDto>.Success(summary, "Cart summary calculated successfully.");
+            return ApiResponse<CartSummaryDto>.SuccessResponse(summary, "Cart summary calculated successfully.");
         }
 
         // Admin methods
@@ -99,7 +99,7 @@ namespace ECommerce.Services
                 Page = page,
                 PageSize = pageSize
             };
-            return ApiResponse<PageResult<CartDto>>.Success(pagedResult, "Carts fetched successfully.");
+            return ApiResponse<PageResult<CartDto>>.SuccessResponse(pagedResult, "Carts fetched successfully.");
         }
 
         public async Task<ApiResponse<CartDto>> GetByIdAsync(int id)
@@ -110,7 +110,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Cart not found.");
             }
             var cartDto = _mapper.Map<CartDto>(cart);
-            return ApiResponse<CartDto>.Success(cartDto, "Cart fetched successfully.");
+            return ApiResponse<CartDto>.SuccessResponse(cartDto, "Cart fetched successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(int id)

@@ -26,7 +26,7 @@ namespace ECommerce.Services
             var createdCategory = await _unitOfWork.Categories.AddAsync(Category);
             await _unitOfWork.CompleteAsync();
             var CategoryDto = _mapper.Map<CategoryDto>(createdCategory);
-            return ApiResponse<CategoryDto>.Success(CategoryDto, "Category created successfully.");
+            return ApiResponse<CategoryDto>.SuccessResponse(CategoryDto, "Category created successfully.");
 
         }
 
@@ -39,7 +39,7 @@ namespace ECommerce.Services
             }
             await _unitOfWork.Categories.DeleteAsync(category);
             await _unitOfWork.CompleteAsync();
-            return ApiResponse<bool>.Success(true, "Category deleted successfully.");
+            return ApiResponse<bool>.SuccessResponse(true, "Category deleted successfully.");
         }
 
         public async Task<ApiResponse<CategoryDto>> GetByIdAsync(int id)
@@ -50,7 +50,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Category not found.");
             }
             var categoryDto = _mapper.Map<CategoryDto>(category);
-            return ApiResponse<CategoryDto>.Success(categoryDto, "Category retrieved successfully.");
+            return ApiResponse<CategoryDto>.SuccessResponse(categoryDto, "Category retrieved successfully.");
 
 
         }
@@ -66,14 +66,14 @@ namespace ECommerce.Services
                 Page = query.Page,
                 PageSize = query.PageSize
             };
-            return ApiResponse<PageResult<CategoryDto>>.Success(pagedResult, "Categories retrieved successfully.");
+            return ApiResponse<PageResult<CategoryDto>>.SuccessResponse(pagedResult, "Categories retrieved successfully.");
         }
 
         public async Task<ApiResponse<IEnumerable<CategoryDto>>> GetRootCategoriesAsync()
         {
             var rootCategories = await _unitOfWork.Categories.GetRootCategoriesAsync();
             var rootCategoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(rootCategories);
-            return ApiResponse<IEnumerable<CategoryDto>>.Success(rootCategoriesDto, "Root categories retrieved successfully.");
+            return ApiResponse<IEnumerable<CategoryDto>>.SuccessResponse(rootCategoriesDto, "Root categories retrieved successfully.");
         }
 
         public async Task<ApiResponse<IEnumerable<CategoryDto>>> GetSubCategoriesAsync(int parentId)
@@ -85,7 +85,7 @@ namespace ECommerce.Services
             }
             var subCategories = await _unitOfWork.Categories.GetSubCategoriesAsync(parentId);
             var subCategoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(subCategories);
-            return ApiResponse<IEnumerable<CategoryDto>>.Success(subCategoriesDto, "Sub categories retrieved successfully.");
+            return ApiResponse<IEnumerable<CategoryDto>>.SuccessResponse(subCategoriesDto, "Sub categories retrieved successfully.");
         }
 
         public async Task<ApiResponse<CategoryDto>> UpdateAsync(int id, CategoryUpdateDto dto)
@@ -100,7 +100,7 @@ namespace ECommerce.Services
             await _unitOfWork.Categories.UpdateAsync(category);
             await _unitOfWork.CompleteAsync();
             var updatedCategoryDto = _mapper.Map<CategoryDto>(category);
-            return ApiResponse<CategoryDto>.Success(updatedCategoryDto, "Category updated successfully.");
+            return ApiResponse<CategoryDto>.SuccessResponse(updatedCategoryDto, "Category updated successfully.");
         }
 
         public async Task<ApiResponse<PageResult<CategoryDto>>> SearchAsync(string term, int page = 1, int pageSize = 10)
@@ -118,13 +118,13 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<CategoryDto>>.Success(pagedResult, "Categories search completed successfully.");
+            return ApiResponse<PageResult<CategoryDto>>.SuccessResponse(pagedResult, "Categories search completed successfully.");
         }
 
         public async Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5)
         {
             var recommendations = await _unitOfWork.Categories.GetSearchRecommendationsAsync(term, size);
-            return ApiResponse<IEnumerable<string>>.Success(recommendations, "Category recommendations fetched successfully.");
+            return ApiResponse<IEnumerable<string>>.SuccessResponse(recommendations, "Category recommendations fetched successfully.");
         }
     }
 }

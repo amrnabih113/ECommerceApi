@@ -26,7 +26,7 @@ namespace ECommerce.Services
             var createdBrand = await _unitOfWork.Brands.AddAsync(brand);
             await _unitOfWork.CompleteAsync();
             var brandDto = _mapper.Map<BrandDto>(createdBrand);
-            return ApiResponse<BrandDto>.Success(brandDto, "Brand created successfully.");
+            return ApiResponse<BrandDto>.SuccessResponse(brandDto, "Brand created successfully.");
         }
 
         public async Task<ApiResponse<bool>> DeleteAsync(int id)
@@ -39,7 +39,7 @@ namespace ECommerce.Services
 
             await _unitOfWork.Brands.DeleteAsync(brand);
             await _unitOfWork.CompleteAsync();
-            return ApiResponse<bool>.Success(true, "Brand deleted successfully.");
+            return ApiResponse<bool>.SuccessResponse(true, "Brand deleted successfully.");
         }
 
         public async Task<ApiResponse<PageResult<BrandDto>>> GetAllAsync(BrandQueryDto query)
@@ -53,7 +53,7 @@ namespace ECommerce.Services
                 Page = query.Page,
                 PageSize = query.PageSize
             };
-            return ApiResponse<PageResult<BrandDto>>.Success(pagedResult, "Brands fetched successfully.");
+            return ApiResponse<PageResult<BrandDto>>.SuccessResponse(pagedResult, "Brands fetched successfully.");
         }
 
         public async Task<ApiResponse<BrandDto>> GetByIdAsync(int id)
@@ -64,7 +64,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Brand not found.");
             }
             var brandDto = _mapper.Map<BrandDto>(brand);
-            return ApiResponse<BrandDto>.Success(brandDto, "Brand fetched successfully.");
+            return ApiResponse<BrandDto>.SuccessResponse(brandDto, "Brand fetched successfully.");
         }
 
         public async Task<ApiResponse<BrandDto>> UpdateAsync(int id, BrandUpdateDto dto)
@@ -79,7 +79,7 @@ namespace ECommerce.Services
             await _unitOfWork.Brands.UpdateAsync(brand);
             await _unitOfWork.CompleteAsync();
             var updatedBrandDto = _mapper.Map<BrandDto>(brand);
-            return ApiResponse<BrandDto>.Success(updatedBrandDto, "Brand updated successfully.");
+            return ApiResponse<BrandDto>.SuccessResponse(updatedBrandDto, "Brand updated successfully.");
         }
 
         public async Task<ApiResponse<PageResult<BrandDto>>> SearchAsync(string term, int page = 1, int pageSize = 10)
@@ -98,13 +98,13 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<BrandDto>>.Success(pagedResult, "Brands search completed successfully.");
+            return ApiResponse<PageResult<BrandDto>>.SuccessResponse(pagedResult, "Brands search completed successfully.");
         }
 
         public async Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5)
         {
             var recommendations = await _unitOfWork.Brands.GetSearchRecommendationsAsync(term, size);
-            return ApiResponse<IEnumerable<string>>.Success(recommendations, "Brand recommendations fetched successfully.");
+            return ApiResponse<IEnumerable<string>>.SuccessResponse(recommendations, "Brand recommendations fetched successfully.");
         }
     }
 }

@@ -297,7 +297,7 @@ namespace ECommerce.Services
         public async Task<ApiResponse> CancelOrderAsync(int orderId, string userId)
         {
             _logger.LogInformation("CancelOrderAsync called for order {OrderId} by user {UserId}", orderId, userId);
-            
+
             var order = await _ordersRepository.GetUserOrderWithDetailsAsync(orderId, userId);
             if (order == null)
             {
@@ -316,7 +316,7 @@ namespace ECommerce.Services
             {
                 _logger.LogInformation("Initiating refund for paid order {OrderId}", orderId);
                 var refundSuccess = await _stripeService.RefundPaymentAsync(order.Payment.StripePaymentIntentId);
-                
+
                 if (refundSuccess)
                 {
                     _logger.LogInformation("Refund initiated for payment {PaymentId}", order.Payment.Id);
@@ -332,7 +332,7 @@ namespace ECommerce.Services
             order.Status = OrderStatus.Cancelled;
             order.UpdatedAt = DateTime.UtcNow;
             await _ordersRepository.UpdateAsync(order);
-            
+
             _logger.LogInformation("Order {OrderId} cancelled successfully", orderId);
             return ApiResponse.SuccessResponse("Order cancelled successfully.");
         }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "31dg7VdhpnI=",
+  "dgSpecHash": "W3fvp3h7wbo=",
   "success": true,
   "projectFilePath": "D:\\Amr\\C#_projects\\ECommerce\\ECommerce.csproj",
   "expectedPackageFiles": [
@@ -62,6 +62,7 @@
     "C:\\Users\\Amany\\.nuget\\packages\\mimekit\\4.15.0\\mimekit.4.15.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Amany\\.nuget\\packages\\stripe.net\\50.4.0\\stripe.net.50.4.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\swashbuckle.aspnetcore\\10.1.4\\swashbuckle.aspnetcore.10.1.4.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\10.1.4\\swashbuckle.aspnetcore.swagger.10.1.4.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\10.1.4\\swashbuckle.aspnetcore.swaggergen.10.1.4.nupkg.sha512",

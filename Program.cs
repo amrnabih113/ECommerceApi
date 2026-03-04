@@ -122,12 +122,20 @@ public partial class Program
         builder.Services.AddScoped<ICartItemsService, CartItemsService>();
         builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
         builder.Services.AddScoped<IReviewsService, ReviewsService>();
+        builder.Services.AddScoped<IAddressesService, AddressesService>();
         builder.Services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
         builder.Services.AddScoped<IProductImagesService, ProductImagesService>();
         builder.Services.AddScoped<IProductVariantsRepository, ProductVariantsRepository>();
         builder.Services.AddScoped<IProductVariantsService, ProductVariantsService>();
         builder.Services.AddScoped<IWishListService, WishListService>();
         builder.Services.AddScoped<IProfileService, ProfileService>();
+        builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+        builder.Services.AddScoped<IOrdersService, OrdersService>();
+        builder.Services.AddScoped<ICouponsRepository, CouponsRepository>();
+        builder.Services.AddScoped<IUserCouponsRepository, UserCouponsRepository>();
+        builder.Services.AddScoped<ICouponsService, CouponsService>();
+        builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
+        builder.Services.AddScoped<IStripeService, StripeService>();
 
         // Swagger Configuration
         builder.Services.AddEndpointsApiExplorer();
@@ -183,6 +191,7 @@ public partial class Program
         using (var scope = app.Services.CreateScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             await BrandSeeder.SeedBrandsAsync(context);
             await CategorySeeder.SeedCategoriesAsync(context);
@@ -192,6 +201,7 @@ public partial class Program
             await ReviewSeeder.SeedReviewsAsync(context);
             await CartSeeder.SeedCartAsync(context);
             await WishListSeeder.SeedWishListAsync(context);
+            await AddressSeeder.SeedAddressesAsync(context, userManager);
         }
 
         // Middleware Pipeline

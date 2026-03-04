@@ -1196,6 +1196,23 @@
           }
         }
       },
+      "Stripe.net/50.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "System.Configuration.ConfigurationManager": "9.0.0"
+        },
+        "compile": {
+          "lib/net9.0/Stripe.net.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Stripe.net.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/10.1.4": {
         "type": "package",
         "dependencies": {
@@ -1410,7 +1427,7 @@
           "System.Security.Cryptography.ProtectedData": "9.0.4"
         },
         "compile": {
-          "lib/net9.0/_._": {
+          "lib/net9.0/System.Configuration.ConfigurationManager.dll": {
             "related": ".xml"
           }
         },
@@ -3956,6 +3973,34 @@
         "packageIcon.png"
       ]
     },
+    "Stripe.net/50.4.0": {
+      "sha512": "XwtYXLX4tlMLkVS3ghph7eFtZOi6ORguRPm+ZCn1lKclJjvkdQoV+K9cFS4t7o3KyBnMFp9SiQmEcesxDDc+Gg==",
+      "type": "package",
+      "path": "stripe.net/50.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "icon.png",
+        "lib/net462/Stripe.net.dll",
+        "lib/net462/Stripe.net.xml",
+        "lib/net5.0/Stripe.net.dll",
+        "lib/net5.0/Stripe.net.xml",
+        "lib/net6.0/Stripe.net.dll",
+        "lib/net6.0/Stripe.net.xml",
+        "lib/net7.0/Stripe.net.dll",
+        "lib/net7.0/Stripe.net.xml",
+        "lib/net8.0/Stripe.net.dll",
+        "lib/net8.0/Stripe.net.xml",
+        "lib/net9.0/Stripe.net.dll",
+        "lib/net9.0/Stripe.net.xml",
+        "lib/netstandard2.0/Stripe.net.dll",
+        "lib/netstandard2.0/Stripe.net.xml",
+        "stripe.net.50.4.0.nupkg.sha512",
+        "stripe.net.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/10.1.4": {
       "sha512": "3y9YcUdzND3E21NiGvhxEVw2/rdQSbSLDOxrAMP96ZCaDVeB8b30L8QeWA9cfkxfyeXt+F2t1umKE0kaPxm4FA==",
       "type": "package",
@@ -4404,6 +4449,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 10.0.3",
       "Microsoft.Identity.Web >= 3.14.1",
       "Microsoft.Identity.Web.DownstreamApi >= 3.14.1",
+      "Stripe.net >= 50.4.0",
       "Swashbuckle.AspNetCore >= 10.1.4",
       "Swashbuckle.AspNetCore.SwaggerGen >= 10.1.4",
       "Swashbuckle.AspNetCore.SwaggerUI >= 10.1.4"
@@ -4510,6 +4556,10 @@
           "Microsoft.Identity.Web.DownstreamApi": {
             "target": "Package",
             "version": "[3.14.1, )"
+          },
+          "Stripe.net": {
+            "target": "Package",
+            "version": "[50.4.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

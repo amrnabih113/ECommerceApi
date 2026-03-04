@@ -48,7 +48,7 @@ namespace ECommerce.Services
             {
                 dto.Product.IsFavorite = true; // Set to true since it's added to wishlist
             }
-            return ApiResponse<WishListItemDto>.Success(dto, "Product added to wishlist successfully.");
+            return ApiResponse<WishListItemDto>.SuccessResponse(dto, "Product added to wishlist successfully.");
         }
 
         public async Task<ApiResponse> RemoveFromWishListAsync(string userId, int productId)
@@ -88,13 +88,13 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<WishListItemDto>>.Success(pagedResult, "Wishlist fetched successfully.");
+            return ApiResponse<PageResult<WishListItemDto>>.SuccessResponse(pagedResult, "Wishlist fetched successfully.");
         }
 
         public async Task<ApiResponse<bool>> IsProductInWishListAsync(string userId, int productId)
         {
             var exists = await _unitOfWork.WishList.ExistsAsync(userId, productId);
-            return ApiResponse<bool>.Success(exists, "Wishlist item check completed.");
+            return ApiResponse<bool>.SuccessResponse(exists, "Wishlist item check completed.");
         }
     }
 }

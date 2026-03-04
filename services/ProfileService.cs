@@ -24,15 +24,6 @@ namespace ECommerce.Services
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<ProfileDto>> GetProfileAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return ApiResponse<ProfileDto>.Error("User not found.");
-
-            var profileDto = _mapper.Map<ProfileDto>(user);
-            return ApiResponse<ProfileDto>.Success(profileDto, "Profile retrieved successfully.");
-        }
 
         public async Task<ApiResponse<ProfileDto>> GetUserByIdAsync(string userId)
         {
@@ -41,7 +32,7 @@ namespace ECommerce.Services
                 return ApiResponse<ProfileDto>.Error("User not found.");
 
             var profileDto = _mapper.Map<ProfileDto>(user);
-            return ApiResponse<ProfileDto>.Success(profileDto, "User retrieved successfully.");
+            return ApiResponse<ProfileDto>.SuccessResponse(profileDto, "User retrieved successfully.");
         }
 
         public async Task<ApiResponse<ProfileDto>> UpdateProfileAsync(string userId, UpdateProfileDto dto)
@@ -50,7 +41,6 @@ namespace ECommerce.Services
             if (user == null)
                 return ApiResponse<ProfileDto>.Error("User not found.");
 
-            // Update user properties
             if (!string.IsNullOrWhiteSpace(dto.FullName))
                 user.FullName = dto.FullName;
 
@@ -59,8 +49,7 @@ namespace ECommerce.Services
 
             if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
             {
-                // Check if phone number is already taken by another user
-                var existingUserWithPhone = await _userManager.Users
+                 var existingUserWithPhone = await _userManager.Users
                     .Where(u => u.PhoneNumber == dto.PhoneNumber && u.Id != userId)
                     .FirstOrDefaultAsync();
 
@@ -68,7 +57,7 @@ namespace ECommerce.Services
                     return ApiResponse<ProfileDto>.Error("Phone number is already in use.");
 
                 user.PhoneNumber = dto.PhoneNumber;
-                user.PhoneNumberConfirmed = false; // Reset confirmation when changed
+                user.PhoneNumberConfirmed = false; 
             }
 
             var result = await _userManager.UpdateAsync(user);
@@ -78,7 +67,7 @@ namespace ECommerce.Services
                 );
 
             var profileDto = _mapper.Map<ProfileDto>(user);
-            return ApiResponse<ProfileDto>.Success(profileDto, "Profile updated successfully.");
+            return ApiResponse<ProfileDto>.SuccessResponse(profileDto, "Profile updated successfully.");
         }
 
         public async Task<ApiResponse> ChangePasswordAsync(string userId, ChangePasswordDto dto)
@@ -107,33 +96,63 @@ namespace ECommerce.Services
             if (user == null)
                 return ApiResponse<ProfileDto>.Error("User not found.");
 
-            // Delete old image if exists
-            if (!string.IsNullOrEmpty(user.ImageUrl))
-            {
-                var publicId = _cloudinaryService.ExtractPublicIdFromUrl(user.ImageUrl);
-                if (publicId != null)
-                {
-                    await _cloudinaryService.DeleteImageAsync(publicId);
-                }
-            }
+            // Store old image URL for rollback if needed
+            var oldImageUrl = user.ImageUrl;
+            string? newImageUrl = null;
 
-            // Upload new image
+            // Upload new image first (before deleting old one)
             try
             {
-                var imageUrl = await _cloudinaryService.UploadImageAsync(file, "ecommerce/profiles");
-                user.ImageUrl = imageUrl;
+                newImageUrl = await _cloudinaryService.UploadImageAsync(file, "ecommerce/profiles");
+                user.ImageUrl = newImageUrl;
 
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
+                {
+                    // Upload succeeded but DB update failed - delete the newly uploaded image
+                    if (!string.IsNullOrEmpty(newImageUrl))
+                    {
+                        var newPublicId = _cloudinaryService.ExtractPublicIdFromUrl(newImageUrl);
+                        if (newPublicId != null)
+                        {
+                            try
+                            {
+                                await _cloudinaryService.DeleteImageAsync(newPublicId);
+                            }
+                            catch
+                            {
+                                // Log error but continue
+                            }
+                        }
+                    }
+                    
                     return ApiResponse<ProfileDto>.Error(
                         string.Join(", ", result.Errors.Select(e => e.Description))
                     );
+                }
+
+                // New image uploaded and DB updated successfully - now delete old image
+                if (!string.IsNullOrEmpty(oldImageUrl))
+                {
+                    var oldPublicId = _cloudinaryService.ExtractPublicIdFromUrl(oldImageUrl);
+                    if (oldPublicId != null)
+                    {
+                        try
+                        {
+                            await _cloudinaryService.DeleteImageAsync(oldPublicId);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
 
                 var profileDto = _mapper.Map<ProfileDto>(user);
-                return ApiResponse<ProfileDto>.Success(profileDto, "Profile image uploaded successfully.");
+                return ApiResponse<ProfileDto>.SuccessResponse(profileDto, "Profile image uploaded successfully.");
             }
             catch (Exception ex)
             {
+                // Upload failed - old image is still intact
                 return ApiResponse<ProfileDto>.Error($"Failed to upload image: {ex.Message}");
             }
         }

@@ -47,7 +47,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var variantDto = _mapper.Map<ProductVariantDto>(createdVariant);
-            return ApiResponse<ProductVariantDto>.Success(variantDto, "Product variant created successfully.");
+            return ApiResponse<ProductVariantDto>.SuccessResponse(variantDto, "Product variant created successfully.");
         }
 
         public async Task<ApiResponse<ProductVariantDto>> UpdateAsync(int productId, int variantId, ProductVariantUpdateDto dto)
@@ -81,7 +81,7 @@ namespace ECommerce.Services
             await _unitOfWork.CompleteAsync();
 
             var updatedVariantDto = _mapper.Map<ProductVariantDto>(variant);
-            return ApiResponse<ProductVariantDto>.Success(updatedVariantDto, "Product variant updated successfully.");
+            return ApiResponse<ProductVariantDto>.SuccessResponse(updatedVariantDto, "Product variant updated successfully.");
         }
 
         public async Task<ApiResponse> DeleteAsync(int productId, int variantId)
@@ -150,7 +150,7 @@ namespace ECommerce.Services
                 PageSize = pageSize
             };
 
-            return ApiResponse<PageResult<ProductVariantDto>>.Success(pagedResult, "Product variants fetched successfully.");
+            return ApiResponse<PageResult<ProductVariantDto>>.SuccessResponse(pagedResult, "Product variants fetched successfully.");
         }
 
         public async Task<ApiResponse<ProductVariantDto>> GetByIdAsync(int productId, int variantId)
@@ -169,7 +169,7 @@ namespace ECommerce.Services
             }
 
             var variantDto = _mapper.Map<ProductVariantDto>(variant);
-            return ApiResponse<ProductVariantDto>.Success(variantDto, "Product variant fetched successfully.");
+            return ApiResponse<ProductVariantDto>.SuccessResponse(variantDto, "Product variant fetched successfully.");
         }
 
         // Helper method to recalculate product stock from all variants

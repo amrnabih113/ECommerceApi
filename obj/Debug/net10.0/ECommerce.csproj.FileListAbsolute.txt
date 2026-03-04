@@ -188,3 +188,4 @@ D:\Amr\C#_projects\ECommerce\obj\Debug\net10.0\refint\ECommerce.dll
 D:\Amr\C#_projects\ECommerce\obj\Debug\net10.0\ECommerce.pdb
 D:\Amr\C#_projects\ECommerce\obj\Debug\net10.0\ECommerce.genruntimeconfig.cache
 D:\Amr\C#_projects\ECommerce\obj\Debug\net10.0\ref\ECommerce.dll
+D:\Amr\C#_projects\ECommerce\bin\Debug\net10.0\Stripe.net.dll

@@ -42,12 +42,13 @@ public class ExceptionMiddleware
         // }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            _logger.LogError(ex, "Unhandled exception occurred: {Message}\nStackTrace: {StackTrace}",
+                ex.Message, ex.StackTrace);
 
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
             await context.Response.WriteAsJsonAsync(
-                ApiResponse.ErrorResponse("Internal Server Error")
+                ApiResponse.ErrorResponse($"Internal Server Error: {ex.Message}")
             );
         }
     }

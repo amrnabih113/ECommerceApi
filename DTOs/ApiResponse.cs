@@ -16,6 +16,9 @@ namespace ECommerce.DTOs
 
         public static ApiResponse ErrorResponse(string message)
             => new ApiResponse(false, message);
+
+        public static ApiResponse Error(string message)
+            => new ApiResponse(false, message);
     }
 
     public class ApiResponse<T> : ApiResponse
@@ -28,10 +31,10 @@ namespace ECommerce.DTOs
             Data = data;
         }
 
-        public static new ApiResponse<T> Success(T data, string message = "")
+        public static ApiResponse<T> SuccessResponse(T data, string message = "")
             => new ApiResponse<T>(true, message, data);
 
-        public static ApiResponse<T> Error(string message)
+        public static new ApiResponse<T> Error(string message)
             => new ApiResponse<T>(false, message, default);
     }
 }
