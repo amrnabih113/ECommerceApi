@@ -9,7 +9,7 @@ namespace ECommerce.Repositories
     {
         public BannersRepository(AppDbContext context) : base(context) { }
 
-        public async Task<(IEnumerable<Banner> Items, int TotalItems)> GetPagedAsync(int page, int pageSize)
+        public override async Task<(IEnumerable<Banner> Items, int TotalItems)> GetPagedAsync(int page, int pageSize)
         {
             page = page <= 0 ? 1 : page;
             pageSize = pageSize <= 0 ? 10 : pageSize;
