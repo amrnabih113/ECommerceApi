@@ -38,5 +38,12 @@ namespace ECommerce.Repositories
                 .Where(pv => pv.ProductId == productId)
                 .CountAsync();
         }
+        public async Task<ProductVariant?> GetByIdWithLockAsync(int id)
+        {
+            return await _dbSet
+                .FromSqlRaw("SELECT * FROM ProductVariants WITH (UPDLOCK, ROWLOCK) WHERE Id = {0}", id)
+                .Include(v => v.Product)
+                .FirstOrDefaultAsync();
+        }
     }
 }

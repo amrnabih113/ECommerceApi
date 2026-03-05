@@ -18,6 +18,9 @@ namespace ECommerce.Repositories
         public IWishListRepository WishList { get; private set; }
         public IAddressesRepository Addresses { get; private set; }
         public IBannersRepository Banners { get; private set; }
+        public ICouponsRepository Coupons { get; private set; }
+        public IUserCouponsRepository UserCoupons { get; private set; }
+        public IOrdersRepository Orders { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
@@ -33,6 +36,9 @@ namespace ECommerce.Repositories
             WishList = new WishListRepository(_context);
             Addresses = new AddressesRepository(_context);
             Banners = new BannersRepository(_context);
+            Coupons = new CouponsRepository(_context);
+            UserCoupons = new UserCouponsRepository(_context);
+            Orders = new OrdersRepository(_context);
         }
 
         public async Task<int> CompleteAsync()

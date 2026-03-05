@@ -14,26 +14,20 @@ namespace ECommerce.Services
 {
     public class OrdersService : IOrdersService
     {
-        private readonly IOrdersRepository _ordersRepository;
-        private readonly ICouponsRepository _couponsRepository;
-        private readonly IUserCouponsRepository _userCouponsRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IStripeService _stripeService;
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<OrdersService> _logger;
 
         public OrdersService(
-            IOrdersRepository ordersRepository,
-            ICouponsRepository couponsRepository,
-            IUserCouponsRepository userCouponsRepository,
+            IUnitOfWork unitOfWork,
             IStripeService stripeService,
             AppDbContext context,
             IMapper mapper,
             ILogger<OrdersService> logger)
         {
-            _ordersRepository = ordersRepository;
-            _couponsRepository = couponsRepository;
-            _userCouponsRepository = userCouponsRepository;
+            _unitOfWork = unitOfWork;
             _stripeService = stripeService;
             _context = context;
             _mapper = mapper;
@@ -42,7 +36,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<PageResult<OrderDto>>> GetAllOrdersAsync(int page, int pageSize)
         {
-            var (items, totalItems) = await _ordersRepository.GetPagedAsync(page, pageSize);
+            var (items, totalItems) = await _unitOfWork.Orders.GetPagedAsync(page, pageSize);
             var orderDtos = _mapper.Map<List<OrderDto>>(items);
 
             var pageResult = new PageResult<OrderDto>
@@ -58,7 +52,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<PageResult<OrderDto>>> GetUserOrdersAsync(string userId, int page, int pageSize)
         {
-            var (items, totalItems) = await _ordersRepository.GetUserOrdersAsync(userId, page, pageSize);
+            var (items, totalItems) = await _unitOfWork.Orders.GetUserOrdersAsync(userId, page, pageSize);
             var orderDtos = _mapper.Map<List<OrderDto>>(items);
 
             var pageResult = new PageResult<OrderDto>
@@ -74,7 +68,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<OrderDto>> GetOrderByIdAsync(int orderId)
         {
-            var order = await _ordersRepository.GetOrderWithDetailsAsync(orderId);
+            var order = await _unitOfWork.Orders.GetOrderWithDetailsAsync(orderId);
             if (order == null)
                 return ApiResponse<OrderDto>.Error("Order not found.");
 
@@ -84,7 +78,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<OrderDto>> GetUserOrderByIdAsync(int orderId, string userId)
         {
-            var order = await _ordersRepository.GetUserOrderWithDetailsAsync(orderId, userId);
+            var order = await _unitOfWork.Orders.GetUserOrderWithDetailsAsync(orderId, userId);
             if (order == null)
                 return ApiResponse<OrderDto>.Error("Order not found.");
 
@@ -134,30 +128,68 @@ namespace ECommerce.Services
 
                     if (item.ProductVariantId.HasValue)
                     {
-                        // Get variant price
-                        var variant = await _context.Set<ProductVariant>()
-                            .Include(v => v.Product)
-                            .FirstOrDefaultAsync(v => v.Id == item.ProductVariantId.Value && v.ProductId == item.ProductId);
+                        // RACE CONDITION PROTECTION: Get variant with row-level locking
+                        // This prevents two users from buying the last item simultaneously
+                        var variant = await _unitOfWork.ProductVariants.GetByIdWithLockAsync(item.ProductVariantId.Value);
 
-                        if (variant == null || variant.StockQuantity < item.Quantity)
-                            return ApiResponse<OrderDto>.Error($"Product variant is out of stock or invalid.");
+                        if (variant == null)
+                        {
+                            await transaction.RollbackAsync();
+                            return ApiResponse<OrderDto>.Error($"Product variant {item.ProductVariantId.Value} not found.");
+                        }
 
-                        product = variant.Product;
-                        unitPrice = product.Price + (variant.AdditionalPrice ?? 0);
+                        if (variant.ProductId != item.ProductId)
+                        {
+                            await transaction.RollbackAsync();
+                            return ApiResponse<OrderDto>.Error($"Product variant {item.ProductVariantId.Value} does not belong to product {item.ProductId}.");
+                        }
 
-                        // Update stock
+                        // ATOMIC STOCK CHECK: Check stock availability within the locked transaction
+                        if (variant.StockQuantity < item.Quantity)
+                        {
+                            await transaction.RollbackAsync();
+                            return ApiResponse<OrderDto>.Error($"Insufficient stock for variant. Available: {variant.StockQuantity}, Requested: {item.Quantity}");
+                        }
+
+                        // PREVENT NEGATIVE STOCK: Reduce stock only after validation
                         variant.StockQuantity -= item.Quantity;
+
+                        // Load product info for the order item
+                        product = await _context.Set<Product>().FindAsync(item.ProductId);
+                        if (product == null)
+                        {
+                            await transaction.RollbackAsync();
+                            return ApiResponse<OrderDto>.Error($"Product {item.ProductId} not found.");
+                        }
+
+                        unitPrice = product.Price + (variant.AdditionalPrice ?? 0);
                     }
                     else
                     {
-                        // Get product price
-                        product = await _context.Set<Product>().FindAsync(item.ProductId);
+                        // RACE CONDITION PROTECTION: Get product with row-level locking
+                        product = await _unitOfWork.Products.GetByIdWithLockAsync(item.ProductId);
 
                         if (product == null || !product.IsActive)
+                        {
+                            await transaction.RollbackAsync();
                             return ApiResponse<OrderDto>.Error($"Product {item.ProductId} not found or inactive.");
+                        }
 
                         if (product.HasVariants)
+                        {
+                            await transaction.RollbackAsync();
                             return ApiResponse<OrderDto>.Error($"Product {item.ProductId} requires variant selection.");
+                        }
+
+                        // ATOMIC STOCK CHECK: Verify stock within locked transaction
+                        if (product.StockQuantity < item.Quantity)
+                        {
+                            await transaction.RollbackAsync();
+                            return ApiResponse<OrderDto>.Error($"Insufficient stock for product '{product.Name}'. Available: {product.StockQuantity}, Requested: {item.Quantity}");
+                        }
+
+                        // PREVENT NEGATIVE STOCK: Reduce stock only after validation
+                        product.StockQuantity -= item.Quantity;
 
                         unitPrice = product.Price;
                     }
@@ -181,7 +213,7 @@ namespace ECommerce.Services
 
                 if (!string.IsNullOrWhiteSpace(dto.CouponCode))
                 {
-                    var coupon = await _couponsRepository.GetByCodeAsync(dto.CouponCode);
+                    var coupon = await _unitOfWork.Coupons.GetByCodeAsync(dto.CouponCode);
 
                     if (coupon == null)
                     {
@@ -190,7 +222,7 @@ namespace ECommerce.Services
                     }
 
                     // Check if user has access to this coupon
-                    var userHasAccess = await _userCouponsRepository.UserHasAccessAsync(userId, coupon.Id);
+                    var userHasAccess = await _unitOfWork.UserCoupons.UserHasAccessAsync(userId, coupon.Id);
                     if (!userHasAccess)
                     {
                         transaction.Rollback();
@@ -221,8 +253,8 @@ namespace ECommerce.Services
                                     couponDiscount = subTotal;
 
                                 couponId = coupon.Id;
-                                await _couponsRepository.IncrementUsedCountAsync(coupon.Id);
-                                await _userCouponsRepository.IncrementUserUsageCountAsync(userId, coupon.Id);
+                                await _unitOfWork.Coupons.IncrementUsedCountAsync(coupon.Id);
+                                await _unitOfWork.UserCoupons.IncrementUserUsageCountAsync(userId, coupon.Id);
                             }
                         }
                     }
@@ -252,12 +284,13 @@ namespace ECommerce.Services
                 };
 
                 _logger.LogInformation("Saving order to database");
-                var createdOrder = await _ordersRepository.AddAsync(order);
+                var createdOrder = await _unitOfWork.Orders.AddAsync(order);
                 _logger.LogInformation("Order saved with ID: {OrderId}", createdOrder.Id);
+                await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
                 // Load full order details
-                var fullOrder = await _ordersRepository.GetOrderWithDetailsAsync(createdOrder.Id);
+                var fullOrder = await _unitOfWork.Orders.GetOrderWithDetailsAsync(createdOrder.Id);
                 var orderDto = _mapper.Map<OrderDto>(fullOrder);
 
                 return ApiResponse<OrderDto>.SuccessResponse(orderDto, "Order created successfully.");
@@ -272,7 +305,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<OrderDto>> UpdateOrderStatusAsync(int orderId, UpdateOrderStatusDto dto)
         {
-            var order = await _ordersRepository.GetOrderWithDetailsAsync(orderId);
+            var order = await _unitOfWork.Orders.GetOrderWithDetailsAsync(orderId);
             if (order == null)
                 return ApiResponse<OrderDto>.Error("Order not found.");
 
@@ -292,7 +325,8 @@ namespace ECommerce.Services
                 order.Notes = dto.Notes;
 
             order.UpdatedAt = DateTime.UtcNow;
-            await _ordersRepository.UpdateAsync(order);
+            await _unitOfWork.Orders.UpdateAsync(order);
+            await _unitOfWork.CompleteAsync();
 
             var orderDto = _mapper.Map<OrderDto>(order);
             return ApiResponse<OrderDto>.SuccessResponse(orderDto, "Order status updated successfully.");
@@ -302,7 +336,7 @@ namespace ECommerce.Services
         {
             _logger.LogInformation("CancelOrderAsync called for order {OrderId} by user {UserId}", orderId, userId);
 
-            var order = await _ordersRepository.GetUserOrderWithDetailsAsync(orderId, userId);
+            var order = await _unitOfWork.Orders.GetUserOrderWithDetailsAsync(orderId, userId);
             if (order == null)
             {
                 _logger.LogWarning("Order {OrderId} not found for user {UserId}", orderId, userId);
@@ -335,7 +369,8 @@ namespace ECommerce.Services
             // Now cancel the order
             order.Status = OrderStatus.Cancelled;
             order.UpdatedAt = DateTime.UtcNow;
-            await _ordersRepository.UpdateAsync(order);
+            await _unitOfWork.Orders.UpdateAsync(order);
+            await _unitOfWork.CompleteAsync();
 
             _logger.LogInformation("Order {OrderId} cancelled successfully", orderId);
             return ApiResponse.SuccessResponse("Order cancelled successfully.");
@@ -343,7 +378,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<PaymentIntentResponseDto>> CreatePaymentIntentAsync(int orderId, string userId)
         {
-            var order = await _ordersRepository.GetUserOrderWithDetailsAsync(orderId, userId);
+            var order = await _unitOfWork.Orders.GetUserOrderWithDetailsAsync(orderId, userId);
             if (order == null)
                 return ApiResponse<PaymentIntentResponseDto>.Error("Order not found.");
 

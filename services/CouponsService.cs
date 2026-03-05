@@ -10,23 +10,20 @@ namespace ECommerce.Services
 {
     public class CouponsService : ICouponsService
     {
-        private readonly ICouponsRepository _couponsRepository;
-        private readonly IUserCouponsRepository _userCouponsRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public CouponsService(
-            ICouponsRepository couponsRepository,
-            IUserCouponsRepository userCouponsRepository,
+            IUnitOfWork unitOfWork,
             IMapper mapper)
         {
-            _couponsRepository = couponsRepository;
-            _userCouponsRepository = userCouponsRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<ApiResponse<PageResult<CouponDto>>> GetAllAsync(int page, int pageSize)
         {
-            var (items, totalItems) = await _couponsRepository.GetPagedAsync(page, pageSize);
+            var (items, totalItems) = await _unitOfWork.Coupons.GetPagedAsync(page, pageSize);
             var couponDtos = _mapper.Map<List<CouponDto>>(items);
 
             var pageResult = new PageResult<CouponDto>
@@ -42,7 +39,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<PageResult<CouponDto>>> GetActiveCouponsAsync(int page, int pageSize)
         {
-            var (items, totalItems) = await _couponsRepository.GetActiveCouponsAsync(page, pageSize);
+            var (items, totalItems) = await _unitOfWork.Coupons.GetActiveCouponsAsync(page, pageSize);
             var couponDtos = _mapper.Map<List<CouponDto>>(items);
 
             var pageResult = new PageResult<CouponDto>
@@ -58,7 +55,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<CouponDto>> GetByIdAsync(int id)
         {
-            var coupon = await _couponsRepository.GetByIdAsync(id);
+            var coupon = await _unitOfWork.Coupons.GetByIdAsync(id);
             if (coupon == null)
                 return ApiResponse<CouponDto>.Error("Coupon not found.");
 
@@ -68,7 +65,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<CouponDto>> GetByCodeAsync(string code)
         {
-            var coupon = await _couponsRepository.GetByCodeAsync(code);
+            var coupon = await _unitOfWork.Coupons.GetByCodeAsync(code);
             if (coupon == null)
                 return ApiResponse<CouponDto>.Error("Coupon not found.");
 
@@ -79,7 +76,7 @@ namespace ECommerce.Services
         public async Task<ApiResponse<CouponDto>> CreateAsync(CreateCouponDto dto)
         {
             // Check if code already exists
-            if (await _couponsRepository.CodeExistsAsync(dto.Code))
+            if (await _unitOfWork.Coupons.CodeExistsAsync(dto.Code))
                 return ApiResponse<CouponDto>.Error("Coupon code already exists.");
 
             // Validate dates
@@ -94,7 +91,8 @@ namespace ECommerce.Services
             coupon.UsedCount = 0;
             coupon.IsActive = true;
 
-            var createdCoupon = await _couponsRepository.AddAsync(coupon);
+            var createdCoupon = await _unitOfWork.Coupons.AddAsync(coupon);
+            await _unitOfWork.CompleteAsync();
             var couponDto = _mapper.Map<CouponDto>(createdCoupon);
 
             return ApiResponse<CouponDto>.SuccessResponse(couponDto, "Coupon created successfully.");
@@ -102,7 +100,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<CouponDto>> UpdateAsync(int id, UpdateCouponDto dto)
         {
-            var coupon = await _couponsRepository.GetByIdAsync(id);
+            var coupon = await _unitOfWork.Coupons.GetByIdAsync(id);
             if (coupon == null)
                 return ApiResponse<CouponDto>.Error("Coupon not found.");
 
@@ -143,7 +141,8 @@ namespace ECommerce.Services
             if (coupon.ValidFrom >= coupon.ValidUntil)
                 return ApiResponse<CouponDto>.Error("Valid from date must be before valid until date.");
 
-            await _couponsRepository.UpdateAsync(coupon);
+            await _unitOfWork.Coupons.UpdateAsync(coupon);
+            await _unitOfWork.CompleteAsync();
             var couponDto = _mapper.Map<CouponDto>(coupon);
 
             return ApiResponse<CouponDto>.SuccessResponse(couponDto, "Coupon updated successfully.");
@@ -151,11 +150,12 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse> DeleteAsync(int id)
         {
-            var coupon = await _couponsRepository.GetByIdAsync(id);
+            var coupon = await _unitOfWork.Coupons.GetByIdAsync(id);
             if (coupon == null)
                 return ApiResponse.ErrorResponse("Coupon not found.");
 
-            await _couponsRepository.DeleteAsync(coupon);
+            await _unitOfWork.Coupons.DeleteAsync(coupon);
+            await _unitOfWork.CompleteAsync();
             return ApiResponse.SuccessResponse("Coupon deleted successfully.");
         }
 
@@ -166,7 +166,7 @@ namespace ECommerce.Services
         /// </summary>
         public async Task<ApiResponse<PageResult<CouponDto>>> GetUserCouponsAsync(string userId, int page, int pageSize)
         {
-            var (items, totalItems) = await _userCouponsRepository.GetUserCouponsAsync(userId, page, pageSize);
+            var (items, totalItems) = await _unitOfWork.UserCoupons.GetUserCouponsAsync(userId, page, pageSize);
             var couponDtos = _mapper.Map<List<CouponDto>>(items);
 
             var pageResult = new PageResult<CouponDto>
@@ -182,7 +182,7 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<CouponValidationResult>> ValidateCouponAsync(string code, decimal orderAmount, string? userId = null)
         {
-            var coupon = await _couponsRepository.GetByCodeAsync(code);
+            var coupon = await _unitOfWork.Coupons.GetByCodeAsync(code);
             var result = new CouponValidationResult();
 
             if (coupon == null)
@@ -195,7 +195,7 @@ namespace ECommerce.Services
             // Check if user has access to this coupon (if userId provided)
             if (!string.IsNullOrEmpty(userId))
             {
-                var hasAccess = await _userCouponsRepository.UserHasAccessAsync(userId, coupon.Id);
+                var hasAccess = await _unitOfWork.UserCoupons.UserHasAccessAsync(userId, coupon.Id);
                 if (!hasAccess)
                 {
                     result.IsValid = false;
@@ -269,11 +269,12 @@ namespace ECommerce.Services
         /// </summary>
         public async Task<ApiResponse> AssignCouponToUserAsync(int couponId, string userId)
         {
-            var coupon = await _couponsRepository.GetByIdAsync(couponId);
+            var coupon = await _unitOfWork.Coupons.GetByIdAsync(couponId);
             if (coupon == null)
                 return ApiResponse.ErrorResponse("Coupon not found.");
 
-            var userCoupon = await _userCouponsRepository.AssignCouponToUserAsync(userId, couponId);
+            var userCoupon = await _unitOfWork.UserCoupons.AssignCouponToUserAsync(userId, couponId);
+            await _unitOfWork.CompleteAsync();
             return ApiResponse.SuccessResponse($"Coupon assigned to user successfully.");
         }
 
@@ -282,10 +283,11 @@ namespace ECommerce.Services
         /// </summary>
         public async Task<ApiResponse> RemoveCouponFromUserAsync(int couponId, string userId)
         {
-            var removed = await _userCouponsRepository.RemoveCouponFromUserAsync(userId, couponId);
+            var removed = await _unitOfWork.UserCoupons.RemoveCouponFromUserAsync(userId, couponId);
             if (!removed)
                 return ApiResponse.ErrorResponse("User-coupon assignment not found.");
 
+            await _unitOfWork.CompleteAsync();
             return ApiResponse.SuccessResponse("Coupon access removed from user.");
         }
 
@@ -294,11 +296,12 @@ namespace ECommerce.Services
         /// </summary>
         public async Task<ApiResponse> BulkAssignCouponAsync(int couponId, IEnumerable<string> userIds)
         {
-            var coupon = await _couponsRepository.GetByIdAsync(couponId);
+            var coupon = await _unitOfWork.Coupons.GetByIdAsync(couponId);
             if (coupon == null)
                 return ApiResponse.ErrorResponse("Coupon not found.");
 
-            var count = await _userCouponsRepository.BulkAssignCouponAsync(couponId, userIds);
+            var count = await _unitOfWork.UserCoupons.BulkAssignCouponAsync(couponId, userIds);
+            await _unitOfWork.CompleteAsync();
             return ApiResponse.SuccessResponse($"Coupon assigned to {count} users successfully.");
         }
 
@@ -307,11 +310,11 @@ namespace ECommerce.Services
         /// </summary>
         public async Task<ApiResponse<PageResult<UserCouponInfoDto>>> GetCouponUsersAsync(int couponId, int page, int pageSize)
         {
-            var coupon = await _couponsRepository.GetByIdAsync(couponId);
+            var coupon = await _unitOfWork.Coupons.GetByIdAsync(couponId);
             if (coupon == null)
                 return ApiResponse<PageResult<UserCouponInfoDto>>.Error("Coupon not found.");
 
-            var (userCoupons, totalCount) = await _userCouponsRepository.GetCouponUsersAsync(couponId, page, pageSize);
+            var (userCoupons, totalCount) = await _unitOfWork.UserCoupons.GetCouponUsersAsync(couponId, page, pageSize);
 
             var userCouponInfos = userCoupons.Select(uc => new UserCouponInfoDto
             {

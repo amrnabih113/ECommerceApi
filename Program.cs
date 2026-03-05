@@ -108,7 +108,7 @@ public partial class Program
 
         // Dependency Injection
         builder.Services.AddAutoMapper(typeof(MappingProfile));
-
+        builder.Services.AddHealthChecks();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
         builder.Services.AddScoped<ITokenService, TokenService>();
@@ -261,7 +261,7 @@ public partial class Program
         app.UseAuthorization();
 
         app.MapControllers();
-
+        app.MapHealthChecks("/health");
         await app.RunAsync();
     }
 }

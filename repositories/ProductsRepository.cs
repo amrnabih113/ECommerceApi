@@ -241,5 +241,12 @@ namespace ECommerce.Repositories
                     .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        public async Task<Product?> GetByIdWithLockAsync(int id)
+        {
+            return await _dbSet
+                .FromSqlRaw("SELECT * FROM Products WITH (UPDLOCK, ROWLOCK) WHERE Id = {0}", id)
+                .FirstOrDefaultAsync();
+        }
     }
 }

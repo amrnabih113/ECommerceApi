@@ -16,7 +16,7 @@ namespace ECommerce.Interfaces.Repositories
         Task<IEnumerable<Product>> GetByIdsAsync(IEnumerable<int> ids);
         Task<(IEnumerable<Product> Items, int TotalItems)> GetSalesProductsAsync(ProductQueryDto query);
         Task<(IEnumerable<Product> Items, int TotalItems)> GetBestSalesProductsAsync(ProductQueryDto query);
-
+        Task<Product?> GetByIdWithLockAsync(int id);
     }
 
 }

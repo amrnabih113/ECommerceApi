@@ -23,6 +23,12 @@ namespace ECommerce.Interfaces.Repositories
 
         IBannersRepository Banners { get; }
 
+        ICouponsRepository Coupons { get; }
+
+        IUserCouponsRepository UserCoupons { get; }
+
+        IOrdersRepository Orders { get; }
+
         Task<int> CompleteAsync();
     }
 }
