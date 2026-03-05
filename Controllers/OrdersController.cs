@@ -4,6 +4,7 @@ using ECommerce.DTOs.Payments;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace ECommerce.Controllers
@@ -14,6 +15,7 @@ namespace ECommerce.Controllers
     [ApiController]
     [Route("api/orders")]
     [Authorize(Roles = "Admin,User")]
+    [EnableRateLimiting("orders")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrdersService _ordersService;

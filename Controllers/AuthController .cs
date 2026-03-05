@@ -2,11 +2,13 @@ using ECommerce.DTOs;
 using ECommerce.DTOs.Auth;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ECommerce.Controllers
 {
     [Route("api/auth")]
     [ApiController]
+    [EnableRateLimiting("auth")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.RateLimiting;
 using ECommerce.core.configs;
 using ECommerce.Data;
 using ECommerce.DTOs;
@@ -11,6 +12,7 @@ using ECommerce.Seeds;
 using ECommerce.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -137,6 +139,40 @@ public partial class Program
         builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
         builder.Services.AddScoped<IStripeService, StripeService>();
 
+        // Rate Limiting Configuration
+        builder.Services.AddRateLimiter(options =>
+        {
+            // Fixed Window Limiter for general API endpoints (100 requests per minute)
+            options.AddFixedWindowLimiter("general", options =>
+            {
+                options.PermitLimit = 100;
+                options.Window = TimeSpan.FromMinutes(1);
+                options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+                options.QueueLimit = 5;
+            });
+
+            // Strict limiter for authentication endpoints (5 requests per minute)
+            options.AddFixedWindowLimiter("auth", options =>
+            {
+                options.PermitLimit = 5;
+                options.Window = TimeSpan.FromMinutes(1);
+                options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+                options.QueueLimit = 0;
+            });
+
+            // Moderate limiter for order/payment endpoints (20 requests per minute)
+            options.AddFixedWindowLimiter("orders", options =>
+            {
+                options.PermitLimit = 20;
+                options.Window = TimeSpan.FromMinutes(1);
+                options.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+                options.QueueLimit = 2;
+            });
+
+            // Response when rate limit is exceeded
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        });
+
         // Swagger Configuration
         builder.Services.AddEndpointsApiExplorer();
 
@@ -214,6 +250,8 @@ public partial class Program
         app.UseMiddleware<ExceptionMiddleware>();
 
         app.UseHttpsRedirection();
+
+        app.UseRateLimiter();
 
         app.UseAuthentication();
         app.UseAuthorization();

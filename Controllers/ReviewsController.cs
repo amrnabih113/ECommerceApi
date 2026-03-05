@@ -3,6 +3,7 @@ using ECommerce.DTOs.Reviews;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace ECommerce.Controllers
@@ -10,6 +11,7 @@ namespace ECommerce.Controllers
     [ApiController]
     [Route("api")]
     [Authorize(Roles = "User,Admin")]
+    [EnableRateLimiting("general")]
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewsService _reviewsService;

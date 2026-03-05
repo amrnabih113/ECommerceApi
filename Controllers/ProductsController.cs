@@ -3,6 +3,7 @@ using ECommerce.DTOs.Products;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace ECommerce.Controllers
@@ -10,6 +11,7 @@ namespace ECommerce.Controllers
     [ApiController]
     [Route("api/products")]
     [Authorize(Roles = "Admin,User")]
+    [EnableRateLimiting("general")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductsService _productsService;

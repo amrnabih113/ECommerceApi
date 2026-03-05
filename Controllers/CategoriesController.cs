@@ -7,12 +7,14 @@ using ECommerce.DTOs.Categories;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace ECommerce.Controllers
 {
     [ApiController]
     [Route("api/categories")]
     [Authorize(Roles = "Admin,User")]
+    [EnableRateLimiting("general")]
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesService _categoriesService;

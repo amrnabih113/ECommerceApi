@@ -3,12 +3,14 @@ using ECommerce.DTOs.Carts;
 using ECommerce.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace ECommerce.Controllers
 {
     [ApiController]
     [Authorize]
+    [EnableRateLimiting("general")]
     public class CartsController : ControllerBase
     {
         private readonly ICartsService _cartsService;
