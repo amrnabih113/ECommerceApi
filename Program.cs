@@ -1,6 +1,7 @@
 using System.Text;
 using System.Threading.RateLimiting;
 using ECommerce.core.configs;
+using ECommerce.core.Middlewares;
 using ECommerce.Data;
 using ECommerce.DTOs;
 using ECommerce.Infrastructure;
@@ -247,7 +248,12 @@ public partial class Program
 
         app.UseMiddleware<ExceptionMiddleware>();
 
+        // Security headers middleware
+        app.UseMiddleware<SecurityHeadersMiddleware>();
+
+        // security 
         app.UseHttpsRedirection();
+        app.UseHsts();
 
         app.UseRateLimiter();
 

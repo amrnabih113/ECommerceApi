@@ -143,7 +143,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
         [HttpGet("sales")]
-        
+
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
         public async Task<IActionResult> GetSalesProducts([FromQuery] ProductQueryDto query)
@@ -159,7 +159,7 @@ namespace ECommerce.Controllers
             return Ok(response);
         }
 
-     
+
         [HttpGet("best-sales")]
         [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
