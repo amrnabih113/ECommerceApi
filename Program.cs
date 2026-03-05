@@ -138,11 +138,12 @@ public partial class Program
         builder.Services.AddScoped<ICouponsService, CouponsService>();
         builder.Services.AddScoped<IPaymentsRepository, PaymentsRepository>();
         builder.Services.AddScoped<IStripeService, StripeService>();
+        builder.Services.AddScoped<IBannersRepository, BannersRepository>();
+        builder.Services.AddScoped<IBannersService, BannersService>();
 
         // Rate Limiting Configuration
         builder.Services.AddRateLimiter(options =>
         {
-            // Fixed Window Limiter for general API endpoints (100 requests per minute)
             options.AddFixedWindowLimiter("general", options =>
             {
                 options.PermitLimit = 100;
@@ -151,7 +152,6 @@ public partial class Program
                 options.QueueLimit = 5;
             });
 
-            // Strict limiter for authentication endpoints (5 requests per minute)
             options.AddFixedWindowLimiter("auth", options =>
             {
                 options.PermitLimit = 5;
@@ -160,7 +160,6 @@ public partial class Program
                 options.QueueLimit = 0;
             });
 
-            // Moderate limiter for order/payment endpoints (20 requests per minute)
             options.AddFixedWindowLimiter("orders", options =>
             {
                 options.PermitLimit = 20;
@@ -169,7 +168,6 @@ public partial class Program
                 options.QueueLimit = 2;
             });
 
-            // Response when rate limit is exceeded
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
         });
 

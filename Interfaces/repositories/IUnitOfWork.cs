@@ -21,6 +21,8 @@ namespace ECommerce.Interfaces.Repositories
 
         IAddressesRepository Addresses { get; }
 
+        IBannersRepository Banners { get; }
+
         Task<int> CompleteAsync();
     }
 }

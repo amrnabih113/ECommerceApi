@@ -142,5 +142,38 @@ namespace ECommerce.Controllers
             var response = await _productsService.GetSearchRecommendationsAsync(term, size);
             return Ok(response);
         }
+        [HttpGet("sales")]
+        
+        [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> GetSalesProducts([FromQuery] ProductQueryDto query)
+        {
+            if (query.Page < 1 || query.PageSize < 1)
+                return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
+
+            if (query.MinPrice.HasValue && query.MaxPrice.HasValue && query.MinPrice > query.MaxPrice)
+                return BadRequest(ApiResponse.ErrorResponse("minPrice cannot be greater than maxPrice."));
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.GetSalesProductsAsync(query, userId);
+            return Ok(response);
+        }
+
+     
+        [HttpGet("best-sales")]
+        [ProducesResponseType(typeof(ApiResponse<PageResult<ProductDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<IActionResult> GetBestSalesProducts([FromQuery] ProductQueryDto query)
+        {
+            if (query.Page < 1 || query.PageSize < 1)
+                return BadRequest(ApiResponse.ErrorResponse("Page and pageSize must be greater than 0."));
+
+            if (query.MinPrice.HasValue && query.MaxPrice.HasValue && query.MinPrice > query.MaxPrice)
+                return BadRequest(ApiResponse.ErrorResponse("minPrice cannot be greater than maxPrice."));
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var response = await _productsService.GetBestSalesProductsAsync(query, userId);
+            return Ok(response);
+        }
     }
 }

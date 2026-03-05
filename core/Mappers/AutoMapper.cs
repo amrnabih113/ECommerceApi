@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECommerce.DTOs.Banners;
 using ECommerce.DTOs.Brands;
 using ECommerce.DTOs.Carts;
 using ECommerce.DTOs.CartItems;
@@ -143,5 +144,11 @@ public class MappingProfile : Profile
 
         // Payment mappings
         CreateMap<Payment, PaymentDto>();
+
+        // Banner mappings
+        CreateMap<Banner, BannerDto>();
+        CreateMap<BannerCreateDto, Banner>();
+        CreateMap<BannerUpdateDto, Banner>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

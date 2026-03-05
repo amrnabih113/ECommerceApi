@@ -15,5 +15,7 @@ namespace ECommerce.Interfaces.Services
         Task<ApiResponse<PageResult<ProductDto>>> GetByBrandAsync(int brandId, ProductQueryDto query, string? userId = null);
         Task<ApiResponse<PageResult<ProductDto>>> SearchAsync(string term, int page = 1, int pageSize = 10, string? userId = null);
         Task<ApiResponse<IEnumerable<string>>> GetSearchRecommendationsAsync(string term, int size = 5);
+        Task<ApiResponse<PageResult<ProductDto>>> GetSalesProductsAsync(ProductQueryDto query, string? userId = null);
+        Task<ApiResponse<PageResult<ProductDto>>> GetBestSalesProductsAsync(ProductQueryDto query, string? userId = null);
     }
 }

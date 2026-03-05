@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>README.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///r%3A/2.Travail/1.Enseignement/Cours/_1.Outils/2.Developpement/1.SCSS/main.css" type="text/css"><link rel="stylesheet" href="file:///d%3A/rdaros/Cours/_1.Outils/2.Developpement/1.SCSS/main.css" type="text/css">
+</head>
+
+<body>
+    <h1 id="ecommerce-api---postman-documentation">ECommerce API - Postman Documentation</h1>
+<h2 id="%F0%9F%93%9A-overview">📚 Overview</h2>
+<p>This Postman collection contains complete API documentation for the ECommerce platform, including all endpoints for:</p>
+<ul>
+<li><strong>Authentication</strong> (Register, Login, Refresh Token)</li>
+<li><strong>Products</strong> (CRUD, filtering by brand/category)</li>
+<li><strong>Product Variants</strong> (Size, Color, Stock management)</li>
+<li><strong>Shopping Cart</strong> (Add, Remove, Update, Clear)</li>
+<li><strong>Categories &amp; Brands</strong> (CRUD operations)</li>
+<li><strong>Addresses</strong> (User shipping addresses management)</li>
+<li><strong>Orders &amp; Payments</strong> (Create orders, payment intents, coupon management)</li>
+<li><strong>Coupons</strong> (User coupons, admin assignment, bulk operations)</li>
+<li><strong>Admin Management</strong> (Cart management, user data, coupon distribution)</li>
+</ul>
+<h3 id="%F0%9F%8E%AF-quick-links">🎯 Quick Links</h3>
+<ul>
+<li><strong>Stripe &amp; Orders Testing</strong>: See <a href="./STRIPE_TESTING_GUIDE.md">STRIPE_TESTING_GUIDE.md</a> for complete local payment testing workflow</li>
+<li><strong>Stripe Setup</strong>: See <code>../STRIPE_SETUP_GUIDE.md</code> for configuration</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%9A%80-getting-started">🚀 Getting Started</h2>
+<h3 id="1-import-the-collection-and-environment">1. Import the Collection and Environment</h3>
+<ol>
+<li>Open Postman</li>
+<li>Click <strong>Import</strong> → <strong>Upload Files</strong></li>
+<li>Select <code>ECommerce_API.json</code> from <code>/postman/collections/</code></li>
+<li>Select <code>Development.json</code> from <code>/postman/environments/</code></li>
+<li>Set <strong>Development</strong> as the active environment (top-right dropdown)</li>
+</ol>
+<h3 id="2-configure-environment-variables">2. Configure Environment Variables</h3>
+<p>Edit the <strong>Development</strong> environment with your actual values:</p>
+<pre class="hljs"><code><div>baseUrl: http://localhost:7286/api
+adminBaseUrl: http://localhost:7286/api/admin
+authToken: (Auto-filled after login)
+userId: (Auto-filled after login)
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%94%90-authentication-workflow">🔐 Authentication Workflow</h2>
+<h3 id="1-register-a-new-user">1. Register a New User</h3>
+<pre class="hljs"><code><div>POST /api/auth/register
+{
+  &quot;userName&quot;: &quot;testuser&quot;,
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;password&quot;: &quot;Test@123&quot;
+}
+</div></code></pre>
+<p><strong>Response:</strong> <code>authToken</code>, <code>userId</code>, <code>refreshToken</code> (auto-set in environment)</p>
+<h3 id="2-login-to-get-token-test-users-available">2. Login to Get Token (Test Users Available!)</h3>
+<p><strong>🧪 Pre-seeded Test Users:</strong></p>
+<p><strong>Admin:</strong></p>
+<pre class="hljs"><code><div>POST /api/auth/login
+{
+  &quot;email&quot;: &quot;admin@ecommerce.com&quot;,
+  &quot;password&quot;: &quot;Admin@123&quot;
+}
+</div></code></pre>
+<p><strong>Customers (Pick any):</strong></p>
+<ul>
+<li><code>customer@example.com</code> / <code>Customer@123</code> (John Doe - 3 addresses)</li>
+<li><code>jane@example.com</code> / <code>JaneSmith@123</code> (Jane Smith - 2 addresses)</li>
+<li><code>mike@example.com</code> / <code>MikeJohnson@123</code> (Mike Johnson - 3 addresses)</li>
+<li><code>sarah@example.com</code> / <code>SarahWilliams@123</code> (Sarah Williams - 2 addresses)</li>
+</ul>
+<p>See <a href="../TEST_USERS_AND_ADDRESSES.md">TEST_USERS_AND_ADDRESSES.md</a> for complete list with all addresses.</p>
+<p><strong>Auto-set variables:</strong></p>
+<ul>
+<li><code>authToken</code> → Used for all authenticated requests</li>
+<li><code>userId</code> → Your user ID</li>
+<li><code>refreshToken</code> → Used to refresh expired tokens</li>
+</ul>
+<h3 id="3-refresh-access-token">3. Refresh Access Token</h3>
+<pre class="hljs"><code><div>POST /api/auth/refresh-token
+{
+  &quot;refreshToken&quot;: &quot;{{refreshToken}}&quot;
+}
+</div></code></pre>
+<p><strong>Use when:</strong> Access token expires (typically after 15-30 minutes)<br>
+<strong>Returns:</strong> New <code>authToken</code> (auto-set)</p>
+<h3 id="4-forgot-password-part-1">4. Forgot Password (Part 1)</h3>
+<pre class="hljs"><code><div>POST /api/auth/forgot-password
+{
+  &quot;email&quot;: &quot;test@example.com&quot;
+}
+</div></code></pre>
+<p><strong>Effect:</strong> Sends OTP code to user's email</p>
+<h3 id="5-verify-otp-part-2">5. Verify OTP (Part 2)</h3>
+<pre class="hljs"><code><div>POST /api/auth/verify-otp
+{
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;otp&quot;: &quot;123456&quot;
+}
+</div></code></pre>
+<p><strong>Effect:</strong> Validates OTP code sent to email</p>
+<h3 id="6-reset-password-part-3">6. Reset Password (Part 3)</h3>
+<pre class="hljs"><code><div>POST /api/auth/reset-password
+{
+  &quot;email&quot;: &quot;test@example.com&quot;,
+  &quot;otp&quot;: &quot;123456&quot;,
+  &quot;newPassword&quot;: &quot;NewPassword@123&quot;,
+  &quot;confirmPassword&quot;: &quot;NewPassword@123&quot;
+}
+</div></code></pre>
+<p><strong>Effect:</strong> Sets new password if OTP is verified</p>
+<h2 id="%F0%9F%93%A6-product-management">📦 Product Management</h2>
+<h3 id="products-with-variants-eg-t-shirt-with-sizes">Products WITH Variants (e.g., T-Shirt with sizes)</h3>
+<p><strong>HasVariants = true</strong></p>
+<pre class="hljs"><code><div>POST /api/products/create (Admin)
+{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Premium T-Shirt"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"High-quality cotton"</span>,
+  <span class="hljs-attr">"imageUrl"</span>: <span class="hljs-string">"https://..."</span>,
+  <span class="hljs-attr">"price"</span>: <span class="hljs-number">29.99</span>,
+  <span class="hljs-attr">"hasVariants"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"stockQuantity"</span>: <span class="hljs-number">0</span>,        <span class="hljs-comment">// Auto-calculated from variants</span>
+  <span class="hljs-attr">"categoryId"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"brandId"</span>: <span class="hljs-number">1</span>
+}
+</div></code></pre>
+<p>Then add variants:</p>
+<pre class="hljs"><code><div>POST /api/products/{{productId}}/variants
+[
+  { <span class="hljs-attr">"size"</span>: <span class="hljs-string">"S"</span>, <span class="hljs-attr">"color"</span>: <span class="hljs-string">"Blue"</span>, <span class="hljs-attr">"stockQuantity"</span>: <span class="hljs-number">50</span> },
+  { <span class="hljs-attr">"size"</span>: <span class="hljs-string">"M"</span>, <span class="hljs-attr">"color"</span>: <span class="hljs-string">"Blue"</span>, <span class="hljs-attr">"stockQuantity"</span>: <span class="hljs-number">60</span> },
+  { <span class="hljs-attr">"size"</span>: <span class="hljs-string">"L"</span>, <span class="hljs-attr">"color"</span>: <span class="hljs-string">"Blue"</span>, <span class="hljs-attr">"stockQuantity"</span>: <span class="hljs-number">40</span> }
+]
+<span class="hljs-comment">// Product.StockQuantity = 50 + 60 + 40 = 150 (auto-calculated)</span>
+</div></code></pre>
+<h3 id="products-without-variants-eg-individual-posters">Products WITHOUT Variants (e.g., Individual posters)</h3>
+<p><strong>HasVariants = false</strong></p>
+<pre class="hljs"><code><div>POST /api/products/create (Admin)
+{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Movie Poster"</span>,
+  <span class="hljs-attr">"hasVariants"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"stockQuantity"</span>: <span class="hljs-number">100</span>,      <span class="hljs-comment">// Direct product-level stock</span>
+  ...
+}
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%9B%92-shopping-cart-logic">🛒 Shopping Cart Logic</h2>
+<h3 id="%F0%9F%9B%91-important-business-rules">🛑 Important Business Rules</h3>
+<p><strong>Rule 1: Products WITH Variants</strong></p>
+<ul>
+<li>Must include <code>productVariantId</code></li>
+<li>Stock checked at <strong>variant level</strong></li>
+<li>Cannot add without selecting size/color</li>
+</ul>
+<pre class="hljs"><code><div>POST /api/cart/items
+{
+  <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">"productId"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"productVariantId"</span>: <span class="hljs-number">5</span>      <span class="hljs-comment">// ✅ REQUIRED for HasVariants=true</span>
+}
+</div></code></pre>
+<p><strong>Rule 2: Products WITHOUT Variants</strong></p>
+<ul>
+<li>Must NOT include <code>productVariantId</code></li>
+<li>Stock checked at <strong>product level</strong></li>
+</ul>
+<pre class="hljs"><code><div>POST /api/cart/items
+{
+  <span class="hljs-attr">"quantity"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"productId"</span>: <span class="hljs-number">2</span>
+  <span class="hljs-comment">// ✅ Leave productVariantId empty</span>
+}
+</div></code></pre>
+<h3 id="cart-price-calculation">Cart Price Calculation</h3>
+<p>When adding to cart, price is <strong>snapshotted</strong>:</p>
+<pre class="hljs"><code><div>UnitPrice = Product.Price + ProductVariant.AdditionalPrice (if variant)
+</div></code></pre>
+<p>This ensures cart totals don't change if product prices are updated later.</p>
+<h3 id="cart-summary">Cart Summary</h3>
+<pre class="hljs"><code><div>GET /api/cart/summary
+
+Returns:
+{
+  &quot;cartId&quot;: 1,
+  &quot;totalItems&quot;: 3,
+  &quot;subtotal&quot;: 100.00,
+  &quot;tax&quot;: 14.00,              // 14% tax rate
+  &quot;discount&quot;: 0,             // Future: coupon system
+  &quot;total&quot;: 114.00
+}
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%96%BC%EF%B8%8F-product-images-management-admin">🖼️ Product Images Management (Admin)</h2>
+<h3 id="upload-product-image">Upload Product Image</h3>
+<pre class="hljs"><code><div>POST /api/products/{{productId}}/images
+Content-Type: multipart/form-data
+
+Form Data:
+- file: (image file) ← JPG, PNG, GIF, WebP
+- isMain: <span class="hljs-literal">true</span>       ← Set as main product image
+
+Response (<span class="hljs-number">200</span> OK):
+{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Image uploaded successfully."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"productId"</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">"imageUrl"</span>: <span class="hljs-string">"https://res.cloudinary.com/..."</span>,
+    <span class="hljs-attr">"isMain"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-03-01T12:30:00Z"</span>,
+    <span class="hljs-attr">"updatedAt"</span>: <span class="hljs-string">"2026-03-01T12:30:00Z"</span>
+  }
+}
+</div></code></pre>
+<h3 id="update-product-image">Update Product Image</h3>
+<pre class="hljs"><code><div>PUT /api/products/{{productId}}/images/{{imageId}}
+Content-Type: multipart/form-data
+
+Form Data:
+- file: (new image file)    ← Replace with new image
+- isMain: <span class="hljs-literal">true</span>              ← Update main status
+
+Response (<span class="hljs-number">200</span> OK):
+{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Image updated successfully."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"productId"</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">"imageUrl"</span>: <span class="hljs-string">"https://res.cloudinary.com/..."</span>,
+    <span class="hljs-attr">"isMain"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-03-01T12:30:00Z"</span>,
+    <span class="hljs-attr">"updatedAt"</span>: <span class="hljs-string">"2026-03-01T14:00:00Z"</span>
+  }
+}
+</div></code></pre>
+<h3 id="delete-product-image">Delete Product Image</h3>
+<pre class="hljs"><code><div>DELETE /api/products/{{productId}}/images/{{imageId}}
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Image deleted successfully.&quot;,
+  &quot;data&quot;: null
+}
+</div></code></pre>
+<p><strong>Note:</strong> Old image automatically deleted from Cloudinary</p>
+<h3 id="list-product-images">List Product Images</h3>
+<pre class="hljs"><code><div>GET /api/products/{{productId}}/images?page=1&amp;pageSize=10
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Images fetched successfully.&quot;,
+  &quot;data&quot;: {
+    &quot;items&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;productId&quot;: 5,
+        &quot;imageUrl&quot;: &quot;https://res.cloudinary.com/...&quot;,
+        &quot;isMain&quot;: true,
+        &quot;createdAt&quot;: &quot;2026-03-01T12:30:00Z&quot;,
+        &quot;updatedAt&quot;: &quot;2026-03-01T12:30:00Z&quot;
+      },
+      ...
+    ],
+    &quot;totalItems&quot;: 5,
+    &quot;page&quot;: 1,
+    &quot;pageSize&quot;: 10
+  }
+}
+</div></code></pre>
+<h3 id="get-single-product-image">Get Single Product Image</h3>
+<pre class="hljs"><code><div>GET /api/products/{{productId}}/images/{{imageId}}
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Image fetched successfully.&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: 1,
+    &quot;productId&quot;: 5,
+    &quot;imageUrl&quot;: &quot;https://res.cloudinary.com/...&quot;,
+    &quot;isMain&quot;: true,
+    &quot;createdAt&quot;: &quot;2026-03-01T12:30:00Z&quot;,
+    &quot;updatedAt&quot;: &quot;2026-03-01T12:30:00Z&quot;
+  }
+}
+</div></code></pre>
+<h3 id="%F0%9F%96%BC%EF%B8%8F-product-images-notes">🖼️ Product Images Notes</h3>
+<ul>
+<li><strong>Admin Only</strong>: All image endpoints require Admin role</li>
+<li><strong>File Formats</strong>: JPG, JPEG, PNG, GIF, WebP supported</li>
+<li><strong>Cloudinary Storage</strong>: Images stored on Cloudinary CDN</li>
+<li><strong>Automatic Deletion</strong>: Old images deleted from Cloudinary when updated/deleted</li>
+<li><strong>Main Image</strong>: Product.ImageUrl always points to image with <code>isMain=true</code></li>
+<li><strong>Auto Main Assignment</strong>: If main image deleted, another image automatically promoted to main</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%94%8D-search--recommendations">🔍 Search &amp; Recommendations</h2>
+<h3 id="search-products">Search Products</h3>
+<pre class="hljs"><code><div>GET /api/products/search?term=shirt&amp;page=1&amp;pageSize=10
+
+Query Parameters:
+- term (required)    : Search term (product name/description)
+- page (optional)    : Page number (default: 1)
+- pageSize (optional): Items per page (default: 10)
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Products searched&quot;,
+  &quot;data&quot;: {
+    &quot;items&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Premium T-Shirt&quot;,
+        &quot;description&quot;: &quot;High quality cotton&quot;,
+        &quot;price&quot;: 29.99,
+        &quot;categoryId&quot;: 1,
+        &quot;brandId&quot;: 1,
+        &quot;hasVariants&quot;: true,
+        &quot;isFavorite&quot;: false,
+        &quot;createdAt&quot;: &quot;2026-03-01T10:00:00Z&quot;
+      },
+      {
+        &quot;id&quot;: 2,
+        &quot;name&quot;: &quot;Classic Shirt&quot;,
+        &quot;description&quot;: &quot;Casual wear&quot;,
+        &quot;price&quot;: 24.99,
+        &quot;categoryId&quot;: 1,
+        &quot;brandId&quot;: 2,
+        &quot;hasVariants&quot;: false,
+        &quot;isFavorite&quot;: true
+      }
+    ],
+    &quot;page&quot;: 1,
+    &quot;pageSize&quot;: 10,
+    &quot;totalCount&quot;: 2
+  }
+}
+</div></code></pre>
+<h3 id="product-search-recommendations-autocomplete">Product Search Recommendations (Autocomplete)</h3>
+<pre class="hljs"><code><div>GET /api/products/search/recommendations?term=shi&amp;size=5
+
+Query Parameters:
+- term (required): Prefix to match (min 2 chars)
+- size (optional): Max results (default: 5)
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Recommendations retrieved&quot;,
+  &quot;data&quot;: [
+    &quot;Premium T-Shirt&quot;,
+    &quot;Classic Shirt&quot;,
+    &quot;Shirt Dress&quot;,
+    &quot;Shirt Set&quot;,
+    &quot;Shirt Combo&quot;
+  ]
+}
+</div></code></pre>
+<h3 id="search-brands">Search Brands</h3>
+<pre class="hljs"><code><div>GET /api/brands/search?term=nike&amp;page=1&amp;pageSize=10
+
+Query Parameters: Same as products search
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Brands searched&quot;,
+  &quot;data&quot;: {
+    &quot;items&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Nike&quot;,
+        &quot;description&quot;: &quot;Leading sports brand&quot;,
+        &quot;createdAt&quot;: &quot;2026-03-01T10:00:00Z&quot;
+      },
+      {
+        &quot;id&quot;: 5,
+        &quot;name&quot;: &quot;Nike Pro&quot;,
+        &quot;description&quot;: &quot;Premium Nike line&quot;,
+        &quot;createdAt&quot;: &quot;2026-03-01T10:00:00Z&quot;
+      }
+    ],
+    &quot;page&quot;: 1,
+    &quot;pageSize&quot;: 10,
+    &quot;totalCount&quot;: 2
+  }
+}
+</div></code></pre>
+<h3 id="brand-search-recommendations-autocomplete">Brand Search Recommendations (Autocomplete)</h3>
+<pre class="hljs"><code><div>GET /api/brands/search/recommendations?term=nik&amp;size=5
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Recommendations retrieved&quot;,
+  &quot;data&quot;: [&quot;Nike&quot;, &quot;Nike Pro&quot;, &quot;Nike Sport&quot;, &quot;Nike Premium&quot;, &quot;Nike Air&quot;]
+}
+</div></code></pre>
+<h3 id="search-categories">Search Categories</h3>
+<pre class="hljs"><code><div>GET /api/categories/search?term=clothing&amp;page=1&amp;pageSize=10
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Categories searched&quot;,
+  &quot;data&quot;: {
+    &quot;items&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Clothing&quot;,
+        &quot;description&quot;: &quot;All clothing items&quot;,
+        &quot;parentCategoryId&quot;: null,
+        &quot;createdAt&quot;: &quot;2026-03-01T10:00:00Z&quot;
+      },
+      {
+        &quot;id&quot;: 3,
+        &quot;name&quot;: &quot;Casual Clothing&quot;,
+        &quot;description&quot;: &quot;Casual wear&quot;,
+        &quot;parentCategoryId&quot;: 1,
+        &quot;createdAt&quot;: &quot;2026-03-01T10:00:00Z&quot;
+      }
+    ],
+    &quot;page&quot;: 1,
+    &quot;pageSize&quot;: 10,
+    &quot;totalCount&quot;: 2
+  }
+}
+</div></code></pre>
+<h3 id="category-search-recommendations-autocomplete">Category Search Recommendations (Autocomplete)</h3>
+<pre class="hljs"><code><div>GET /api/categories/search/recommendations?term=clot&amp;size=5
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Recommendations retrieved&quot;,
+  &quot;data&quot;: [&quot;Clothing&quot;, &quot;Casual Clothing&quot;, &quot;Formal Clothing&quot;]
+}
+</div></code></pre>
+<h3 id="%F0%9F%94%8D-search-features">🔍 Search Features</h3>
+<ul>
+<li><strong>Full-Text Search</strong>: Uses SQL Server Full-Text Search for performance</li>
+<li><strong>Graceful Fallback</strong>: If full-text not enabled, falls back to LIKE query</li>
+<li><strong>Deterministic Results</strong>: Always ordered by Name then ID for consistent pagination</li>
+<li><strong>Pagination</strong>: All search endpoints support page and pageSize</li>
+<li><strong>Recommendations</strong>: Returns prefix-matched suggestions for autocomplete UI</li>
+<li><strong>IsFavorite Flag</strong>: Product search enriches results with user's wishlist status</li>
+<li><strong>Multi-field Search</strong>: Products search across Name and Description</li>
+<li><strong>Case-Insensitive</strong>: All searches are case-insensitive</li>
+</ul>
+<hr>
+<h2 id="%E2%9D%A4%EF%B8%8F-wishlist-management">❤️ WishList Management</h2>
+<h3 id="add-product-to-wishlist">Add Product to WishList</h3>
+<pre class="hljs"><code><div>POST /api/products/{{productId}}/wishlist
+
+Response (<span class="hljs-number">200</span> OK):
+{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Product added to wishlist successfully."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"productId"</span>: <span class="hljs-number">5</span>,
+    <span class="hljs-attr">"product"</span>: {
+      <span class="hljs-attr">"id"</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"Premium T-Shirt"</span>,
+      <span class="hljs-attr">"isFavorite"</span>: <span class="hljs-literal">true</span>,
+      ...
+    },
+    <span class="hljs-attr">"createdAt"</span>: <span class="hljs-string">"2026-03-01T12:30:00Z"</span>
+  }
+}
+</div></code></pre>
+<h3 id="remove-product-from-wishlist">Remove Product from WishList</h3>
+<pre class="hljs"><code><div>DELETE /api/products/{{productId}}/wishlist
+
+Response (<span class="hljs-number">200</span> OK):
+{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Product removed from wishlist successfully."</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<h3 id="get-my-wishlist">Get My WishList</h3>
+<pre class="hljs"><code><div>GET /api/wishlist?page=1&amp;pageSize=10
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Wishlist fetched successfully.&quot;,
+  &quot;data&quot;: {
+    &quot;items&quot;: [
+      {
+        &quot;id&quot;: 1,
+        &quot;productId&quot;: 5,
+        &quot;product&quot;: {
+          &quot;id&quot;: 5,
+          &quot;name&quot;: &quot;Premium T-Shirt&quot;,
+          &quot;price&quot;: 29.99,
+          &quot;isFavorite&quot;: true,
+          &quot;categoryId&quot;: 1,
+          &quot;categoryName&quot;: &quot;Clothing&quot;,
+          &quot;brandId&quot;: 2,
+          &quot;brandName&quot;: &quot;Nike&quot;,
+          ...
+        },
+        &quot;createdAt&quot;: &quot;2026-03-01T10:15:00Z&quot;
+      },
+      ...
+    ],
+    &quot;totalItems&quot;: 15,
+    &quot;page&quot;: 1,
+    &quot;pageSize&quot;: 10
+  }
+}
+</div></code></pre>
+<h3 id="check-if-product-is-in-wishlist">Check if Product is in WishList</h3>
+<pre class="hljs"><code><div>GET /api/products/{{productId}}/wishlist/check
+
+Response (200 OK):
+{
+  &quot;success&quot;: true,
+  &quot;message&quot;: &quot;Wishlist item check completed.&quot;,
+  &quot;data&quot;: true          // or false
+}
+</div></code></pre>
+<h3 id="%F0%9F%8F%B7%EF%B8%8F-wishlist-notes">🏷️ WishList Notes</h3>
+<ul>
+<li><strong>Duplicates</strong>: Cannot add same product twice (returns error if already exists)</li>
+<li><strong>IsFavorite Flag</strong>: Automatically set to <code>true</code> for products in wishlist</li>
+<li><strong>Pagination</strong>: Wishlist supports page and pageSize parameters</li>
+<li><strong>Auth Required</strong>: All wishlist endpoints require authentication</li>
+<li><strong>Product Details</strong>: Returns full ProductDto with all details</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%8F%A2-admin-endpoints">🏢 Admin Endpoints</h2>
+<h3 id="cart-management-admin-only">Cart Management (Admin Only)</h3>
+<pre class="hljs"><code><div>GET /api/admin/carts                           // List all carts
+GET /api/admin/carts/{{cartId}}               // Get specific cart
+GET /api/admin/carts/user/{{userId}}          // Get user's cart
+GET /api/admin/cart-items/cart/{{cartId}}     // List items in cart
+DELETE /api/admin/carts/{{cartId}}            // Delete cart
+DELETE /api/admin/cart-items/{{cartId}}       // Delete cart item
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%93%8A-api-response-format">📊 API Response Format</h2>
+<h3 id="success-response-200-ok">Success Response (200 OK)</h3>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Product created successfully."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"T-Shirt"</span>,
+    ...
+  }
+}
+</div></code></pre>
+<h3 id="error-response-400-bad-request">Error Response (400 Bad Request)</h3>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Product not found."</span>,
+  <span class="hljs-attr">"data"</span>: <span class="hljs-literal">null</span>
+}
+</div></code></pre>
+<h3 id="paginated-response">Paginated Response</h3>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"status"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Products fetched successfully."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"items"</span>: [...],
+    <span class="hljs-attr">"totalItems"</span>: <span class="hljs-number">50</span>,
+    <span class="hljs-attr">"page"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"pageSize"</span>: <span class="hljs-number">10</span>
+  }
+}
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%94%84-stock-management-flow">🔄 Stock Management Flow</h2>
+<h3 id="automatic-stock-calculation-products-with-variants">Automatic Stock Calculation (Products WITH Variants)</h3>
+<ol>
+<li><strong>Create Variant</strong> → Product.HasVariants = true</li>
+<li><strong>Update Variant Stock</strong> → Product.StockQuantity auto-recalculated</li>
+<li><strong>Delete Last Variant</strong> → Product.HasVariants = false, StockQuantity = 0</li>
+</ol>
+<h3 id="stock-validation">Stock Validation</h3>
+<ul>
+<li><strong>Adding to cart</strong>: Check available stock before adding</li>
+<li><strong>Updating quantity</strong>: Re-validate stock for new quantity</li>
+<li><strong>Cannot delete variant</strong> if items are in active carts</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%94%8D-useful-query-parameters">🔍 Useful Query Parameters</h2>
+<h3 id="pagination">Pagination</h3>
+<pre class="hljs"><code><div>?page=1&amp;pageSize=10      // Default pagination
+</div></code></pre>
+<h3 id="filtering">Filtering</h3>
+<pre class="hljs"><code><div>GET /api/products/by-category/{{categoryId}}
+GET /api/products/by-brand/{{brandId}}
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%93%9D-common-workflows">📝 Common Workflows</h2>
+<h3 id="workflow-1-create-product-with-variants">Workflow 1: Create Product with Variants</h3>
+<pre class="hljs"><code><div>1. POST /api/products/create              → Get productId
+2. POST /api/products/{{productId}}/variants (3x)  → Add S, M, L sizes
+3. GET /api/products/{{productId}}        → View auto-calculated stock
+</div></code></pre>
+<h3 id="workflow-2-customer-shopping">Workflow 2: Customer Shopping</h3>
+<pre class="hljs"><code><div>1. POST /api/auth/login                   → Get authToken
+2. GET /api/products                      → Browse products
+3. POST /api/cart/items                   → Add to cart
+4. GET /api/cart/summary                  → View total
+5. DELETE /api/cart/items/{{id}}          → Remove items
+</div></code></pre>
+<h3 id="workflow-3-admin-stock-management">Workflow 3: Admin Stock Management</h3>
+<pre class="hljs"><code><div>1. GET /api/admin/products                → Find product
+2. PUT /api/products/{{id}}/variants/{{variantId}}  → Update stock
+3. GET /api/admin/carts                   → Check all carts
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%90%9B-troubleshooting">🐛 Troubleshooting</h2>
+<h3 id="error-%22this-product-has-variants-you-must-select-a-variant%22">Error: &quot;This product has variants. You must select a variant.&quot;</h3>
+<ul>
+<li>Solution: For products with <code>HasVariants=true</code>, add <code>productVariantId</code> to cart request</li>
+</ul>
+<h3 id="error-%22this-product-does-not-have-variants-variantid-must-not-be-provided%22">Error: &quot;This product does not have variants. VariantId must not be provided.&quot;</h3>
+<ul>
+<li>Solution: For products with <code>HasVariants=false</code>, remove <code>productVariantId</code> from cart request</li>
+</ul>
+<h3 id="error-%22insufficient-stock%22">Error: &quot;Insufficient stock&quot;</h3>
+<ul>
+<li>Check product stock: <code>GET /api/products/{{productId}}</code></li>
+<li>For variants: Check specific variant availability</li>
+<li>Stock includes items already in cart</li>
+</ul>
+<h3 id="error-%22unauthorized%22-401">Error: &quot;Unauthorized&quot; (401)</h3>
+<ul>
+<li>Ensure authToken is set in environment</li>
+<li>Re-login to get fresh token</li>
+<li>Check Authorization header is set to Bearer token</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%93%8D-addresses-management">📍 Addresses Management</h2>
+<p><strong>⚠️ Important</strong>: Users must create at least one address before placing orders.</p>
+<h3 id="get-my-addresses">Get My Addresses</h3>
+<pre class="hljs"><code><div>GET /api/addresses
+</div></code></pre>
+<p><strong>Returns:</strong> List of user's saved addresses</p>
+<h3 id="create-address">Create Address</h3>
+<pre class="hljs"><code><div>POST /api/addresses
+{
+  &quot;country&quot;: &quot;USA&quot;,
+  &quot;city&quot;: &quot;New York&quot;,
+  &quot;street&quot;: &quot;123 Main St, Apt 4B&quot;,
+  &quot;postalCode&quot;: &quot;10001&quot;
+}
+</div></code></pre>
+<p><strong>Response:</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"success"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Address created successfully."</span>,
+  <span class="hljs-attr">"data"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"country"</span>: <span class="hljs-string">"USA"</span>,
+    <span class="hljs-attr">"city"</span>: <span class="hljs-string">"New York"</span>,
+    <span class="hljs-attr">"street"</span>: <span class="hljs-string">"123 Main St, Apt 4B"</span>,
+    <span class="hljs-attr">"postalCode"</span>: <span class="hljs-string">"10001"</span>
+  }
+}
+</div></code></pre>
+<h3 id="update-address">Update Address</h3>
+<pre class="hljs"><code><div>PUT /api/addresses/{id}
+{
+  &quot;country&quot;: &quot;USA&quot;,
+  &quot;city&quot;: &quot;Los Angeles&quot;,
+  &quot;street&quot;: &quot;456 Oak Ave&quot;,
+  &quot;postalCode&quot;: &quot;90001&quot;
+}
+</div></code></pre>
+<h3 id="delete-address">Delete Address</h3>
+<pre class="hljs"><code><div>DELETE /api/addresses/{id}
+</div></code></pre>
+<p><strong>Note:</strong> Cannot delete an address if it's used in active orders.</p>
+<hr>
+<h2 id="%F0%9F%92%B3-orders--payments">💳 Orders &amp; Payments</h2>
+<h3 id="create-an-order">Create an Order</h3>
+<pre class="hljs"><code><div>POST /api/orders
+{
+  &quot;addressId&quot;: 1,
+  &quot;orderItems&quot;: [
+    {
+      &quot;productId&quot;: 1,
+      &quot;quantity&quot;: 2,
+      &quot;price&quot;: 99.99
+    }
+  ],
+  &quot;couponCode&quot;: &quot;SAVE10&quot;
+}
+</div></code></pre>
+<p><strong>Response:</strong> <code>{ &quot;id&quot;: 101, &quot;status&quot;: &quot;Pending&quot;, &quot;totalAmount&quot;: 189.98 }</code></p>
+<h3 id="create-payment-intent-for-order">Create Payment Intent for Order</h3>
+<pre class="hljs"><code><div>POST /api/orders/{{orderId}}/payment
+{
+  &quot;paymentMethodType&quot;: &quot;card&quot;
+}
+</div></code></pre>
+<p><strong>Response:</strong> <code>{ &quot;clientSecret&quot;: &quot;pi_test_xx&quot;, &quot;paymentIntentId&quot;: &quot;pi_test_xx&quot; }</code></p>
+<h3 id="get-order-details">Get Order Details</h3>
+<pre class="hljs"><code><div>GET /api/orders/{{orderId}}
+</div></code></pre>
+<h3 id="get-users-orders">Get User's Orders</h3>
+<pre class="hljs"><code><div>GET /api/orders/my-orders?page=1&amp;limit=10
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%8E%9F%EF%B8%8F-coupons--user-access">🎟️ Coupons &amp; User Access</h2>
+<h3 id="get-my-available-coupons-user">Get My Available Coupons (User)</h3>
+<pre class="hljs"><code><div>GET /api/coupons/my-coupons?page=1&amp;limit=10
+</div></code></pre>
+<p><strong>Only returns coupons assigned to current user</strong></p>
+<h3 id="get-active-coupons-public">Get Active Coupons (Public)</h3>
+<pre class="hljs"><code><div>GET /api/coupons/active
+</div></code></pre>
+<h3 id="assign-coupon-to-user-admin">Assign Coupon to User (Admin)</h3>
+<pre class="hljs"><code><div>POST /api/coupons/{{couponId}}/assign-user/{{userId}}
+{
+  &quot;canUse&quot;: true
+}
+</div></code></pre>
+<h3 id="bulk-assign-coupon-admin">Bulk Assign Coupon (Admin)</h3>
+<pre class="hljs"><code><div>POST /api/coupons/{{couponId}}/assign-users
+{
+  &quot;userIds&quot;: [&quot;user-1&quot;, &quot;user-2&quot;, &quot;user-3&quot;],
+  &quot;canUse&quot;: true
+}
+</div></code></pre>
+<h3 id="remove-coupon-from-user-admin">Remove Coupon from User (Admin)</h3>
+<pre class="hljs"><code><div>DELETE /api/coupons/{{couponId}}/remove-user/{{userId}}
+</div></code></pre>
+<h3 id="get-coupon-users-admin">Get Coupon Users (Admin)</h3>
+<pre class="hljs"><code><div>GET /api/coupons/{{couponId}}/users?page=1&amp;limit=10
+</div></code></pre>
+<p><strong>Returns:</strong> List of users assigned to coupon with their usage info</p>
+<hr>
+<h2 id="%F0%9F%94%94-testing-payment-flow">🔔 Testing Payment Flow</h2>
+<p>⚠️ <strong>Important</strong>: Before testing payments locally, you need:</p>
+<ol>
+<li>
+<p><strong>Stripe CLI running</strong>:</p>
+<pre class="hljs"><code><div>stripe listen --forward-to https://localhost:7286/api/webhooks/stripe
+</div></code></pre>
+</li>
+<li>
+<p><strong>Application running</strong>:</p>
+<pre class="hljs"><code><div>dotnet run
+</div></code></pre>
+</li>
+<li>
+<p><strong>See <a href="./STRIPE_TESTING_GUIDE.md">STRIPE_TESTING_GUIDE.md</a></strong> for complete step-by-step flow with:</p>
+<ul>
+<li>Test card numbers</li>
+<li>Payment confirmation in Stripe Dashboard</li>
+<li>Webhook verification</li>
+<li>Coupon application testing</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="undefined">�📋 Environment Variables</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>baseUrl</code></td>
+<td>API base URL</td>
+<td><code>http://localhost:7286/api</code></td>
+</tr>
+<tr>
+<td><code>adminBaseUrl</code></td>
+<td>Admin endpoints</td>
+<td><code>http://localhost:7286/api/admin</code></td>
+</tr>
+<tr>
+<td><code>authToken</code></td>
+<td>JWT token (auto-set)</td>
+<td><code>Bearer eyJhbGc...</code></td>
+</tr>
+<tr>
+<td><code>userId</code></td>
+<td>Current user ID (auto-set)</td>
+<td><code>user-123</code></td>
+</tr>
+<tr>
+<td><code>productId</code></td>
+<td>Product ID for testing</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>variantId</code></td>
+<td>Variant ID for testing</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>cartId</code></td>
+<td>Cart ID for admin testing</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>categoryId</code></td>
+<td>Category ID</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>brandId</code></td>
+<td>Brand ID</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>orderId</code></td>
+<td>Order ID (set after create)</td>
+<td><code>101</code></td>
+</tr>
+<tr>
+<td><code>addressId</code></td>
+<td>Address ID for orders</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>couponCode</code></td>
+<td>Coupon code to test</td>
+<td><code>SAVE10</code></td>
+</tr>
+<tr>
+<td><code>couponId</code></td>
+<td>Coupon ID for admin ops</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td>Pagination page</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>pageSize</code></td>
+<td>Items per page</td>
+<td><code>10</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="%E2%9C%85-best-practices">✅ Best Practices</h2>
+<ol>
+<li><strong>Always set authToken</strong> in environment after login</li>
+<li><strong>Use collection variables</strong> (<code>{{productId}}</code>) instead of hardcoding IDs</li>
+<li><strong>Test with pagination</strong> for large datasets</li>
+<li><strong>Validate stock</strong> before adding to cart in UI</li>
+<li><strong>Handle variant selection</strong> for products with multiple options</li>
+<li><strong>Cache computed stock</strong> on client for better UX</li>
+</ol>
+<hr>
+<h2 id="%F0%9F%93%9E-api-support">📞 API Support</h2>
+<p>For more information, refer to:</p>
+<ul>
+<li>Base URL: <code>http://localhost:7286</code></li>
+<li>Swagger/OpenAPI: <code>/swagger/index.html</code> (if available)</li>
+<li>Environment: Development (local testing)</li>
+</ul>
+<hr>
+<p><strong>Last Updated:</strong> March 4, 2026</p>
+
+</body>
+
+</html>

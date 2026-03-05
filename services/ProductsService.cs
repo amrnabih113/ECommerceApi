@@ -186,6 +186,59 @@ namespace ECommerce.Services
             return ApiResponse<IEnumerable<string>>.SuccessResponse(recommendations, "Product recommendations fetched successfully.");
         }
 
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetSalesProductsAsync(ProductQueryDto query, string? userId = null)
+        {
+            var (products, totalItems) = await _unitOfWork.Products.GetSalesProductsAsync(query);
+
+            var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                foreach (var dto in dtos)
+                {
+                    var isFavorite = await _unitOfWork.WishList.ExistsAsync(userId, dto.Id);
+                    dto.IsFavorite = isFavorite;
+                }
+            }
+
+            var pagedResult = new PageResult<ProductDto>
+            {
+                Items = dtos,
+                TotalItems = totalItems,
+                Page = query.Page,
+                PageSize = query.PageSize
+            };
+
+            return ApiResponse<PageResult<ProductDto>>.SuccessResponse(pagedResult, "Sale products fetched successfully.");
+        }
+
+        public async Task<ApiResponse<PageResult<ProductDto>>> GetBestSalesProductsAsync(ProductQueryDto query, string? userId = null)
+        {
+            var (products, totalItems) = await _unitOfWork.Products.GetBestSalesProductsAsync(query);
+
+            var dtos = _mapper.Map<IEnumerable<ProductDto>>(products);
+
+            // Set IsFavorite for each product if userId is provided
+            if (!string.IsNullOrEmpty(userId))
+            {
+                foreach (var dto in dtos)
+                {
+                    var isFavorite = await _unitOfWork.WishList.ExistsAsync(userId, dto.Id);
+                    dto.IsFavorite = isFavorite;
+                }
+            }
+
+            var pagedResult = new PageResult<ProductDto>
+            {
+                Items = dtos,
+                TotalItems = totalItems,
+                Page = query.Page,
+                PageSize = query.PageSize
+            };
+
+            return ApiResponse<PageResult<ProductDto>>.SuccessResponse(pagedResult, "Best selling products fetched successfully.");
+        }
+
 
     }
 

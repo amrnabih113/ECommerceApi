@@ -163,6 +163,73 @@ namespace ECommerce.Repositories
                 .ToListAsync();
         }
 
+        public async Task<(IEnumerable<Product> Items, int TotalItems)> GetSalesProductsAsync(ProductQueryDto query)
+        {
+            query.Page = query.Page <= 0 ? 1 : query.Page;
+            query.PageSize = query.PageSize <= 0 ? 10 : query.PageSize;
+
+            var productsQuery = BuildQuery(query);
+            // Filter for products with discount
+            productsQuery = productsQuery.Where(p => p.HasDiscount == true);
+
+            var totalItems = await productsQuery.CountAsync();
+
+            var items = await productsQuery
+                .Skip((query.Page - 1) * query.PageSize)
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            return (items, totalItems);
+        }
+
+        public async Task<(IEnumerable<Product> Items, int TotalItems)> GetBestSalesProductsAsync(ProductQueryDto query)
+        {
+            query.Page = query.Page <= 0 ? 1 : query.Page;
+            query.PageSize = query.PageSize <= 0 ? 10 : query.PageSize;
+
+            // Join with OrderItems to calculate total quantity sold and order by sales
+            var bestSalesQuery = _dbSet
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.Images)
+                .Include(p => p.Variants)
+                .GroupJoin(
+                    _context.Set<OrderItem>(),
+                    p => p.Id,
+                    oi => oi.ProductId,
+                    (product, orderItems) => new
+                    {
+                        Product = product,
+                        TotalSold = orderItems.Sum(oi => oi.Quantity)
+                    })
+                .OrderByDescending(x => x.TotalSold)
+                .ThenByDescending(x => x.Product.CreatedAt)
+                .AsNoTracking();
+
+            // Apply active filter if needed
+            if (query.IsActive.HasValue)
+                bestSalesQuery = bestSalesQuery.Where(x => x.Product.IsActive == query.IsActive.Value);
+            else
+                bestSalesQuery = bestSalesQuery.Where(x => x.Product.IsActive == true);
+
+            // Apply category and brand filters
+            if (query.CategoryId.HasValue)
+                bestSalesQuery = bestSalesQuery.Where(x => x.Product.CategoryId == query.CategoryId.Value);
+
+            if (query.BrandId.HasValue)
+                bestSalesQuery = bestSalesQuery.Where(x => x.Product.BrandId == query.BrandId.Value);
+
+            var totalItems = await bestSalesQuery.CountAsync();
+
+            var items = await bestSalesQuery
+                .Skip((query.Page - 1) * query.PageSize)
+                .Take(query.PageSize)
+                .Select(x => x.Product)
+                .ToListAsync();
+
+            return (items, totalItems);
+        }
+
         public override async Task<Product?> GetByIdAsync(int id)
         {
             return await _dbSet

@@ -1,7 +1,7 @@
 {
     "info": {
         "name": "ECommerce API",
-        "description": "Complete API collection for ECommerce platform with Authentication, Products, Cart, Orders, Payments (Stripe), Coupons, and Webhooks. See /postman/STRIPE_TESTING_GUIDE.md for payment testing workflow.",
+        "description": "Complete API collection for ECommerce platform with Authentication, Products, Cart, Orders, Payments (Stripe), Coupons, Banners, and Webhooks. See /postman/STRIPE_TESTING_GUIDE.md for payment testing workflow and /postman/BANNERS_ENDPOINTS.md for banners management.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "_exporter_id": "1",
         "_postman_variable_scope": "environment"
@@ -1804,6 +1804,140 @@
                             "body": ""
                         }
                     ]
+                },
+                {
+                    "name": "Get Products on Sale",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/sales?page=1&pageSize=10&sortBy=price&sortOrder=desc&minPrice=10&maxPrice=200",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "sales"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10",
+                                    "description": "Items per page"
+                                },
+                                {
+                                    "key": "sortBy",
+                                    "value": "price",
+                                    "description": "Sort field: name, price, createdAt",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "sortOrder",
+                                    "value": "desc",
+                                    "description": "Sort direction: asc or desc",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "minPrice",
+                                    "value": "10",
+                                    "description": "Minimum price filter",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "maxPrice",
+                                    "value": "200",
+                                    "description": "Maximum price filter",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "Get products with discounts (on sale)"
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Sale products fetched successfully\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Discounted T-Shirt\",\"description\":\"50% off\",\"price\":29.99,\"priceAfterDiscount\":14.99,\"hasDiscount\":true,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false}],\"totalItems\":1,\"page\":1,\"pageSize\":10}}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Best Selling Products",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{authToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/products/best-sales?page=1&pageSize=10&categoryId={{categoryId}}&brandId={{brandId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "products",
+                                "best-sales"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1",
+                                    "description": "Page number"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10",
+                                    "description": "Items per page"
+                                },
+                                {
+                                    "key": "categoryId",
+                                    "value": "{{categoryId}}",
+                                    "description": "Filter by category ID",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "brandId",
+                                    "value": "{{brandId}}",
+                                    "description": "Filter by brand ID",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "Get best-selling products ordered by sales volume"
+                    },
+                    "response": [
+                        {
+                            "name": "Success",
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\"success\":true,\"message\":\"Best selling products fetched successfully\",\"data\":{\"items\":[{\"id\":1,\"name\":\"Best Seller T-Shirt\",\"description\":\"All time favorite\",\"price\":29.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":true,\"isFavorite\":false},{\"id\":2,\"name\":\"Popular Polo\",\"description\":\"Customer favorite\",\"price\":34.99,\"categoryId\":1,\"brandId\":1,\"hasVariants\":false,\"isFavorite\":true}],\"totalItems\":2,\"page\":1,\"pageSize\":10}}"
+                        }
+                    ]
                 }
             ]
         },
@@ -3527,6 +3661,194 @@
             ]
         },
         {
+            "name": "Banners",
+            "item": [
+                {
+                    "name": "Get All Banners (Admin)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/banners?page=1&pageSize=10",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                }
+                            ]
+                        },
+                        "description": "Get all banners with pagination (Admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Active Banners (Public)",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/banners/active",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners",
+                                "active"
+                            ]
+                        },
+                        "description": "Get active banners for display (No authentication required)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Banner by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/banners/{{bannerId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners",
+                                "{{bannerId}}"
+                            ]
+                        },
+                        "description": "Get banner by ID (No authentication required)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Banner",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"imageUrl\": \"https://example.com/banners/summer-sale.jpg\",\n  \"isActive\": true,\n  \"title\": \"Summer Sale 2026\",\n  \"description\": \"50% off on all summer collection\",\n  \"link\": \"https://example.com/summer-sale\",\n  \"displayOrder\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/banners",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners"
+                            ]
+                        },
+                        "description": "Create a new banner (Admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Banner",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"imageUrl\": \"https://example.com/banners/summer-sale-updated.jpg\",\n  \"isActive\": true,\n  \"title\": \"Updated Summer Sale\",\n  \"displayOrder\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/banners/{{bannerId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners",
+                                "{{bannerId}}"
+                            ]
+                        },
+                        "description": "Update a banner (Admin only) - All fields are optional"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Toggle Banner Active Status",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/banners/{{bannerId}}/toggle",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners",
+                                "{{bannerId}}",
+                                "toggle"
+                            ]
+                        },
+                        "description": "Toggle banner active status (Admin only)"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Banner",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/banners/{{bannerId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "banners",
+                                "{{bannerId}}"
+                            ]
+                        },
+                        "description": "Delete a banner (Admin only)"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
             "name": "Webhooks",
             "item": [
                 {
@@ -3643,6 +3965,11 @@
         {
             "key": "couponCode",
             "value": "SAVE10",
+            "type": "string"
+        },
+        {
+            "key": "bannerId",
+            "value": "1",
             "type": "string"
         }
     ]

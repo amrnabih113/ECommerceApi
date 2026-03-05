@@ -69,9 +69,11 @@ namespace ECommerce.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<UserCoupon> UserCoupons { get; set; }
         public DbSet<WishList> WishLists { get; set; }
+        public DbSet<Banner> Banners { get; set; }
 
     }
 }
