@@ -88,38 +88,31 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse<OrderDto>> CreateOrderAsync(CreateOrderDto dto, string userId)
         {
-            _logger.LogInformation("CreateOrderAsync called for user {UserId} with {ItemCount} items", userId, dto.OrderItems?.Count ?? 0);
-
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                _logger.LogInformation("Validating address {AddressId} for user {UserId}", dto.AddressId, userId);
-
                 // Validate address
                 var address = await _context.Set<Address>().FindAsync(dto.AddressId);
                 if (address == null)
                 {
-                    _logger.LogWarning("Address {AddressId} not found", dto.AddressId);
+                    _logger.LogWarning("Order creation blocked: address not found. UserId: {UserId}, AddressId: {AddressId}", userId, dto.AddressId);
                     return ApiResponse<OrderDto>.Error("Invalid shipping address - address not found.");
                 }
 
                 if (address.UserId != userId)
                 {
-                    _logger.LogWarning("Address {AddressId} does not belong to user {UserId}", dto.AddressId, userId);
+                    _logger.LogWarning("Order creation blocked: address ownership mismatch. UserId: {UserId}, AddressId: {AddressId}", userId, dto.AddressId);
                     return ApiResponse<OrderDto>.Error("Invalid shipping address - address does not belong to user.");
                 }
-
-                _logger.LogInformation("Address validated successfully");
 
                 // Calculate order totals
                 decimal subTotal = 0;
                 var orderItems = new List<OrderItem>();
                 if (dto.OrderItems == null || !dto.OrderItems.Any())
                 {
-                    _logger.LogWarning("Order has no items");
+                    _logger.LogWarning("Order creation blocked: empty order items. UserId: {UserId}", userId);
                     return ApiResponse<OrderDto>.Error("Order must contain at least one item.");
                 }
-                _logger.LogInformation("Processing {Count} order items", dto.OrderItems.Count);
 
                 foreach (var item in dto.OrderItems)
                 {
@@ -135,12 +128,14 @@ namespace ECommerce.Services
                         if (variant == null)
                         {
                             await transaction.RollbackAsync();
+                            _logger.LogWarning("Order creation blocked: variant not found. UserId: {UserId}, ProductVariantId: {ProductVariantId}", userId, item.ProductVariantId.Value);
                             return ApiResponse<OrderDto>.Error($"Product variant {item.ProductVariantId.Value} not found.");
                         }
 
                         if (variant.ProductId != item.ProductId)
                         {
                             await transaction.RollbackAsync();
+                            _logger.LogWarning("Order creation blocked: variant-product mismatch. UserId: {UserId}, ProductId: {ProductId}, ProductVariantId: {ProductVariantId}", userId, item.ProductId, item.ProductVariantId.Value);
                             return ApiResponse<OrderDto>.Error($"Product variant {item.ProductVariantId.Value} does not belong to product {item.ProductId}.");
                         }
 
@@ -148,6 +143,7 @@ namespace ECommerce.Services
                         if (variant.StockQuantity < item.Quantity)
                         {
                             await transaction.RollbackAsync();
+                            _logger.LogWarning("Order creation blocked: insufficient variant stock. UserId: {UserId}, ProductVariantId: {ProductVariantId}, Available: {Available}, Requested: {Requested}", userId, item.ProductVariantId.Value, variant.StockQuantity, item.Quantity);
                             return ApiResponse<OrderDto>.Error($"Insufficient stock for variant. Available: {variant.StockQuantity}, Requested: {item.Quantity}");
                         }
 
@@ -172,12 +168,14 @@ namespace ECommerce.Services
                         if (product == null || !product.IsActive)
                         {
                             await transaction.RollbackAsync();
+                            _logger.LogWarning("Order creation blocked: product missing/inactive. UserId: {UserId}, ProductId: {ProductId}", userId, item.ProductId);
                             return ApiResponse<OrderDto>.Error($"Product {item.ProductId} not found or inactive.");
                         }
 
                         if (product.HasVariants)
                         {
                             await transaction.RollbackAsync();
+                            _logger.LogWarning("Order creation blocked: variant required. UserId: {UserId}, ProductId: {ProductId}", userId, item.ProductId);
                             return ApiResponse<OrderDto>.Error($"Product {item.ProductId} requires variant selection.");
                         }
 
@@ -185,6 +183,7 @@ namespace ECommerce.Services
                         if (product.StockQuantity < item.Quantity)
                         {
                             await transaction.RollbackAsync();
+                            _logger.LogWarning("Order creation blocked: insufficient product stock. UserId: {UserId}, ProductId: {ProductId}, Available: {Available}, Requested: {Requested}", userId, item.ProductId, product.StockQuantity, item.Quantity);
                             return ApiResponse<OrderDto>.Error($"Insufficient stock for product '{product.Name}'. Available: {product.StockQuantity}, Requested: {item.Quantity}");
                         }
 
@@ -218,6 +217,7 @@ namespace ECommerce.Services
                     if (coupon == null)
                     {
                         transaction.Rollback();
+                        _logger.LogWarning("Order creation blocked: coupon not found. UserId: {UserId}, CouponCode: {CouponCode}", userId, dto.CouponCode);
                         return ApiResponse<OrderDto>.Error("Coupon code not found.");
                     }
 
@@ -226,6 +226,7 @@ namespace ECommerce.Services
                     if (!userHasAccess)
                     {
                         transaction.Rollback();
+                        _logger.LogWarning("Order creation blocked: coupon access denied. UserId: {UserId}, CouponId: {CouponId}", userId, coupon.Id);
                         return ApiResponse<OrderDto>.Error("You don't have access to this coupon.");
                     }
 
@@ -265,9 +266,6 @@ namespace ECommerce.Services
                 decimal taxAmount = (subTotal - couponDiscount) * 0.1m; // 10% tax
                 decimal totalAmount = subTotal + shippingPrice + taxAmount - couponDiscount;
 
-                // Create order
-                _logger.LogInformation("Creating order with SubTotal: {SubTotal}, TotalAmount: {TotalAmount}", subTotal, totalAmount);
-
                 var order = new Order
                 {
                     UserId = userId,
@@ -283,11 +281,11 @@ namespace ECommerce.Services
                     OrderItems = orderItems
                 };
 
-                _logger.LogInformation("Saving order to database");
                 var createdOrder = await _unitOfWork.Orders.AddAsync(order);
-                _logger.LogInformation("Order saved with ID: {OrderId}", createdOrder.Id);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
+
+                _logger.LogInformation("Order created successfully. OrderId: {OrderId}, UserId: {UserId}, TotalAmount: {TotalAmount}", createdOrder.Id, userId, totalAmount);
 
                 // Load full order details
                 var fullOrder = await _unitOfWork.Orders.GetOrderWithDetailsAsync(createdOrder.Id);
@@ -334,34 +332,30 @@ namespace ECommerce.Services
 
         public async Task<ApiResponse> CancelOrderAsync(int orderId, string userId)
         {
-            _logger.LogInformation("CancelOrderAsync called for order {OrderId} by user {UserId}", orderId, userId);
-
             var order = await _unitOfWork.Orders.GetUserOrderWithDetailsAsync(orderId, userId);
             if (order == null)
             {
-                _logger.LogWarning("Order {OrderId} not found for user {UserId}", orderId, userId);
+                _logger.LogWarning("Order cancellation blocked: order not found/owned. UserId: {UserId}, OrderId: {OrderId}", userId, orderId);
                 return ApiResponse.ErrorResponse("Order not found.");
             }
 
             if (order.Status != OrderStatus.Pending && order.Status != OrderStatus.Paid)
             {
-                _logger.LogWarning("Cannot cancel order {OrderId} with status {Status}", orderId, order.Status);
+                _logger.LogWarning("Order cancellation blocked: invalid status. UserId: {UserId}, OrderId: {OrderId}, CurrentStatus: {Status}", userId, orderId, order.Status);
                 return ApiResponse.ErrorResponse("Only pending or paid orders can be cancelled.");
             }
 
             // Check if order was paid and has payment - refund BEFORE changing status
             if (order.Status == OrderStatus.Paid && order.Payment != null)
             {
-                _logger.LogInformation("Initiating refund for paid order {OrderId}", orderId);
                 var refundSuccess = await _stripeService.RefundPaymentAsync(order.Payment.StripePaymentIntentId);
 
                 if (refundSuccess)
                 {
-                    _logger.LogInformation("Refund initiated for payment {PaymentId}", order.Payment.Id);
                 }
                 else
                 {
-                    _logger.LogWarning("Refund failed for order {OrderId}", orderId);
+                    _logger.LogError("Refund failed while cancelling order {OrderId}", orderId);
                     return ApiResponse.ErrorResponse("Failed to process refund. Order cancellation aborted.");
                 }
             }
@@ -372,7 +366,7 @@ namespace ECommerce.Services
             await _unitOfWork.Orders.UpdateAsync(order);
             await _unitOfWork.CompleteAsync();
 
-            _logger.LogInformation("Order {OrderId} cancelled successfully", orderId);
+            _logger.LogInformation("Order cancelled. OrderId: {OrderId}, UserId: {UserId}", orderId, userId);
             return ApiResponse.SuccessResponse("Order cancelled successfully.");
         }
 
@@ -390,6 +384,8 @@ namespace ECommerce.Services
                 return ApiResponse<PaymentIntentResponseDto>.Error("Payment already initiated for this order.");
 
             var (clientSecret, paymentIntentId) = await _stripeService.CreatePaymentIntentAsync(order);
+
+            _logger.LogInformation("Payment intent created. OrderId: {OrderId}, UserId: {UserId}, PaymentIntentId: {PaymentIntentId}", orderId, userId, paymentIntentId);
 
             var response = new PaymentIntentResponseDto
             {

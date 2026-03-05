@@ -17,13 +17,32 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Serilog;
+using Serilog.Events;
 
 
 public partial class Program
 {
     private static async Task Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+            .MinimumLevel.Override("System", LogEventLevel.Warning)
+            .Enrich.FromLogContext()
+            .Enrich.WithProperty("Application", "ECommerce-API")
+            .WriteTo.Console()
+            .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        try
+        {
+            Log.Information("Starting ECommerce API");
+
         var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog();
 
         // Configurations
         builder.Services.Configure<JWTConfig>(builder.Configuration.GetSection("Jwt"));
@@ -262,6 +281,18 @@ public partial class Program
 
         app.MapControllers();
         app.MapHealthChecks("/health");
-        await app.RunAsync();
+
+            Log.Information("ECommerce API started successfully");
+            await app.RunAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "ECommerce API terminated unexpectedly");
+            throw;
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }

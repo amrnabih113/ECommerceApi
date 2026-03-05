@@ -40,13 +40,11 @@ namespace ECommerce.Controllers
 
             try
             {
-                _logger.LogInformation("Webhook received. Event JSON: {Json}", json);
+                _logger.LogInformation("Stripe webhook received.");
 
                 // TODO: For production, use ConstructEvent for signature verification
                 // For local testing with Stripe CLI, we skip signature verification
                 var stripeEvent = EventUtility.ParseEvent(json);
-
-                _logger.LogInformation($"Stripe webhook received: {stripeEvent?.Type ?? "NULL"}");
 
                 if (stripeEvent == null)
                 {
@@ -54,11 +52,12 @@ namespace ECommerce.Controllers
                     return BadRequest(ApiResponse.ErrorResponse("Invalid webhook event"));
                 }
 
+                _logger.LogInformation("Stripe webhook event parsed. EventType: {EventType}", stripeEvent.Type);
+
                 // Handle the event
                 switch (stripeEvent.Type)
                 {
                     case "payment_intent.succeeded":
-                        _logger.LogInformation("Processing payment_intent.succeeded");
                         var paymentIntent = stripeEvent.Data?.Object as PaymentIntent;
 
                         if (paymentIntent == null)
@@ -67,15 +66,14 @@ namespace ECommerce.Controllers
                             return BadRequest(ApiResponse.ErrorResponse("Invalid payment intent in webhook event"));
                         }
 
-                        _logger.LogInformation($"PaymentIntent ID from webhook: {paymentIntent.Id}");
                         var result = await _stripeService.HandlePaymentSuccessAsync(paymentIntent.Id);
 
                         if (result == null)
                         {
-                            _logger.LogWarning($"Payment not found in database for PaymentIntent: {paymentIntent.Id}");
+                            _logger.LogWarning("Payment record not found for successful webhook PaymentIntentId: {PaymentIntentId}", paymentIntent.Id);
                             return BadRequest(ApiResponse.ErrorResponse($"Payment not found for PaymentIntent: {paymentIntent.Id}. Make sure to create the payment intent through POST /api/orders/{{orderId}}/payment first."));
                         }
-                        _logger.LogInformation($"Payment succeeded for PaymentIntent: {paymentIntent.Id}");
+                        _logger.LogInformation("Payment success webhook processed. PaymentIntentId: {PaymentIntentId}", paymentIntent.Id);
                         break;
 
                     case "payment_intent.payment_failed":
@@ -86,7 +84,7 @@ namespace ECommerce.Controllers
                                 failedIntent.Id,
                                 failedIntent.LastPaymentError?.Message ?? "Payment failed"
                             );
-                            _logger.LogWarning($"Payment failed for PaymentIntent: {failedIntent.Id}");
+                            _logger.LogWarning("Payment failed webhook received. PaymentIntentId: {PaymentIntentId}", failedIntent.Id);
                         }
                         break;
 
@@ -94,13 +92,13 @@ namespace ECommerce.Controllers
                         var charge = stripeEvent.Data.Object as Charge;
                         if (charge != null && charge.PaymentIntentId != null)
                         {
-                            _logger.LogInformation($"Charge refunded for PaymentIntent: {charge.PaymentIntentId}");
+                            _logger.LogInformation("Charge refunded webhook received. PaymentIntentId: {PaymentIntentId}", charge.PaymentIntentId);
                             // Refund is already handled in RefundPaymentAsync method
                         }
                         break;
 
                     default:
-                        _logger.LogInformation($"Unhandled event type: {stripeEvent.Type}");
+                        _logger.LogInformation("Unhandled Stripe webhook event type: {EventType}", stripeEvent.Type);
                         break;
                 }
 
@@ -108,12 +106,12 @@ namespace ECommerce.Controllers
             }
             catch (StripeException e)
             {
-                _logger.LogError($"Stripe webhook error: {e.Message}");
+                _logger.LogError(e, "Stripe webhook error");
                 return BadRequest(ApiResponse.ErrorResponse($"Webhook error: {e.Message}"));
             }
             catch (Exception e)
             {
-                _logger.LogError($"Webhook processing error: {e.Message}");
+                _logger.LogError(e, "Webhook processing error");
                 return StatusCode(500, ApiResponse.ErrorResponse($"Internal error: {e.Message}"));
             }
         }

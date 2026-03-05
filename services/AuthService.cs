@@ -8,6 +8,7 @@ using ECommerce.Interfaces.Services;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Services
 {
@@ -18,19 +19,22 @@ namespace ECommerce.Services
         private readonly IRefreshTokenRepository _refreshRepo;
         private readonly IEmailService _emailService;
         private readonly AppDbContext _context;
+        private readonly ILogger<AuthService> _logger;
 
         public AuthService(
             AppDbContext context,
             UserManager<ApplicationUser> userManager,
             ITokenService tokenService,
             IRefreshTokenRepository refreshRepo,
-            IEmailService emailService)
+            IEmailService emailService,
+            ILogger<AuthService> logger)
         {
             _context = context;
             _userManager = userManager;
             _tokenService = tokenService;
             _refreshRepo = refreshRepo;
             _emailService = emailService;
+            _logger = logger;
         }
 
 
@@ -54,6 +58,7 @@ namespace ECommerce.Services
                 throw new BadRequestException("Failed to assign role.");
 
             await SendOtpAsync(user);
+            _logger.LogInformation("User registration created. UserId: {UserId}", user.Id);
 
             var response = new RegisterResponseDto
             {
@@ -70,17 +75,24 @@ namespace ECommerce.Services
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user == null)
+            {
+                _logger.LogWarning("Failed login attempt for unknown email {Email}", dto.Email);
                 throw new UnauthorizedException("Invalid Email or Password.");
+            }
 
             if (!user.EmailConfirmed)
             {
+                _logger.LogWarning("Login blocked for unverified email. UserId: {UserId}", user.Id);
                 await SendOtpAsync(user);
                 throw new BadRequestException("Email is not verified. OTP sent.");
             }
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, dto.Password);
             if (!passwordValid)
+            {
+                _logger.LogWarning("Failed login attempt for user {UserId}", user.Id);
                 throw new UnauthorizedException("Invalid Email or Password.");
+            }
 
             var roles = await _userManager.GetRolesAsync(user);
             var accessToken = _tokenService.GenerateAccessToken(user, roles.ToList());
@@ -96,6 +108,8 @@ namespace ECommerce.Services
 
             await _refreshRepo.AddAsync(refreshToken);
             await _refreshRepo.SaveAsync();
+
+            _logger.LogInformation("User login succeeded. UserId: {UserId}", user.Id);
 
             var response = new LoginResponseDto
             {
@@ -149,6 +163,8 @@ namespace ECommerce.Services
             await _refreshRepo.AddAsync(refreshToken);
             await _refreshRepo.SaveAsync();
 
+            _logger.LogInformation("Account verified successfully. UserId: {UserId}", user.Id);
+
             var response = new VerifyOtpResponseDto
             {
                 UserId = user.Id,
@@ -166,7 +182,10 @@ namespace ECommerce.Services
         {
             var user = await _userManager.FindByEmailAsync(dto.Email);
             if (user != null)
+            {
                 await SendOtpAsync(user);
+                _logger.LogInformation("Password reset OTP sent. UserId: {UserId}", user.Id);
+            }
 
             // Always return success message to prevent email enumeration
             return ApiResponse.SuccessResponse("OTP sent successfully.");
@@ -203,6 +222,8 @@ namespace ECommerce.Services
             _context.EmailOtps.Remove(otpRecord);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation("Password reset succeeded. UserId: {UserId}", user.Id);
+
             return ApiResponse.SuccessResponse("Password reset successfully.");
         }
 
@@ -213,7 +234,10 @@ namespace ECommerce.Services
             var refreshRecord = await _refreshRepo.GetByHashAsync(hashedToken);
 
             if (refreshRecord == null || refreshRecord.ExpiresAt < DateTime.UtcNow)
+            {
+                _logger.LogWarning("Invalid or expired refresh token used.");
                 throw new UnauthorizedException("Invalid or expired refresh token.");
+            }
 
             var user = await _userManager.FindByIdAsync(refreshRecord.UserId);
             if (user == null)
@@ -236,6 +260,8 @@ namespace ECommerce.Services
 
             await _refreshRepo.AddAsync(newRefreshToken);
             await _refreshRepo.SaveAsync();
+
+            _logger.LogInformation("Refresh token rotated successfully. UserId: {UserId}", user.Id);
 
             return ApiResponse<object>.SuccessResponse(new
             {
@@ -260,6 +286,7 @@ namespace ECommerce.Services
             await _context.SaveChangesAsync();
 
             await _emailService.SendOtpAsync(user.Email!, otpCode);
+            _logger.LogInformation("OTP generated and sent. UserId: {UserId}", user.Id);
         }
     }
 

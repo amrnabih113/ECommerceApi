@@ -21,6 +21,7 @@ public class ExceptionMiddleware
         }
         catch (UnauthorizedException ex)
         {
+            _logger.LogWarning(ex, "Unauthorized operation blocked");
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsJsonAsync(
                 ApiResponse.ErrorResponse(ex.Message)
@@ -28,6 +29,7 @@ public class ExceptionMiddleware
         }
         catch (BadRequestException ex)
         {
+            _logger.LogWarning(ex, "Bad request validation failed");
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             await context.Response.WriteAsJsonAsync(
                 ApiResponse.ErrorResponse(ex.Message)
@@ -42,8 +44,7 @@ public class ExceptionMiddleware
         // }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unhandled exception occurred: {Message}\nStackTrace: {StackTrace}",
-                ex.Message, ex.StackTrace);
+            _logger.LogCritical(ex, "Unhandled exception caused 500 response");
 
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 

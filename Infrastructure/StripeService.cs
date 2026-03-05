@@ -3,6 +3,7 @@ using ECommerce.Interfaces.Repositories;
 using ECommerce.Interfaces.Services;
 using ECommerce.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Stripe;
 using PaymentMethod = ECommerce.core.utils.PaymentMethod;
 
@@ -13,54 +14,69 @@ namespace ECommerce.Infrastructure
         private readonly IPaymentsRepository _paymentsRepository;
         private readonly IOrdersRepository _ordersRepository;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<StripeService> _logger;
 
         public StripeService(
             IPaymentsRepository paymentsRepository,
             IOrdersRepository ordersRepository,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<StripeService> logger)
         {
             _paymentsRepository = paymentsRepository;
             _ordersRepository = ordersRepository;
             _configuration = configuration;
+            _logger = logger;
 
             // Set Stripe API key
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
+            if (string.IsNullOrWhiteSpace(StripeConfiguration.ApiKey))
+            {
+                _logger.LogCritical("Stripe secret key is missing. Payment operations cannot run.");
+                throw new InvalidOperationException("Stripe:SecretKey configuration is missing.");
+            }
         }
 
         public async Task<(string ClientSecret, string PaymentIntentId)> CreatePaymentIntentAsync(Models.Order order)
         {
-            var options = new PaymentIntentCreateOptions
+            try
             {
-                Amount = (long)(order.TotalAmount * 100), // Convert to cents
-                Currency = "usd",
-                AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                var options = new PaymentIntentCreateOptions
                 {
-                    Enabled = true,
-                },
-                Metadata = new Dictionary<string, string>
+                    Amount = (long)(order.TotalAmount * 100), // Convert to cents
+                    Currency = "usd",
+                    AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                    {
+                        Enabled = true,
+                    },
+                    Metadata = new Dictionary<string, string>
+                    {
+                        { "order_id", order.Id.ToString() },
+                        { "user_id", order.UserId ?? string.Empty }
+                    }
+                };
+
+                var service = new PaymentIntentService();
+                var paymentIntent = await service.CreateAsync(options);
+
+                // Create Payment record
+                var payment = new Payment
                 {
-                    { "order_id", order.Id.ToString() },
-                    { "user_id", order.UserId ?? string.Empty }
-                }
-            };
+                    OrderId = order.Id,
+                    StripePaymentIntentId = paymentIntent.Id,
+                    Amount = order.TotalAmount,
+                    Currency = "USD",
+                    Status = PaymentStatus.Pending,
+                    PaymentMethod = PaymentMethod.Card
+                };
 
-            var service = new PaymentIntentService();
-            var paymentIntent = await service.CreateAsync(options);
-
-            // Create Payment record
-            var payment = new Payment
+                await _paymentsRepository.AddAsync(payment);
+                return (paymentIntent.ClientSecret, paymentIntent.Id);
+            }
+            catch (Exception ex)
             {
-                OrderId = order.Id,
-                StripePaymentIntentId = paymentIntent.Id,
-                Amount = order.TotalAmount,
-                Currency = "USD",
-                Status = PaymentStatus.Pending,
-                PaymentMethod = PaymentMethod.Card
-            };
-
-            await _paymentsRepository.AddAsync(payment);
-
-            return (paymentIntent.ClientSecret, paymentIntent.Id);
+                _logger.LogError(ex, "Failed to create payment intent. OrderId: {OrderId}", order.Id);
+                throw;
+            }
         }
 
         public async Task<Payment?> ConfirmPaymentAsync(string paymentIntentId)
@@ -101,16 +117,12 @@ namespace ECommerce.Infrastructure
         {
             try
             {
-                Console.WriteLine($"[HandlePaymentSuccessAsync] Looking up payment for PaymentIntent: {paymentIntentId}");
-
                 var payment = await _paymentsRepository.GetByPaymentIntentIdAsync(paymentIntentId);
                 if (payment == null)
                 {
-                    Console.WriteLine($"[WARNING] Payment not found for PaymentIntent: {paymentIntentId}");
+                    _logger.LogWarning("Payment success received for unknown PaymentIntentId: {PaymentIntentId}", paymentIntentId);
                     return null;
                 }
-
-                Console.WriteLine($"[HandlePaymentSuccessAsync] Found payment ID: {payment.Id}, Order ID: {payment.OrderId}");
 
                 payment.Status = PaymentStatus.Succeeded;
                 payment.PaidAt = DateTime.UtcNow;
@@ -120,22 +132,18 @@ namespace ECommerce.Infrastructure
                 var service = new PaymentIntentService();
                 var paymentIntent = await service.GetAsync(paymentIntentId);
                 payment.StripeChargeId = paymentIntent.LatestChargeId;
-
-                Console.WriteLine($"[HandlePaymentSuccessAsync] Updating payment {payment.Id}");
                 await _paymentsRepository.UpdateAsync(payment);
 
                 // Update order status to Paid
-                Console.WriteLine($"[HandlePaymentSuccessAsync] Updating order {payment.OrderId} to Paid");
                 await _ordersRepository.UpdateOrderStatusAsync(payment.OrderId, core.utils.OrderStatus.Paid);
 
-                Console.WriteLine($"[SUCCESS] Payment {payment.Id} updated to Succeeded for Order {payment.OrderId}");
+                _logger.LogInformation("Payment marked as succeeded. PaymentId: {PaymentId}, OrderId: {OrderId}, PaymentIntentId: {PaymentIntentId}", payment.Id, payment.OrderId, paymentIntentId);
 
                 return payment;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] HandlePaymentSuccessAsync failed: {ex.Message}");
-                Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Failed to handle payment success. PaymentIntentId: {PaymentIntentId}", paymentIntentId);
                 throw;
             }
         }
@@ -155,6 +163,8 @@ namespace ECommerce.Infrastructure
             // Update order status to Cancelled
             await _ordersRepository.UpdateOrderStatusAsync(payment.OrderId, core.utils.OrderStatus.Cancelled);
 
+            _logger.LogError("Payment failed. PaymentId: {PaymentId}, OrderId: {OrderId}, PaymentIntentId: {PaymentIntentId}, Reason: {FailureReason}", payment.Id, payment.OrderId, paymentIntentId, payment.FailureReason);
+
             return payment;
         }
 
@@ -162,7 +172,10 @@ namespace ECommerce.Infrastructure
         {
             var payment = await _paymentsRepository.GetByPaymentIntentIdAsync(paymentIntentId);
             if (payment == null || payment.Status != PaymentStatus.Succeeded)
+            {
+                _logger.LogWarning("Refund blocked: payment missing or not succeeded. PaymentIntentId: {PaymentIntentId}", paymentIntentId);
                 return false;
+            }
 
             try
             {
@@ -197,14 +210,17 @@ namespace ECommerce.Infrastructure
                     payment.RefundedAt = DateTime.UtcNow;
                     payment.UpdatedAt = DateTime.UtcNow;
                     await _paymentsRepository.UpdateAsync(payment);
+                    _logger.LogInformation("Refund processed. PaymentId: {PaymentId}, PaymentIntentId: {PaymentIntentId}, RefundedAmount: {RefundedAmount}", payment.Id, paymentIntentId, payment.RefundedAmount ?? 0);
 
                     return true;
                 }
 
+                _logger.LogError("Refund failed at provider level. PaymentIntentId: {PaymentIntentId}, RefundStatus: {RefundStatus}", paymentIntentId, refund.Status);
                 return false;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Refund operation failed. PaymentIntentId: {PaymentIntentId}", paymentIntentId);
                 return false;
             }
         }

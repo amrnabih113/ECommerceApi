@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>INVENTORY_RACE_CONDITION_PROTECTION.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+html,footer,header{
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Custom MD PDF CSS
+ */
+html,footer,header{
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+
+ }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///r%3A/2.Travail/1.Enseignement/Cours/_1.Outils/2.Developpement/1.SCSS/main.css" type="text/css"><link rel="stylesheet" href="file:///d%3A/rdaros/Cours/_1.Outils/2.Developpement/1.SCSS/main.css" type="text/css">
+</head>
+
+<body>
+    <h1 id="inventory-race-condition-protection">Inventory Race Condition Protection</h1>
+<h2 id="overview">Overview</h2>
+<p>This implementation prevents race conditions when multiple users simultaneously attempt to purchase the same product, especially the last item in stock.</p>
+<h2 id="the-problem">The Problem</h2>
+<p><strong>Without protection:</strong></p>
+<pre class="hljs"><code><div>Time    User A                          User B
+----    ------                          ------
+T1      Read stock: 1 item             
+T2                                      Read stock: 1 item
+T3      Check OK, reduce stock to 0    
+T4                                      Check OK, reduce stock to -1 ❌
+T5      Order created                   Order created
+Result: BOTH orders succeed, stock = -1 (CRITICAL BUG)
+</div></code></pre>
+<h2 id="the-solution">The Solution</h2>
+<p><strong>With row-level locking:</strong></p>
+<pre class="hljs"><code><div>Time    User A                          User B
+----    ------                          ------
+T1      Lock row, read stock: 1        
+T2                                      Wait for lock... ⏳
+T3      Check OK, reduce stock to 0    
+T4      Commit &amp; release lock          
+T5                                      Lock acquired, read stock: 0
+T6                                      Check FAILS ✅
+Result: User A succeeds, User B gets &quot;out of stock&quot; error
+</div></code></pre>
+<hr>
+<h2 id="implementation-details">Implementation Details</h2>
+<h3 id="1-row-level-locking">1. Row-Level Locking</h3>
+<h4 id="iproductvariantsrepositorycs">IProductVariantsRepository.cs</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+<span class="hljs-comment"><span class="hljs-doctag">///</span> Gets a product variant with row-level locking to prevent race conditions.</span>
+<span class="hljs-comment"><span class="hljs-doctag">///</span> Must be called within a transaction.</span>
+<span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+Task&lt;ProductVariant?&gt; GetByIdWithLockAsync(<span class="hljs-keyword">int</span> id);
+</div></code></pre>
+<h4 id="productvariantsrepositorycs">ProductVariantsRepository.cs</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;ProductVariant?&gt; GetByIdWithLockAsync(<span class="hljs-keyword">int</span> id)
+{
+    <span class="hljs-comment">// UPDLOCK: Prevents other transactions from acquiring update or exclusive locks</span>
+    <span class="hljs-comment">// ROWLOCK: Locks only this specific row, not the entire table</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> _dbSet
+        .FromSqlRaw(<span class="hljs-string">"SELECT * FROM ProductVariants WITH (UPDLOCK, ROWLOCK) WHERE Id = {0}"</span>, id)
+        .Include(v =&gt; v.Product)
+        .FirstOrDefaultAsync();
+}
+</div></code></pre>
+<p><strong>SQL Server Lock Hints:</strong></p>
+<ul>
+<li><strong>UPDLOCK</strong>: Prevents other transactions from acquiring update or exclusive locks (read is OK)</li>
+<li><strong>ROWLOCK</strong>: Locks only the specific row, not the entire table (better concurrency)</li>
+</ul>
+<h3 id="2-products-without-variants">2. Products Without Variants</h3>
+<p>Similar implementation for products that don't have variants:</p>
+<h4 id="iproductrepositorycs">IProductRepository.cs</h4>
+<pre class="hljs"><code><div>Task&lt;Product?&gt; GetByIdWithLockAsync(<span class="hljs-keyword">int</span> id);
+</div></code></pre>
+<h4 id="productsrepositorycs">ProductsRepository.cs</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> Task&lt;Product?&gt; GetByIdWithLockAsync(<span class="hljs-keyword">int</span> id)
+{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> _dbSet
+        .FromSqlRaw(<span class="hljs-string">"SELECT * FROM Products WITH (UPDLOCK, ROWLOCK) WHERE Id = {0}"</span>, id)
+        .FirstOrDefaultAsync();
+}
+</div></code></pre>
+<h3 id="3-ordersservice-stock-reduction">3. OrdersService Stock Reduction</h3>
+<p>The critical path in <code>CreateOrderAsync</code>:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">using</span> <span class="hljs-keyword">var</span> transaction = <span class="hljs-keyword">await</span> _context.Database.BeginTransactionAsync();
+<span class="hljs-keyword">try</span>
+{
+    <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">var</span> item <span class="hljs-keyword">in</span> dto.OrderItems)
+    {
+        <span class="hljs-keyword">if</span> (item.ProductVariantId.HasValue)
+        {
+            <span class="hljs-comment">// ✅ RACE CONDITION PROTECTION: Lock the row</span>
+            <span class="hljs-keyword">var</span> variant = <span class="hljs-keyword">await</span> _productVariantsRepository.GetByIdWithLockAsync(
+                item.ProductVariantId.Value
+            );
+
+            <span class="hljs-comment">// ✅ ATOMIC CHECK: Verify stock within the locked transaction</span>
+            <span class="hljs-keyword">if</span> (variant.StockQuantity &lt; item.Quantity)
+            {
+                <span class="hljs-keyword">await</span> transaction.RollbackAsync();
+                <span class="hljs-keyword">return</span> ApiResponse&lt;OrderDto&gt;.Error(
+                    <span class="hljs-string">$"Insufficient stock. Available: <span class="hljs-subst">{variant.StockQuantity}</span>"</span>
+                );
+            }
+
+            <span class="hljs-comment">// ✅ PREVENT NEGATIVE STOCK: Reduce only after validation</span>
+            variant.StockQuantity -= item.Quantity;
+        }
+        <span class="hljs-keyword">else</span>
+        {
+            <span class="hljs-comment">// Same logic for products without variants</span>
+            <span class="hljs-keyword">var</span> product = <span class="hljs-keyword">await</span> _productsRepository.GetByIdWithLockAsync(item.ProductId);
+            
+            <span class="hljs-keyword">if</span> (product.StockQuantity &lt; item.Quantity)
+            {
+                <span class="hljs-keyword">await</span> transaction.RollbackAsync();
+                <span class="hljs-keyword">return</span> ApiResponse&lt;OrderDto&gt;.Error(<span class="hljs-string">"Insufficient stock"</span>);
+            }
+            
+            product.StockQuantity -= item.Quantity;
+        }
+    }
+    
+    <span class="hljs-comment">// Create order and commit</span>
+    <span class="hljs-keyword">await</span> _context.SaveChangesAsync();
+    <span class="hljs-keyword">await</span> transaction.CommitAsync();
+}
+<span class="hljs-keyword">catch</span>
+{
+    <span class="hljs-keyword">await</span> transaction.RollbackAsync();
+    <span class="hljs-keyword">throw</span>;
+}
+</div></code></pre>
+<hr>
+<h2 id="database-level-protection">Database-Level Protection</h2>
+<h3 id="check-constraints">Check Constraints</h3>
+<p>Additional safety net at the database level:</p>
+<pre class="hljs"><code><div><span class="hljs-comment">-- Prevent negative stock in ProductVariants</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> ProductVariants
+<span class="hljs-keyword">ADD</span> <span class="hljs-keyword">CONSTRAINT</span> CK_ProductVariants_StockQuantity_NonNegative
+<span class="hljs-keyword">CHECK</span> (StockQuantity &gt;= <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">-- Prevent negative stock in Products</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> Products
+<span class="hljs-keyword">ADD</span> <span class="hljs-keyword">CONSTRAINT</span> CK_Products_StockQuantity_NonNegative
+<span class="hljs-keyword">CHECK</span> (StockQuantity &gt;= <span class="hljs-number">0</span>);
+
+<span class="hljs-comment">-- Ensure positive quantities in orders</span>
+<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">TABLE</span> OrderItems
+<span class="hljs-keyword">ADD</span> <span class="hljs-keyword">CONSTRAINT</span> CK_OrderItems_Quantity_Positive
+<span class="hljs-keyword">CHECK</span> (Quantity &gt; <span class="hljs-number">0</span>);
+</div></code></pre>
+<p>To apply these constraints:</p>
+<pre class="hljs"><code><div>sqlcmd -S localhost -d ECommerceDB -i Migrations/AddStockCheckConstraints.sql
+</div></code></pre>
+<hr>
+<h2 id="testing-race-conditions">Testing Race Conditions</h2>
+<h3 id="load-test-scenario">Load Test Scenario</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># Simulate 100 concurrent users buying the last item</span>
+ab -n 100 -c 100 -p order.json -T application/json \
+   https://localhost:7286/api/orders
+</div></code></pre>
+<h3 id="expected-results">Expected Results</h3>
+<ul>
+<li>✅ <strong>1 order succeeds</strong> (stock reduced from 1 to 0)</li>
+<li>✅ <strong>99 orders fail</strong> with &quot;Insufficient stock&quot; error</li>
+<li>✅ <strong>Stock never goes negative</strong> (stays at 0)</li>
+</ul>
+<h3 id="without-protection-before">Without Protection (Before)</h3>
+<ul>
+<li>❌ Multiple orders succeed</li>
+<li>❌ Stock becomes negative (-50, -100, etc.)</li>
+<li>❌ Overselling occurs</li>
+</ul>
+<hr>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<h3 id="lock-duration">Lock Duration</h3>
+<p>Row locks are held only for:</p>
+<ol>
+<li>Reading stock quantity</li>
+<li>Validating stock</li>
+<li>Reducing stock</li>
+<li>Committing transaction</li>
+</ol>
+<p><strong>Typical lock hold time: &lt; 50ms</strong></p>
+<h3 id="concurrency-impact">Concurrency Impact</h3>
+<ul>
+<li>✅ Different products: No blocking (different rows)</li>
+<li>✅ Different variants: No blocking (different rows)</li>
+<li>⚠️ Same product/variant: Sequential processing (by design)</li>
+</ul>
+<h3 id="optimization-tips">Optimization Tips</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// ✅ GOOD: Lock acquired late, held briefly</span>
+<span class="hljs-keyword">var</span> cart = <span class="hljs-keyword">await</span> GetCart();
+<span class="hljs-keyword">var</span> coupon = <span class="hljs-keyword">await</span> ValidateCoupon();
+<span class="hljs-comment">// Lock acquired here ⬇️</span>
+<span class="hljs-keyword">var</span> variant = <span class="hljs-keyword">await</span> GetByIdWithLockAsync(id);
+variant.StockQuantity -= qty;
+<span class="hljs-keyword">await</span> SaveChangesAsync();
+<span class="hljs-comment">// Lock released here ⬆️</span>
+
+<span class="hljs-comment">// ❌ BAD: Lock held for entire order process</span>
+<span class="hljs-keyword">var</span> variant = <span class="hljs-keyword">await</span> GetByIdWithLockAsync(id); <span class="hljs-comment">// Lock acquired</span>
+<span class="hljs-keyword">var</span> cart = <span class="hljs-keyword">await</span> GetCart(); <span class="hljs-comment">// Still holding lock</span>
+<span class="hljs-keyword">var</span> coupon = <span class="hljs-keyword">await</span> ValidateCoupon(); <span class="hljs-comment">// Still holding lock</span>
+variant.StockQuantity -= qty;
+<span class="hljs-keyword">await</span> SaveChangesAsync(); <span class="hljs-comment">// Lock finally released</span>
+</div></code></pre>
+<hr>
+<h2 id="security-benefits">Security Benefits</h2>
+<h3 id="1-prevents-overselling">1. Prevents Overselling</h3>
+<ul>
+<li>Cannot sell more than available stock</li>
+<li>Critical for physical product businesses</li>
+</ul>
+<h3 id="2-data-integrity">2. Data Integrity</h3>
+<ul>
+<li>Stock count always accurate</li>
+<li>No negative inventory</li>
+</ul>
+<h3 id="3-financial-protection">3. Financial Protection</h3>
+<ul>
+<li>Prevents fulfillment of orders that can't be completed</li>
+<li>Avoids refund/compensation costs</li>
+</ul>
+<h3 id="4-user-trust">4. User Trust</h3>
+<ul>
+<li>Customers never buy &quot;out of stock&quot; items</li>
+<li>Professional error handling</li>
+</ul>
+<hr>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="%E2%9C%85-do">✅ DO</h3>
+<ul>
+<li>Always use transactions for stock reduction</li>
+<li>Lock rows before reading stock</li>
+<li>Validate stock within the locked transaction</li>
+<li>Rollback on any validation failure</li>
+<li>Use specific error messages</li>
+<li>Log race condition events</li>
+</ul>
+<h3 id="%E2%9D%8C-dont">❌ DON'T</h3>
+<ul>
+<li>Read stock outside transaction</li>
+<li>Check stock without locking</li>
+<li>Reduce stock before validation</li>
+<li>Use table-level locks (kills concurrency)</li>
+<li>Allow negative stock</li>
+<li>Ignore lock timeout errors</li>
+</ul>
+<hr>
+<h2 id="monitoring--alerts">Monitoring &amp; Alerts</h2>
+<h3 id="key-metrics">Key Metrics</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">// Log when stock prevents order</span>
+_logger.LogWarning(
+    <span class="hljs-string">"Order blocked: Insufficient stock for variant {VariantId}. "</span> +
+    <span class="hljs-string">"Available: {Available}, Requested: {Requested}"</span>,
+    variantId, available, requested
+);
+
+<span class="hljs-comment">// Log potential high-contention scenarios</span>
+_logger.LogInformation(
+    <span class="hljs-string">"High contention detected for product {ProductId}. "</span> +
+    <span class="hljs-string">"Lock wait time: {WaitTimeMs}ms"</span>,
+    productId, waitTime
+);
+</div></code></pre>
+<h3 id="dashboard-queries">Dashboard Queries</h3>
+<pre class="hljs"><code><div><span class="hljs-comment">-- Products with frequent stock-outs</span>
+<span class="hljs-keyword">SELECT</span> p.Id, p.Name, <span class="hljs-keyword">COUNT</span>(*) <span class="hljs-keyword">as</span> StockOutCount
+<span class="hljs-keyword">FROM</span> Products p
+<span class="hljs-keyword">JOIN</span> AuditLog a <span class="hljs-keyword">ON</span> a.ProductId = p.Id
+<span class="hljs-keyword">WHERE</span> a.Message <span class="hljs-keyword">LIKE</span> <span class="hljs-string">'%Insufficient stock%'</span>
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> p.Id, p.Name
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> StockOutCount <span class="hljs-keyword">DESC</span>;
+
+<span class="hljs-comment">-- High-contention products (frequent simultaneous access)</span>
+<span class="hljs-keyword">SELECT</span> ProductId, <span class="hljs-keyword">COUNT</span>(*) <span class="hljs-keyword">as</span> ConcurrentAttempts, <span class="hljs-keyword">AVG</span>(LockWaitTime) <span class="hljs-keyword">as</span> AvgWaitMs
+<span class="hljs-keyword">FROM</span> OrderAttemptLog
+<span class="hljs-keyword">WHERE</span> CreatedAt &gt; <span class="hljs-keyword">DATEADD</span>(<span class="hljs-keyword">hour</span>, <span class="hljs-number">-1</span>, <span class="hljs-keyword">GETUTCDATE</span>())
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> ProductId
+<span class="hljs-keyword">HAVING</span> <span class="hljs-keyword">COUNT</span>(*) &gt; <span class="hljs-number">10</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ConcurrentAttempts <span class="hljs-keyword">DESC</span>;
+</div></code></pre>
+<hr>
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Protection Layer</th>
+<th>Mechanism</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application</strong></td>
+<td>Row-level locking (UPDLOCK)</td>
+<td>Prevent race conditions</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Transaction validation</td>
+<td>Atomic stock checks</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Explicit stock checks</td>
+<td>Business logic validation</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>Check constraints</td>
+<td>Prevent negative stock</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>Transaction isolation</td>
+<td>ACID guarantees</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result:</strong> Rock-solid inventory management even under high concurrent load! 🔒</p>
+<hr>
+<h2 id="migration-checklist">Migration Checklist</h2>
+<ul>
+<li><input type="checkbox" id="checkbox0" checked="true"><label for="checkbox0">Add </label><code>GetByIdWithLockAsync</code> to <code>IProductVariantsRepository</code></li>
+<li><input type="checkbox" id="checkbox1" checked="true"><label for="checkbox1">Implement row-level locking in </label><code>ProductVariantsRepository</code></li>
+<li><input type="checkbox" id="checkbox2" checked="true"><label for="checkbox2">Add </label><code>GetByIdWithLockAsync</code> to <code>IProductsRepository</code></li>
+<li><input type="checkbox" id="checkbox3" checked="true"><label for="checkbox3">Implement row-level locking in </label><code>ProductsRepository</code></li>
+<li><input type="checkbox" id="checkbox4" checked="true"><label for="checkbox4">Inject repositories into </label><code>OrdersService</code></li>
+<li><input type="checkbox" id="checkbox5" checked="true"><label for="checkbox5">Update </label><code>CreateOrderAsync</code> to use locked methods</li>
+<li><input type="checkbox" id="checkbox6" checked="true"><label for="checkbox6">Add atomic stock validation</label></li>
+<li><input type="checkbox" id="checkbox7" checked="true"><label for="checkbox7">Add explicit rollback on stock failures</label></li>
+<li><input type="checkbox" id="checkbox8" checked="true"><label for="checkbox8">Create SQL check constraints script</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Apply SQL check constraints to database</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Load test with concurrent users</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Monitor for lock contention</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">Update API documentation</label></li>
+</ul>
+
+</body>
+
+</html>
